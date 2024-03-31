@@ -44,22 +44,22 @@ const AuthItem = styled.a`
 `
 
 function NavBar() {
-    return (
-        <Wrapper>
-            <LogoImg src={Logo} alt="메인로고" />
+  return (
+    <Wrapper>
+      <LogoImg src={Logo} alt="메인로고" />
 
-            <CategoryContainer>
-                <Category>입양/분양</Category>
-                <Category>인근 보호소</Category>
-                <Category>장례</Category>
-            </CategoryContainer>
+      <CategoryContainer>
+        <Category>입양/분양</Category>
+        <Category>인근 보호소</Category>
+        <Category>장례</Category>
+      </CategoryContainer>
 
-            <AuthContainer>
-                <AuthItem>로그인</AuthItem>
-                <AuthItem>회원가입</AuthItem>
-            </AuthContainer>
-        </Wrapper>
-    )
+      <AuthContainer>
+        <AuthItem>로그인</AuthItem>
+        <AuthItem>회원가입</AuthItem>
+      </AuthContainer>
+    </Wrapper>
+  )
 }
 
 export default NavBar;

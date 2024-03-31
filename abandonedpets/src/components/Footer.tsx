@@ -24,12 +24,12 @@ const Explan = styled.p`
 `
 
 function Footer() {
-    return (
-        <Wrapper>
-            <LogoImg src={Logo} alt="메인로고" />
-            <Explan>Team 미정</Explan>
-        </Wrapper>
-    )
+  return (
+    <Wrapper>
+      <LogoImg src={Logo} alt="메인로고" />
+      <Explan>Team 미정</Explan>
+    </Wrapper>
+  )
 }
 
 export default Footer;
