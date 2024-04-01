@@ -12,7 +12,7 @@ const Wrapper = styled.div`
   min-height: 100%;
 `
 
-const LoginContainer = styled.div`
+const SignUpContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -56,44 +56,46 @@ const Button = styled.button`
   }
 `
 
-const SignUpContainer = styled.div`
+const LoginContainer = styled.div`
   width: 18rem;
   display: flex;
   justify-content: space-between;
   margin-top: 1.5%;
 `
 
-const SignUpExplan = styled.p`
+const LoginExplan = styled.p`
   font-size: 0.875rem;
   color: #939393;
 `
 
-const SignUpText = styled.p`
+const LoginText = styled.p`
   font-size: 0.875rem;
   cursor: pointer;
 `
 
-function LoginPage() {
-  return (
-    <FullWrapper>
-      <Wrapper>
-        <NavBar />
-        <LoginContainer>
-          <Explan>로그인</Explan>
-          <FormContainer>
-            <Input type='text' placeholder="이메일" />
-            <Input type='password' placeholder="비밀번호" />
-            <Button>로그인</Button>
-          </FormContainer>
-          <SignUpContainer>
-            <SignUpExplan>아직 회원이 아니신가요?</SignUpExplan>
-            <SignUpText>회원가입</SignUpText>
-          </SignUpContainer>
-        </LoginContainer>
-      </Wrapper>
-      <Footer />
-    </FullWrapper>
-  );
+function SignUpPage() {
+    return (
+        <FullWrapper>
+            <Wrapper>
+                <NavBar />
+                <SignUpContainer>
+                    <Explan>회원가입</Explan>
+                    <FormContainer>
+                        <Input type='text' placeholder='이름' />
+                        <Input type='email' placeholder='이메일' />
+                        <Input type='password' placeholder='비밀번호' />
+                        <Input type='number' placeholder='전화번호' />
+                        <Button>회원가입</Button>
+                    </FormContainer>
+                    <LoginContainer>
+                        <LoginExplan>이미 회원이신가요?</LoginExplan>
+                        <LoginText>회원가입</LoginText>
+                    </LoginContainer>
+                </SignUpContainer>
+            </Wrapper>
+            <Footer />
+        </FullWrapper>
+    )
 }
 
-export default LoginPage;
+export default SignUpPage;
