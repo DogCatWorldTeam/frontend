@@ -41,7 +41,7 @@ function MainPage() {
         <ExplanContainer>
           <div>
             <ExplanHeader>반려동물 사지말고 입양하세요</ExplanHeader>
-            <Explan>유기동물의 주인이 되어주세요</Explan>
+            <Explan>유기동물의 가족이 되어주세요</Explan>
             <Explan>입양,분양부터 장례까지 정보를 제공합니다.</Explan>
           </div>
 
