@@ -5,6 +5,7 @@ import SignUpPage from "./pages/SignUpPage";
 import ShelterPage from './pages/ShelterPage';
 import FuneralPage from "./pages/FuneralPage";
 import Pets from "./pages/Pets";
+import PetDetail from "./pages/PetDetail";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path='shelter' element={<ShelterPage />} />
           <Route path='funeral' element={<FuneralPage />} />
           <Route path='pets' element={<Pets />} />
+          <Route path='detail' element={<PetDetail />} />
         </Routes>
       </BrowserRouter>
     </>
