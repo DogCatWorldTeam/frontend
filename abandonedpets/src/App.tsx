@@ -6,6 +6,7 @@ import ShelterPage from './pages/ShelterPage';
 import FuneralPage from "./pages/FuneralPage";
 import Pets from "./pages/Pets";
 import PetDetail from "./pages/PetDetail";
+import Chat from "./pages/Chat";
 
 function App() {
   return (
@@ -19,6 +20,8 @@ function App() {
           <Route path='funeral' element={<FuneralPage />} />
           <Route path='pets' element={<Pets />} />
           <Route path='detail' element={<PetDetail />} />
+          {/* chat는 모달이라 확인용 추후 지워줘야 함 */}
+          <Route path='chat' element={<Chat />} />
         </Routes>
       </BrowserRouter>
     </>
