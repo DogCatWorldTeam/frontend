@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import InfoBar from "../components/chat/InfoBar";
-import Messages from "../components/chat/Messges";
-import Input from "../components/chat/Input";
+import InfoBar from "../chat/InfoBar";
+import Messages from "../chat/Messges";
+import Input from "../chat/Input";
 
 const Backdrop = styled.div`
   position: fixed;
@@ -28,16 +28,16 @@ const Modal = styled.div`
 
 
 function Chat() {
-    return (
-        <div>
-            <Backdrop />
-            <Modal>
-                <InfoBar />
-                <Messages />
-                <Input />
-            </Modal>
-        </div>
-    )
+  return (
+    <>
+      <Backdrop />
+      <Modal>
+        <InfoBar />
+        <Messages />
+        <Input />
+      </Modal>
+    </>
+  )
 }
 
 export default Chat;
