@@ -6,9 +6,10 @@ import ShelterPage from './pages/ShelterPage';
 import FuneralPage from "./pages/FuneralPage";
 import Pets from "./pages/Pets";
 import PetDetail from "./pages/PetDetail";
+import Mypage from "./pages/Mypage";
 import Chat from "./components/modal/Chat";
 import ChatList from "./components/modal/ChatList";
-import FavoriteList from "./components/modal/FavoriteList";
+import FavoriteList from "./components/mypage/FavoriteList";
 import PetWrite from "./pages/PetWrite";
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
           <Route path='pets' element={<Pets />} />
           <Route path='detail' element={<PetDetail />} />
           <Route path='petwrite' element={<PetWrite />} />
+          <Route path='mypage' element={<Mypage />} />
           {/* chat는 모달이라 확인용 추후 지워줘야 함 */}
           <Route path='chat' element={<Chat />} />
           <Route path='chatlist' element={<ChatList />} />
