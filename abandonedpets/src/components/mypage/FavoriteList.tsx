@@ -14,13 +14,10 @@ const Wrapper = styled.div`
 `;
 
 const InfoContainer = styled.div`
-  width: 60rem;
-  height: 4rem;
-  background-color: #FBE8E8;
-  text-align: center;
-  line-height: 4rem;
-  margin-bottom: 0.7rem;
-  position: relative;
+  width: 95%;
+  padding: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: 900;
 `
 
 const ListWrapper = styled.div`
