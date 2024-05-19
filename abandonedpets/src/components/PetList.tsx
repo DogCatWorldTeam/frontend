@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Dog from '../assets/sampleImg/Dog.png';
 import Favorite from '../assets/Favorite.svg';
@@ -20,6 +21,10 @@ const PetItem = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const PetImg = styled.img`
@@ -123,10 +128,12 @@ const PetData = {
 };
 
 function PetList() {
+  const navigate = useNavigate();
+
   return (
     <PetContainer>
       {PetData.pets.map((pet) => (
-        <PetItem>
+        <PetItem onClick={() => navigate('/detail')}>
           <PetImg src={pet.img} />
           <PetInfo key={pet.name}>
             <InfoDetail>{pet.name}</InfoDetail>

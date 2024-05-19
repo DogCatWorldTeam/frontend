@@ -24,11 +24,13 @@ const Img = styled.img`
   }
 `;
 
-function InfoBar() {
+function InfoBar(props) {
+  const { close } = props;
+
   return (
     <InfoContainer>
       <span>infobar 입니다</span>
-      <Img src={Cencel} alt="닫기" />
+      <Img onClick={close} src={Cencel} alt="닫기" />
     </InfoContainer>
   );
 }

@@ -33,10 +33,14 @@ const SendIng = styled.img`
   transform: translate(0%, -50%);
 `;
 
-function SendMessageBtn() {
+function SendMessageBtn(props) {
+  const { onConfirm } = props;
+
   return (
     <Wrapper>
-      <SendBtn type="button">메세지 보내기</SendBtn>
+      <SendBtn onClick={onConfirm} type="button">
+        메세지 보내기
+      </SendBtn>
       <SendIng src={Send} alt="전송이미지" />
     </Wrapper>
   );

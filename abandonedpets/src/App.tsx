@@ -19,13 +19,13 @@ function App() {
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="signup" element={<SignUpPage />} />
-          <Route path="shelter" element={<ShelterPage />} />
-          <Route path="funeral" element={<FuneralPage />} />
-          <Route path="pets" element={<Pets />} />
-          <Route path="detail" element={<PetDetail />} />
-          <Route path="petwrite" element={<PetWrite />} />
-          <Route path="mypage" element={<Mypage />} />
+          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/shelter" element={<ShelterPage />} />
+          <Route path="/funeral" element={<FuneralPage />} />
+          <Route path="/pets" element={<Pets />} />
+          <Route path="/detail" element={<PetDetail />} />
+          <Route path="/petwrite" element={<PetWrite />} />
+          <Route path="/mypage" element={<Mypage />} />
           {/* chat는 모달이라 확인용 추후 지워줘야 함 */}
           <Route path="chat" element={<Chat />} />
           <Route path="chatlist" element={<ChatList />} />

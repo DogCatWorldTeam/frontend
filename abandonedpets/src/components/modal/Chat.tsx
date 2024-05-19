@@ -26,12 +26,14 @@ const Modal = styled.div`
   transform: translate(-50%, -50%);
 `;
 
-function Chat() {
+function Chat(props) {
+  const { onConfirm } = props;
+
   return (
     <>
       <Backdrop />
       <Modal>
-        <InfoBar />
+        <InfoBar close={onConfirm} />
         <Messages />
         <Input />
       </Modal>

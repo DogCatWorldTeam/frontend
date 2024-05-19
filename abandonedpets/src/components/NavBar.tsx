@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Logo from '../assets/Logo.png';
 
@@ -24,10 +25,12 @@ const LogoImg = styled.img`
 
 const CategoryContainer = styled.ul``;
 
-const Category = styled.a`
+const Category = styled(Link)`
   font-family: pretendard;
   font-size: 1.25rem;
   margin: 0 1.6rem;
+  text-decoration: none;
+  color: inherit;
 
   &:hover {
     cursor: pointer;
@@ -37,25 +40,28 @@ const Category = styled.a`
 
 const AuthContainer = styled.div``;
 
-const AuthItem = styled.a`
+const AuthItem = styled(Link)`
   font-size: 1rem;
   margin: 0 1.6rem;
+  text-decoration: none;
+  color: inherit;
 `;
 
 function NavBar() {
   return (
     <Wrapper>
-      <LogoImg src={Logo} alt="메인로고" />
-
+      <Link to="/">
+        <LogoImg src={Logo} alt="메인로고" />
+      </Link>
       <CategoryContainer>
-        <Category>입양/분양</Category>
-        <Category>인근 보호소</Category>
-        <Category>장례</Category>
+        <Category to="/pets">입양/분양</Category>
+        <Category to="/shelter">인근 보호소</Category>
+        <Category to="/funeral">장례식장</Category>
       </CategoryContainer>
 
       <AuthContainer>
-        <AuthItem>로그인</AuthItem>
-        <AuthItem>회원가입</AuthItem>
+        <AuthItem to="/login">로그인</AuthItem>
+        <AuthItem to="/signup">회원가입</AuthItem>
       </AuthContainer>
     </Wrapper>
   );
