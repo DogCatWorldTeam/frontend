@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import FilterIcon from '../assets/Filter.png';
 import SearchIcon from '../assets/Search.png';
@@ -31,6 +32,10 @@ const FilterImg = styled.img`
 const SearchImg = styled.img`
   width: 1.5rem;
   height: 1.5rem;
+
+  &: hover {
+    cursor: pointer;
+  }
 `;
 
 const InputContainer = styled.div`
@@ -39,6 +44,13 @@ const InputContainer = styled.div`
   justify-content: start;
   align-items: center;
   margin-left: 3rem;
+`;
+
+const WriteBtn = styled.button`
+  width: 10rem;
+  border: none;
+  background-color: #ffc184;
+  font-size: 1rem;
 
   &: hover {
     cursor: pointer;
@@ -83,6 +95,7 @@ const Label = styled.label`
 `;
 
 function Search() {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
   const FilterOpenHandler = () => {
@@ -97,6 +110,9 @@ function Search() {
           <SearchImg src={SearchIcon} alt="검색" />
           <Input type="text" placeholder="검색할 내용을 입력해주세요" />
         </InputContainer>
+        <WriteBtn onClick={() => navigate('/petwrite')} type="button">
+          글 작성하기
+        </WriteBtn>
       </SearchContainer>
 
       {isOpen && (
