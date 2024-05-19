@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import UpArrow from "../../assets/UpArrow.png";
+import styled from 'styled-components';
+import UpArrow from '../../assets/UpArrow.png';
 
 const InputContainer = styled.div`
   width: 45rem;
@@ -10,7 +10,7 @@ const InputContainer = styled.div`
   position: relative;
   display: flex;
   align-items: center;
-`
+`;
 
 const InputText = styled.input`
   width: 90%;
@@ -21,27 +21,26 @@ const InputText = styled.input`
   font-size: 1rem;
   padding: 1%;
   margin-left: 0.3rem;
-`
+`;
 
 const SendImg = styled.img`
   position: absolute;
   right: 2%;
-  background-color: #FFDADA;
+  background-color: #ffdada;
   border-radius: 25px;
 
-  &:hover{
+  &:hover {
     cursor: pointer;
   }
-`
-
+`;
 
 function Input() {
-    return (
-        <InputContainer>
-            <InputText placeholder="메세지 입력" />
-            <SendImg src={UpArrow} alt="전송" />
-        </InputContainer>
-    )
+  return (
+    <InputContainer>
+      <InputText placeholder="메세지 입력" />
+      <SendImg src={UpArrow} alt="전송" />
+    </InputContainer>
+  );
 }
 
 export default Input;

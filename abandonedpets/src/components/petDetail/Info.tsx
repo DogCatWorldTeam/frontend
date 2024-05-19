@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import DogDetail from "../../assets/sampleImg/DogDetail.png";
-import Favorite from "../../assets/Favorite.svg";
+import styled from 'styled-components';
+import DogDetail from '../../assets/sampleImg/DogDetail.png';
+import Favorite from '../../assets/Favorite.svg';
 
 const Wrapper = styled.div`
   width: 70%;
@@ -16,40 +16,40 @@ const ImgContainer = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
-`
+`;
 
 const PetState = styled.div`
   font-size: 1.5rem;
-`
+`;
 
 const Img = styled.img`
   width: 17rem;
   height: 17rem;
   margin-top: 0.45rem;
-`
+`;
 
 const LikeImg = styled.img`
   position: absolute;
   right: 17%;
   bottom: 3%;
-`
+`;
 
 const InfoContainer = styled.div`
   width: 30%;
   display: flex;
   justify-content: space-between;
-`
+`;
 
 const InfoDetail = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-`
+`;
 
 const PetDetailText = styled.span`
   font-size: 1.2rem;
   margin: 10px 0;
-`
+`;
 function Info() {
   return (
     <Wrapper>
@@ -81,7 +81,7 @@ function Info() {
         </InfoDetail>
       </InfoContainer>
     </Wrapper>
-  )
+  );
 }
 
 export default Info;

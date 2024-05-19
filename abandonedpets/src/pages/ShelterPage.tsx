@@ -1,7 +1,6 @@
-import NavBar from "../components/NavBar";
-import ShelterList from "../components/shelter/ShelterList";
-import Footer from "../components/Footer";
-
+import NavBar from '../components/NavBar';
+import ShelterList from '../components/shelter/ShelterList';
+import Footer from '../components/Footer';
 
 function ShelterPage() {
   return (
@@ -10,7 +9,7 @@ function ShelterPage() {
       <ShelterList />
       <Footer />
     </>
-  )
+  );
 }
 
 export default ShelterPage;

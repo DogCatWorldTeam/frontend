@@ -4,26 +4,25 @@ import Logo from '../assets/Logo.png';
 const Wrapper = styled.div`
   width: 100%;
   height: 5.625rem;
-  background-color: #F9F0E7;
+  background-color: #f9f0e7;
   border-bottom: solid 1px #000000;
   margin: 0px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-`
+`;
 
 const LogoImg = styled.img`
   height: 4.5rem;
   margin-top: 0.4rem;
   margin-left: 1.2rem;
-  
-  &:hover{
+
+  &:hover {
     cursor: pointer;
   }
-`
+`;
 
-const CategoryContainer = styled.ul`
-`
+const CategoryContainer = styled.ul``;
 
 const Category = styled.a`
   font-family: pretendard;
@@ -34,14 +33,14 @@ const Category = styled.a`
     cursor: pointer;
     text-decoration: underline;
   }
-`
+`;
 
-const AuthContainer = styled.div``
+const AuthContainer = styled.div``;
 
 const AuthItem = styled.a`
   font-size: 1rem;
   margin: 0 1.6rem;
-`
+`;
 
 function NavBar() {
   return (
@@ -59,7 +58,7 @@ function NavBar() {
         <AuthItem>회원가입</AuthItem>
       </AuthContainer>
     </Wrapper>
-  )
+  );
 }
 
 export default NavBar;
