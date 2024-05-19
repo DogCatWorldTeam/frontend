@@ -1,7 +1,7 @@
-import styled from "styled-components";
-import InfoBar from "../chat/InfoBar";
-import Messages from "../chat/Messges";
-import Input from "../chat/Input";
+import styled from 'styled-components';
+import InfoBar from '../chat/InfoBar';
+import Messages from '../chat/Messges';
+import Input from '../chat/Input';
 
 const Backdrop = styled.div`
   position: fixed;
@@ -13,7 +13,7 @@ const Backdrop = styled.div`
 
 const Modal = styled.div`
   position: fixed;
-  border: 1px solid #F6D9D9;
+  border: 1px solid #f6d9d9;
   z-index: 4;
   display: flex;
   flex-direction: column;
@@ -26,18 +26,19 @@ const Modal = styled.div`
   transform: translate(-50%, -50%);
 `;
 
+function Chat(props) {
+  const { onConfirm } = props;
 
-function Chat() {
   return (
     <>
       <Backdrop />
       <Modal>
-        <InfoBar />
+        <InfoBar close={onConfirm} />
         <Messages />
         <Input />
       </Modal>
     </>
-  )
+  );
 }
 
 export default Chat;

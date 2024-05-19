@@ -1,37 +1,37 @@
-import styled from "styled-components";
-import Header from "../components/NavBar";
+import styled from 'styled-components';
+import Header from '../components/NavBar';
 import Footer from '../components/Footer';
 import Dog from '../assets/MainDog.png';
 
 const FullWrapper = styled.div`
   width: 100%;
   height: 100vh;
-`
+`;
 
 const Wrapper = styled.div`
   height: auto;
   min-height: 100%;
-`
+`;
 
 const ExplanContainer = styled.div`
   height: 40rem;
   display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 
 const ExplanHeader = styled.p`
   font-size: 2.5rem;
-`
+`;
 
 const Explan = styled.p`
   font-size: 2rem;
-`
+`;
 
 const ExplanImg = styled.img`
   height: 18.75rem;
   padding-left: 1.5rem;
-`
+`;
 
 function MainPage() {
   return (
@@ -45,7 +45,7 @@ function MainPage() {
             <Explan>입양,분양부터 장례까지 정보를 제공합니다.</Explan>
           </div>
 
-          <ExplanImg src={Dog} alt='강아지 이미지' />
+          <ExplanImg src={Dog} alt="강아지 이미지" />
         </ExplanContainer>
       </Wrapper>
 
