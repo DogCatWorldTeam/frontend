@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import FilterIcon from '../assets/Filter.png';
-import SearchIcon from '../assets/Search.png';
+import FilterIcon from '../../assets/Filter.png';
+import SearchIcon from '../../assets/Search.png';
 
 const SearchWrapper = styled.div`
   width: 85%;

@@ -1,8 +1,8 @@
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import Dog from '../assets/sampleImg/Dog.png';
-import Favorite from '../assets/Favorite.svg';
-import FavoriteFill from '../assets/Favorite_fill.svg';
+import PetCard from './PetCard';
+import Dog from '../../assets/sampleImg/Dog.png';
+import Favorite from '../../assets/Favorite.svg';
+import FavoriteFill from '../../assets/Favorite_fill.svg';
 
 const PetContainer = styled.div`
   width: 85%;
@@ -13,6 +13,7 @@ const PetContainer = styled.div`
   margin: 3% auto;
 `;
 
+/*
 const PetItem = styled.div`
   width: 18rem;
   height: 18rem;
@@ -37,10 +38,7 @@ const PetInfo = styled.div`
   display: flex;
   justify-content: space-evenly;
 `;
-
-const InfoDetail = styled.p`
-  font-size: 1rem;
-`;
+*/
 
 const PetData = {
   pets: [
@@ -128,33 +126,21 @@ const PetData = {
 };
 
 function PetList() {
-  const navigate = useNavigate();
-
   return (
     <PetContainer>
       {PetData.pets.map((pet) => (
-        <PetItem onClick={() => navigate('/detail')}>
-          <PetImg src={pet.img} />
-          <PetInfo key={pet.name}>
-            <InfoDetail>{pet.name}</InfoDetail>
-            <InfoDetail>{pet.age}</InfoDetail>
-            <InfoDetail>{pet.gender}</InfoDetail>
-            <InfoDetail>{pet.weight}</InfoDetail>
-            <img src={pet.fav} />
-          </PetInfo>
-        </PetItem>
+        // <PetItem onClick={() => navigate('/detail')}>
+        //   <PetImg src={pet.img} />
+        //   <PetInfo key={pet.name}>
+        //     <InfoDetail>{pet.name}</InfoDetail>
+        //     <InfoDetail>{pet.age}</InfoDetail>
+        //     <InfoDetail>{pet.gender}</InfoDetail>
+        //     <InfoDetail>{pet.weight}</InfoDetail>
+        //     <img src={pet.fav} />
+        //   </PetInfo>
+        // </PetItem>
+        <PetCard key={pet.name} pet={pet} />
       ))}
-
-      <PetItem>
-        <PetImg src={Dog} alt="강아지 예시 이미지" />
-        <PetInfo>
-          <InfoDetail>이름</InfoDetail>
-          <InfoDetail>나이</InfoDetail>
-          <InfoDetail>성별</InfoDetail>
-          <InfoDetail>몸무게</InfoDetail>
-          <img src={Favorite} />
-        </PetInfo>
-      </PetItem>
     </PetContainer>
   );
 }
