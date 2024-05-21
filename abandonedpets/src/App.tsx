@@ -4,7 +4,8 @@ import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import ShelterPage from './pages/ShelterPage';
 import FuneralPage from './pages/FuneralPage';
-import Pets from './pages/Pets';
+import Dog from './pages/Dog';
+import Cat from './pages/Cat';
 import PetDetail from './pages/PetDetail';
 import Mypage from './pages/Mypage';
 import Chat from './components/modal/Chat';
@@ -22,7 +23,8 @@ function App() {
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/shelter" element={<ShelterPage />} />
           <Route path="/funeral" element={<FuneralPage />} />
-          <Route path="/pets" element={<Pets />} />
+          <Route path="/dog" element={<Dog />} />
+          <Route path="/cat" element={<Cat />} />
           <Route path="/detail" element={<PetDetail />} />
           <Route path="/petwrite" element={<PetWrite />} />
           <Route path="/mypage" element={<Mypage />} />

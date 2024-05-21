@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import Button from '@mui/material/Button';
 import FilterIcon from '../../assets/Filter.png';
 import SearchIcon from '../../assets/Search.png';
 
@@ -46,15 +47,8 @@ const InputContainer = styled.div`
   margin-left: 3rem;
 `;
 
-const WriteBtn = styled.button`
+const WriteBtn = styled.span`
   width: 10rem;
-  border: none;
-  background-color: #ffc184;
-  font-size: 1rem;
-
-  &: hover {
-    cursor: pointer;
-  }
 `;
 
 const Input = styled.input`
@@ -110,9 +104,13 @@ function Search() {
           <SearchImg src={SearchIcon} alt="검색" />
           <Input type="text" placeholder="검색할 내용을 입력해주세요" />
         </InputContainer>
-        <WriteBtn onClick={() => navigate('/petwrite')} type="button">
-          글 작성하기
-        </WriteBtn>
+        <Button
+          variant="outlined"
+          color="warning"
+          onClick={() => navigate('/petwrite')}
+        >
+          <WriteBtn>글 작성하기</WriteBtn>
+        </Button>
       </SearchContainer>
 
       {isOpen && (

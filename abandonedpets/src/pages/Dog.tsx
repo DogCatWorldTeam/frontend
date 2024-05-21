@@ -1,19 +1,19 @@
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import Search from '../components/pets/Search';
-import PetList from '../components/pets/PetList';
+import DogList from '../components/pets/DogList';
 import SelectPage from '../components/pets/SelectPage';
 
-function Pets() {
+function Dog() {
   return (
     <>
       <NavBar />
       <Search />
-      <PetList />
+      <DogList />
       <SelectPage />
       <Footer />
     </>
   );
 }
 
-export default Pets;
+export default Dog;

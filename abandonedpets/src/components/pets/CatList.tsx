@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import PetCard from './PetCard';
-import Dog from '../../assets/sampleImg/Dog.png';
+import Cat from '../../assets/sampleImg/Cat.png';
 import Favorite from '../../assets/Favorite.svg';
 import FavoriteFill from '../../assets/Favorite_fill.svg';
 
@@ -47,7 +47,7 @@ const PetData = {
       age: '2살',
       gender: '남',
       weight: '6kg',
-      img: Dog,
+      img: Cat,
       fav: Favorite,
     },
     {
@@ -55,7 +55,7 @@ const PetData = {
       age: '2살',
       gender: '남',
       weight: '6kg',
-      img: Dog,
+      img: Cat,
       fav: Favorite,
     },
     {
@@ -63,7 +63,7 @@ const PetData = {
       age: '2살',
       gender: '남',
       weight: '6kg',
-      img: Dog,
+      img: Cat,
       fav: FavoriteFill,
     },
     {
@@ -71,7 +71,7 @@ const PetData = {
       age: '2살',
       gender: '남',
       weight: '6kg',
-      img: Dog,
+      img: Cat,
       fav: FavoriteFill,
     },
     {
@@ -79,7 +79,7 @@ const PetData = {
       age: '2살',
       gender: '남',
       weight: '6kg',
-      img: Dog,
+      img: Cat,
       fav: FavoriteFill,
     },
     {
@@ -87,7 +87,7 @@ const PetData = {
       age: '2살',
       gender: '남',
       weight: '6kg',
-      img: Dog,
+      img: Cat,
       fav: Favorite,
     },
     {
@@ -95,7 +95,7 @@ const PetData = {
       age: '2살',
       gender: '남',
       weight: '6kg',
-      img: Dog,
+      img: Cat,
       fav: FavoriteFill,
     },
     {
@@ -103,7 +103,7 @@ const PetData = {
       age: '2살',
       gender: '남',
       weight: '6kg',
-      img: Dog,
+      img: Cat,
       fav: Favorite,
     },
     {
@@ -111,7 +111,7 @@ const PetData = {
       age: '2살',
       gender: '남',
       weight: '6kg',
-      img: Dog,
+      img: Cat,
       fav: Favorite,
     },
     {
@@ -119,13 +119,13 @@ const PetData = {
       age: '2살',
       gender: '남',
       weight: '6kg',
-      img: Dog,
+      img: Cat,
       fav: FavoriteFill,
     },
   ],
 };
 
-function PetList() {
+function CatList() {
   return (
     <PetContainer>
       {PetData.pets.map((pet) => (
@@ -145,4 +145,4 @@ function PetList() {
   );
 }
 
-export default PetList;
+export default CatList;
