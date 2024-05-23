@@ -7,7 +7,7 @@ function ShelterPage() {
     <>
       <NavBar />
       <ShelterList />
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }
