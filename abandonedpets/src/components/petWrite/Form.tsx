@@ -1,8 +1,10 @@
 import { useState, useRef } from 'react';
 import styled from 'styled-components';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 
 const FormWrapper = styled.form`
-  width: 100%;
+  width: 50%;
   margin: 3rem auto 5rem auto;
   display: flex;
   flex-direction: column;
@@ -11,13 +13,24 @@ const FormWrapper = styled.form`
 `;
 
 const FromHeader = styled.div`
-  width: 70%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+`;
+
+const Title = styled.div`
+  width: 100%;
+  font-size: 2rem;
+  font-weight: 900;
   display: flex;
   justify-content: center;
 `;
 
 const LeftContainer = styled.div`
-  width: 40%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -26,30 +39,34 @@ const LeftContainer = styled.div`
 
 const BtnContainer = styled.div`
   width: 17rem;
-  border: 1px solid #a9a9a9;
+  border: 1px solid #ffbe57;
   margin-bottom: 0.25rem;
   border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
 `;
 
 // 버튼 스타일 - 선택 여부에 따라 동적 스타일 적용
 const StyledButton = styled.button<{ choice: boolean }>`
-  width: 50%;
+  width: 49.45%;
   height: 100%;
   border: none;
   border-radius: 5px;
   color: #000;
-  background-color: ${({ choice }) => (choice ? '#FFEBD8' : '#fff')};
+  background-color: ${({ choice }) => (choice ? '#FFBE57' : '#fff')};
   transition: background-color 0.3s;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 
-  &:hover {
+  &: hover {
     cursor: pointer;
+    border-color: #ffac29;
+    box-shadow: 0 0 0 3px #ffcf85;
   }
 `;
 
 const ImgFile = styled.label`
-  width: 17rem;
-  height: 17rem;
+  width: 45rem;
+  height: 30rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -59,6 +76,8 @@ const ImgFile = styled.label`
 
   &: hover {
     cursor: pointer;
+    border-color: #ffac29;
+    box-shadow: 0 0 0 3px #ffcf85;
   }
 `;
 
@@ -69,8 +88,8 @@ const ImgFileExplan = styled.div`
 `;
 
 const ImgPreview = styled.img`
-  width: 90%;
-  height: 90%;
+  width: 95%;
+  height: 95%;
   text-align: center;
   object-fit: contain;
 `;
@@ -80,12 +99,13 @@ const InputFile = styled.input`
 `;
 
 const InfoContainer = styled.div`
-  width: 40%;
+  width: 50%;
   display: flex;
   justify-content: space-evenly;
 `;
 
 const InfoDetail = styled.div`
+  width: 15rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -95,16 +115,25 @@ const InfoDetail = styled.div`
 
 const PetDetailText = styled.span`
   font-size: 1.2rem;
+  padding: 0.25rem;
 `;
 
 const InputInfo = styled.input`
-  font-size: 1.2rem;
+  width: 100%;
+  height: 1.5rem;
+  font-size: 1rem;
   outline: none;
-  border: 1px solid #ffc184;
+  border: 1px solid #ffcf85;
   border-radius: 5px;
+  padding: 0.25rem;
+
+  &: hover {
+    border-color: #ffac29;
+  }
 
   &: focus {
-    outline: 1px solid #ffc184;
+    border-color: #ffac29;
+    box-shadow: 0 0 0 3px #ffcf85;
   }
 `;
 
@@ -119,12 +148,13 @@ const InputGenderBtn = styled.button<{ gender: boolean }>`
   border: none;
   border-radius: 5px;
   color: #000;
-  background-color: ${({ gender }) => (gender ? '#FFEBD8' : '#A9A9A9')};
+  background-color: ${({ gender }) => (gender ? '#FFBE57' : '#A9A9A9')};
   transition: background-color 0.3s;
   font-size: 1.2rem;
 
   &:hover {
     cursor: pointer;
+    background-color: #ffbe57;
   }
 `;
 
@@ -133,20 +163,22 @@ const InputNeuterBtn = styled.button<{ neuter: boolean | string }>`
   border: none;
   border-radius: 5px;
   color: #000;
-  background-color: ${({ neuter }) => (neuter ? '#FFEBD8' : '#A9A9A9')};
+  background-color: ${({ neuter }) => (neuter ? '#FFBE57' : '#A9A9A9')};
   transition: background-color 0.3s;
   font-size: 1.2rem;
 
   &:hover {
     cursor: pointer;
+    background-color: #ffbe57;
   }
 `;
 
 const TextArea = styled.textarea`
-  width: 60%;
+  width: 100%;
   margin: 3% auto;
   background-color: #ffefde;
-  border: none;
+
+  border: 1px solid #ffcf85;
   border-radius: 10px;
   min-height: 7rem;
   resize: none;
@@ -154,16 +186,23 @@ const TextArea = styled.textarea`
   padding: 15px;
   font-size: 1rem;
 
+  &: hover {
+    border-color: #ffac29;
+  }
+
   &: focus {
-    outline: 1px solid #ffc184;
+    border-color: #ffac29;
+    box-shadow: 0 0 0 3px #ffcf85;
   }
 `;
 
 const InputImgList = styled.div`
+  width: 100%;
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 5개의 동일한 크기의 열 생성 */
+  grid-template-columns: repeat(3, 1fr);
   grid-auto-flow: row; /* 요소가 너비를 초과하면 다음 행으로 넘어가도록 설정 */
   gap: 20px;
+  place-items: center;
 `;
 
 const ImgPreviewList = styled.label`
@@ -177,20 +216,14 @@ const ImgPreviewList = styled.label`
 
   &: hover {
     cursor: pointer;
+    border-color: #ffac29;
+    box-shadow: 0 0 0 3px #ffcf85;
   }
 `;
 
-const SubmitBtn = styled.button`
-  width: 20%;
-  height: 2.5rem;
+const SubmitBtn = styled.span`
+  width: 10rem;
   font-size: 1.25rem;
-  background-color: #ffc184;
-  border: none;
-  border-radius: 10px;
-
-  &: hover {
-    cursor: pointer;
-  }
 `;
 
 function Form() {
@@ -251,6 +284,15 @@ function Form() {
   return (
     <FormWrapper>
       <FromHeader>
+        <Title>
+          <TextField
+            fullWidth
+            label="제목"
+            variant="outlined"
+            color="warning"
+          />
+        </Title>
+
         <LeftContainer>
           <BtnContainer>
             <StyledButton
@@ -268,7 +310,6 @@ function Form() {
               입양 완료
             </StyledButton>
           </BtnContainer>
-
           <ImgFile htmlFor="petImg">
             {imgFile ? (
               <ImgPreview src={imgFile} alt="Preview" />
@@ -287,7 +328,6 @@ function Form() {
 
         <InfoContainer>
           <InfoDetail>
-            <PetDetailText>제목</PetDetailText>
             <PetDetailText>이름</PetDetailText>
             <PetDetailText>성별</PetDetailText>
             <PetDetailText>나이</PetDetailText>
@@ -298,7 +338,6 @@ function Form() {
           </InfoDetail>
 
           <InfoDetail>
-            <InputInfo placeholder="제목" />
             <InputInfo placeholder="이름" />
             <InputBtnContainer>
               <InputGenderBtn
@@ -343,7 +382,7 @@ function Form() {
       <TextArea placeholder="추가 설명을 작성해주세요. (예, 성격 또는 특이사항)" />
 
       <InputImgList>
-        {[...Array(4)].map((_, index) => (
+        {[...Array(6)].map((_, index) => (
           <ImgPreviewList key={`listImg${index}`} htmlFor={`listImg${index}`}>
             {imgList[index] ? (
               <ImgPreview src={imgList[index]} alt="Preview" />
@@ -359,7 +398,9 @@ function Form() {
         ))}
       </InputImgList>
 
-      <SubmitBtn type="button">등록하기</SubmitBtn>
+      <Button variant="contained" color="warning">
+        <SubmitBtn>등록하기</SubmitBtn>
+      </Button>
     </FormWrapper>
   );
 }
