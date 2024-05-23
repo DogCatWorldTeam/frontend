@@ -1,60 +1,216 @@
+import { useState } from 'react';
 import styled from 'styled-components';
-import Shelter from '../../assets/sampleImg/Shelter.png';
+import { Map, MapMarker, CustomOverlayMap } from 'react-kakao-maps-sdk';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
+import Cat from '../../assets/sampleImg/Cat.png';
 
 const ShelterContainer = styled.div`
-  width: 80%;
-  display: grid;
-  place-items: center;
-  grid-template-columns: repeat(4, 1fr); //4개의 열
-  gap: 30px;
+  width: 50%;
   margin: 3% auto;
-`;
-
-const ShelterItem = styled.div`
-  width: 100%;
-  height: 19rem;
-  background-color: #f9f0e7;
-  border-radius: 20px;
-  box-shadow: 0 4px 4px -4px gray; // 그림자
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
-const ShelterImg = styled.img`
-  width: 23rem;
-  height: 16rem;
-`;
-
 const ShelterInfo = styled.div`
-  font-size: 1rem;
-  margin-top: 0.5rem;
+  font-size: 1.5rem;
 `;
 
-const sheltersData = {
-  shelters: [
-    { name: '보호소 1', img: Shelter },
-    { name: '보호소 2', img: Shelter },
-    { name: '보호소 3', img: Shelter },
-    { name: '보호소 4', img: Shelter },
-    { name: '보호소 5', img: Shelter },
-    { name: '보호소 6', img: Shelter },
-    { name: '보호소 7', img: Shelter },
-    { name: '보호소 8', img: Shelter },
-    { name: '보호소 9', img: Shelter },
-    { name: '보호소 10', img: Shelter },
-  ],
-};
+const MarkerInfo = styled.div`
+  background-color: #000;
+  padding: 0.5rem;
+  color: #fff;
+  border-radius: 5px;
+`;
+
+const PetContainer = styled.div`
+  width: 100%;
+  display: grid;
+  place-items: center;
+  grid-template-columns: repeat(3, 1fr); //4개의 열
+  gap: 20px;
+`;
+
+const InfoDetail = styled.p`
+  margin-bottom: 0;
+`;
+
+const DefaultMarkerUrl =
+  'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
+
+// 타입 정의
+interface Pet {
+  profile: string; // 이미지 URL이므로 string 타입
+  desertionNo: string;
+  state: string;
+  age: string;
+  gender: string;
+  kindCd: string;
+}
+
+interface Location {
+  title: string;
+  latlng: { lat: number; lng: number };
+  pet?: Pet[];
+}
+
+const locations: Location[] = [
+  {
+    title: '경복궁',
+    latlng: { lat: 37.579617, lng: 126.977041 },
+    pet: [
+      {
+        profile: Cat,
+        desertionNo: '고유번호',
+        state: '보호중',
+        age: '2024(년생)',
+        gender: '남',
+        kindCd: '믹스견',
+      },
+      {
+        profile: Cat,
+        desertionNo: '고유번호',
+        state: '보호중',
+        age: '2024(년생)',
+        gender: '남',
+        kindCd: '믹스견',
+      },
+      {
+        profile: Cat,
+        desertionNo: '고유번호',
+        state: '보호중',
+        age: '2024(년생)',
+        gender: '남',
+        kindCd: '믹스견',
+      },
+      {
+        profile: Cat,
+        desertionNo: '고유번호',
+        state: '보호중',
+        age: '2024(년생)',
+        gender: '남',
+        kindCd: '믹스견',
+      },
+      {
+        profile: Cat,
+        desertionNo: '고유번호',
+        state: '보호중',
+        age: '2024(년생)',
+        gender: '남',
+        kindCd: '믹스견',
+      },
+      {
+        profile: Cat,
+        desertionNo: '고유번호',
+        state: '보호중',
+        age: '2024(년생)',
+        gender: '남',
+        kindCd: '믹스견',
+      },
+      {
+        profile: Cat,
+        desertionNo: '고유번호',
+        state: '보호중',
+        age: '2024(년생)',
+        gender: '남',
+        kindCd: '믹스견',
+      },
+      {
+        profile: Cat,
+        desertionNo: '고유번호',
+        state: '보호중',
+        age: '2024(년생)',
+        gender: '남',
+        kindCd: '믹스견',
+      },
+    ],
+  },
+
+  { title: '서울 시청', latlng: { lat: 37.566295, lng: 126.977945 } },
+  { title: '남산타워', latlng: { lat: 37.551169, lng: 126.988227 } },
+  { title: '명동', latlng: { lat: 37.563656, lng: 126.982656 } },
+  { title: '이태원', latlng: { lat: 37.534552, lng: 126.994192 } },
+  {
+    title: '동대문 디자인 플라자',
+    latlng: { lat: 37.566295, lng: 127.009369 },
+  },
+  { title: '한강시민공원', latlng: { lat: 37.516066, lng: 126.966797 } },
+  { title: '롯데월드', latlng: { lat: 37.511074, lng: 127.098198 } },
+  { title: '서울숲', latlng: { lat: 37.544317, lng: 127.037448 } },
+  { title: '홍대입구', latlng: { lat: 37.556161, lng: 126.923642 } },
+];
 
 function ShelterList() {
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>(
+    null,
+  );
+
   return (
     <ShelterContainer>
-      {sheltersData.shelters.map((shelter, index) => (
-        <ShelterItem key={index}>
-          <ShelterImg src={shelter.img} />
-          <ShelterInfo>{shelter.name}</ShelterInfo>
-        </ShelterItem>
-      ))}
+      <ShelterInfo>가까운 보호소를 클릭해주세요.</ShelterInfo>
+      <Map
+        center={{ lat: 37.5528803113882, lng: 126.972601286522 }}
+        style={{ width: '800px', height: '600px' }}
+        level={7}
+      >
+        {locations.map((loc) => (
+          <>
+            <MapMarker
+              key={`${loc.title}-${loc.latlng}`}
+              position={loc.latlng}
+              image={{
+                src: DefaultMarkerUrl,
+                size: { width: 24, height: 35 },
+                options: {
+                  offset: {
+                    x: 16,
+                    y: 67,
+                  },
+                },
+              }}
+              onClick={() => setSelectedLocation(loc)}
+            />
+            <CustomOverlayMap position={loc.latlng} yAnchor={1}>
+              <MarkerInfo onClick={() => setSelectedLocation(loc)}>
+                {loc.title}
+              </MarkerInfo>
+            </CustomOverlayMap>
+          </>
+        ))}
+      </Map>
+
+      {selectedLocation && (
+        <div>
+          <h2>{selectedLocation.title}에서 친구들이 기다리고 있어요.</h2>
+          <PetContainer>
+            {selectedLocation.pet ? (
+              selectedLocation.pet.map((pet, index) => (
+                <Card sx={{ width: '16rem' }} key={index}>
+                  <CardMedia sx={{ height: 140 }} image={pet.profile} />
+                  <CardContent>
+                    <Typography variant="h5" component="div">
+                      {pet.desertionNo}
+                    </Typography>
+                  </CardContent>
+                  <CardContent>
+                    <Typography variant="body2" color="text.secondary">
+                      <InfoDetail>분류: {pet.state} </InfoDetail>
+                      <InfoDetail>이름: {pet.age}</InfoDetail>
+                      <InfoDetail>성별: {pet.gender}</InfoDetail>
+                      <InfoDetail>품종: {pet.kindCd}</InfoDetail>
+                    </Typography>
+                  </CardContent>
+                </Card>
+              ))
+            ) : (
+              <p>No pets available</p>
+            )}
+          </PetContainer>
+        </div>
+      )}
     </ShelterContainer>
   );
 }
