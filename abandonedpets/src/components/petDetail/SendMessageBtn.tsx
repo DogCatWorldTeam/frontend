@@ -2,15 +2,12 @@ import styled from 'styled-components';
 import Send from '../../assets/Send.png';
 
 const Wrapper = styled.div`
-  width: 55%;
-  margin: 0 auto;
-  display: flex;
-  justify-content: end;
+  width: 50%;
   position: relative;
 `;
 
 const SendBtn = styled.button`
-  width: 45%;
+  width: 100%;
   height: 2.3rem;
   background-color: #ffe7ce;
   border: none;
