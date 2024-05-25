@@ -3,41 +3,27 @@ import InfoBar from '../chat/InfoBar';
 import Messages from '../chat/Messges';
 import Input from '../chat/Input';
 
-const Backdrop = styled.div`
+const ChatContainer = styled.div`
   position: fixed;
-  width: 100%;
-  height: 100vh;
-  z-index: 3;
-  background: rgba(0, 0, 0, 0.45);
+  bottom: 80px;
+  right: 22px;
+  width: 390px;
+  height: 600px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  padding: 16px;
 `;
 
-const Modal = styled.div`
-  position: fixed;
-  border: 1px solid #f6d9d9;
-  z-index: 4;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: #fff;
-  width: 60rem;
-  height: 50rem;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-`;
-
-function Chat(props) {
-  const { onConfirm } = props;
-
+function Chat() {
   return (
-    <>
-      <Backdrop />
-      <Modal>
-        <InfoBar close={onConfirm} />
-        <Messages />
-        <Input />
-      </Modal>
-    </>
+    <ChatContainer>
+      <InfoBar />
+      <Messages />
+      <Input />
+    </ChatContainer>
   );
 }
 

@@ -120,12 +120,12 @@ const PetDetailText = styled.span`
 
 const InputInfo = styled.input`
   width: 100%;
-  height: 1.5rem;
   font-size: 1rem;
   outline: none;
   border: 1px solid #ffcf85;
   border-radius: 5px;
   padding: 0.25rem;
+  box-sizing: border-box; // input의 길이가 부모 요소의 밖으로 나가는 것을 방지
 
   &: hover {
     border-color: #ffac29;

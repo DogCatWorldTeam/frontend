@@ -1,36 +1,35 @@
 import styled from 'styled-components';
-import Cencel from '../../assets/Cencel.png';
+import Button from '@mui/material/Button';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 const InfoContainer = styled.div`
-  width: 60rem;
-  height: 4rem;
-  background-color: #fbe8e8;
-  text-align: center;
-  line-height: 4rem;
-  margin-bottom: 0.7rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: relative;
 `;
 
-const Img = styled.img`
-  width: 1.1rem;
-  height: 1.1rem;
-  position: absolute;
-  right: 3%;
-  top: 50%;
-  transform: translateY(-50%);
-
-  &:hover {
-    cursor: pointer;
-  }
+const InfoText = styled.div`
+  width: 16rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1rem;
 `;
 
-function InfoBar(props) {
-  const { close } = props;
-
+function InfoBar() {
   return (
     <InfoContainer>
-      <span>infobar 입니다</span>
-      <Img onClick={close} src={Cencel} alt="닫기" />
+      <Button
+        sx={{
+          position: 'absolute',
+          left: 0,
+        }}
+        size="small"
+      >
+        <ArrowBackIosNewIcon fontSize="small" />
+      </Button>
+      <InfoText>중.소형 진도 믹스견 잘 키워 주실 분을 찾습니다</InfoText>
     </InfoContainer>
   );
 }

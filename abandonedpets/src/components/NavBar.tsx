@@ -2,9 +2,12 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import IconButton from '@mui/material/IconButton';
-import ForumIcon from '@mui/icons-material/Forum';
+import CloseIcon from '@mui/icons-material/Close';
 import PersonIcon from '@mui/icons-material/Person';
+import Fab from '@mui/material/Fab';
+import ChatIcon from '@mui/icons-material/Chat';
 import Logo from '../assets/Logo.png';
+import Chat from '../components/modal/Chat';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -43,7 +46,6 @@ const Category = styled(Link)`
 `;
 
 const AuthContainer = styled.div`
-  width: 7rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -129,7 +131,8 @@ const UserDropDownMenu = styled.ul`
 function NavBar() {
   const [isDropDown, setIsDropDown] = useState<boolean>(false); // navbar 드롭다운
   const [isUserDropDown, setIsUserDropDown] = useState<boolean>(false);
-  const [isLogin, setIsLogin] = useState<boolean>(false); // 로그인 여부 확인
+  const [isLogin, setIsLogin] = useState<boolean>(true); // 로그인 여부 확인
+  const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
 
   return (
     <Wrapper>
@@ -158,9 +161,6 @@ function NavBar() {
 
       {isLogin ? (
         <AuthContainer>
-          <IconButton>
-            <ForumIcon fontSize="large" />
-          </IconButton>
           <IconButton
             sx={{ position: 'relative' }}
             onMouseEnter={() => setIsUserDropDown(true)}
@@ -176,6 +176,16 @@ function NavBar() {
               ''
             )}
           </IconButton>
+          <div>
+            {isChatOpen && <Chat />}
+            <Fab
+              sx={{ position: 'fixed', bottom: 20, right: 22 }}
+              color="primary"
+              onClick={() => setIsChatOpen(!isChatOpen)}
+            >
+              {isChatOpen ? <CloseIcon /> : <ChatIcon />}
+            </Fab>
+          </div>
         </AuthContainer>
       ) : (
         <div>
