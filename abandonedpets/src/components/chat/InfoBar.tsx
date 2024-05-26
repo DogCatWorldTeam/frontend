@@ -17,7 +17,7 @@ const InfoText = styled.div`
   font-size: 1rem;
 `;
 
-function InfoBar() {
+function InfoBar({ close }) {
   return (
     <InfoContainer>
       <Button
@@ -26,6 +26,7 @@ function InfoBar() {
           left: 0,
         }}
         size="small"
+        onClick={close}
       >
         <ArrowBackIosNewIcon fontSize="small" />
       </Button>

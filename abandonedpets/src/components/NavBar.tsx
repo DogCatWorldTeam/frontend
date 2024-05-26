@@ -8,6 +8,7 @@ import Fab from '@mui/material/Fab';
 import ChatIcon from '@mui/icons-material/Chat';
 import Logo from '../assets/Logo.png';
 import Chat from '../components/modal/Chat';
+import ChatList from './modal/ChatList';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -132,7 +133,19 @@ function NavBar() {
   const [isDropDown, setIsDropDown] = useState<boolean>(false); // navbar 드롭다운
   const [isUserDropDown, setIsUserDropDown] = useState<boolean>(false);
   const [isLogin, setIsLogin] = useState<boolean>(true); // 로그인 여부 확인
-  const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
+  const [isChatListOpen, setIsChatListOpen] = useState<boolean>(false); // 채팅 리스트 open 확인
+  const [isChatRoomOpen, setIsChatRoomOpen] = useState<boolean>(false); // 채팅 리스트에서 채팅 방 연결, 채팅방 open 확인
+  const [currentTalk, setCurrentTalk] = useState<number | string>(); // 채팅방 Id 연결
+
+  const chatRoomLink = (talkId: number) => {
+    setCurrentTalk(talkId);
+    setIsChatRoomOpen(true);
+  };
+
+  const ChatRoomClose = () => {
+    setIsChatRoomOpen(false);
+    setCurrentTalk('');
+  };
 
   return (
     <Wrapper>
@@ -177,13 +190,18 @@ function NavBar() {
             )}
           </IconButton>
           <div>
-            {isChatOpen && <Chat />}
+            {isChatListOpen &&
+              (isChatRoomOpen ? (
+                <Chat talkId={currentTalk} close={ChatRoomClose} />
+              ) : (
+                <ChatList openChatRoom={chatRoomLink} />
+              ))}
             <Fab
               sx={{ position: 'fixed', bottom: 20, right: 22 }}
               color="primary"
-              onClick={() => setIsChatOpen(!isChatOpen)}
+              onClick={() => setIsChatListOpen(!isChatListOpen)}
             >
-              {isChatOpen ? <CloseIcon /> : <ChatIcon />}
+              {isChatListOpen ? <CloseIcon /> : <ChatIcon />}
             </Fab>
           </div>
         </AuthContainer>

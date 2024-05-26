@@ -17,10 +17,12 @@ const ChatContainer = styled.div`
   padding: 16px;
 `;
 
-function Chat() {
+function Chat({ talkId, close }) {
+  console.log(talkId);
+
   return (
     <ChatContainer>
-      <InfoBar />
+      <InfoBar close={close} />
       <Messages />
       <Input />
     </ChatContainer>
