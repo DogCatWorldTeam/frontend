@@ -1,32 +1,22 @@
 import styled from 'styled-components';
 import ListItem from '../chat/ListItem';
-import Cencel from '../../assets/Cencel.png';
 
-const Backdrop = styled.div`
+const ChatContainer = styled.div`
   position: fixed;
-  width: 100%;
-  height: 100vh;
-  z-index: 3;
-  background: rgba(0, 0, 0, 0.45);
-`;
-
-const Modal = styled.div`
-  position: fixed;
-  border: 1px solid #f6d9d9;
-  z-index: 4;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: #fff;
-  width: 60rem;
-  height: 50rem;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  bottom: 80px;
+  right: 22px;
+  width: 390px;
+  height: 600px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  padding: 16px;
 `;
 
 const InfoContainer = styled.div`
-  width: 60rem;
+  width: 100%;
   height: 4rem;
   background-color: #fbe8e8;
   text-align: center;
@@ -35,51 +25,50 @@ const InfoContainer = styled.div`
   position: relative;
 `;
 
-const Img = styled.img`
-  width: 1.1rem;
-  height: 1.1rem;
-  position: absolute;
-  right: 3%;
-  top: 50%;
-  transform: translateY(-50%);
-
-  &:hover {
-    cursor: pointer;
-  }
+const InfoText = styled.span`
+  font-size: 2.2rem;
 `;
 
 const ListWrapper = styled.div`
-  width: 90%;
+  width: 100%;
+  height: 530px;
   display: flex;
   flex-direction: column;
   gap: 20px;
-  margin-top: 5%;
+  margin: 10px 0;
+  overflow-y: auto;
 `;
 
 const MockData = {
   ChatLists: [
-    { title: '제목 1', name: ' 이름1', chat: 'talk1' },
-    { title: '제목 2', name: ' 이름2', chat: 'talk2' },
-    { title: '제목 3', name: ' 이름3', chat: 'talk3' },
-    { title: '제목 4', name: ' 이름4', chat: 'talk4' },
+    { id: 1, title: '제목 1' },
+    { id: 2, title: '제목 2' },
+    { id: 3, title: '제목 3' },
+    { id: 4, title: '제목 4' },
+    { id: 1, title: '제목 1' },
+    { id: 2, title: '제목 2' },
+    { id: 3, title: '제목 3' },
+    { id: 4, title: '제목 4' },
+    { id: 1, title: '제목 1' },
+    { id: 2, title: '제목 2' },
+    { id: 3, title: '제목 3' },
+    { id: 4, title: '제목 4' },
   ],
 };
 
-function ChatList() {
+function ChatList({ openChatRoom }) {
   return (
     <>
-      <Backdrop />
-      <Modal>
-        <InfoContainer>
-          채팅 목록
-          <Img src={Cencel} alt="닫기" />
-        </InfoContainer>
+      <ChatContainer>
+        <header>
+          <InfoText>채팅 목록</InfoText>
+        </header>
         <ListWrapper>
           {MockData.ChatLists.map((chat) => (
-            <ListItem {...chat} />
+            <ListItem {...chat} openChatRoom={openChatRoom} />
           ))}
         </ListWrapper>
-      </Modal>
+      </ChatContainer>
     </>
   );
 }

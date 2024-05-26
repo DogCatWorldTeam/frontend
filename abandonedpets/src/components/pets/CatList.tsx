@@ -5,10 +5,11 @@ import Favorite from '../../assets/Favorite.svg';
 import FavoriteFill from '../../assets/Favorite_fill.svg';
 
 const PetContainer = styled.div`
-  width: 85%;
+  max-width: 75%;
+  width: 100%;
   display: grid;
   place-items: center;
-  grid-template-columns: repeat(4, 1fr); //4개의 열
+  grid-template-columns: repeat(3, 1fr); //4개의 열
   gap: 20px;
   margin: 3% auto;
 `;

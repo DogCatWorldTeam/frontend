@@ -16,4 +16,6 @@
 
 body {
   font-family: 'NanumBarunGothic';
+  min-width: 1440px;
+  min-height: 100vh;
 }

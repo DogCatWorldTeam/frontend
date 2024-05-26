@@ -25,7 +25,9 @@ interface petData {
 }
 
 function PetCard({ pet }: petData) {
-  const [isFavorite, setIsFavorite] = useState(pet.fav === FavoriteFill);
+  const [isFavorite, setIsFavorite] = useState<boolean>(
+    pet.fav === FavoriteFill,
+  );
   const navigate = useNavigate();
 
   const handleFavoriteClick = () => {

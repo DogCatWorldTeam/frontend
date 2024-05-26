@@ -2,9 +2,13 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import IconButton from '@mui/material/IconButton';
-import ForumIcon from '@mui/icons-material/Forum';
+import CloseIcon from '@mui/icons-material/Close';
 import PersonIcon from '@mui/icons-material/Person';
+import Fab from '@mui/material/Fab';
+import ChatIcon from '@mui/icons-material/Chat';
 import Logo from '../assets/Logo.png';
+import Chat from '../components/modal/Chat';
+import ChatList from './modal/ChatList';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -43,7 +47,6 @@ const Category = styled(Link)`
 `;
 
 const AuthContainer = styled.div`
-  width: 7rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -90,6 +93,7 @@ const DropDownMenu = styled.ul`
   list-style: none;
   background-color: #fff;
   padding: 0.5rem;
+  z-index: 1 !important;
 
   box-shadow:
     0 10px 20px rgba(0, 0, 0, 0.19),
@@ -129,7 +133,20 @@ const UserDropDownMenu = styled.ul`
 function NavBar() {
   const [isDropDown, setIsDropDown] = useState<boolean>(false); // navbar 드롭다운
   const [isUserDropDown, setIsUserDropDown] = useState<boolean>(false);
-  const [isLogin, setIsLogin] = useState<boolean>(false); // 로그인 여부 확인
+  const [isLogin, setIsLogin] = useState<boolean>(true); // 로그인 여부 확인
+  const [isChatListOpen, setIsChatListOpen] = useState<boolean>(false); // 채팅 리스트 open 확인
+  const [isChatRoomOpen, setIsChatRoomOpen] = useState<boolean>(false); // 채팅 리스트에서 채팅 방 연결, 채팅방 open 확인
+  const [currentTalk, setCurrentTalk] = useState<number | string>(); // 채팅방 Id 연결
+
+  const chatRoomLink = (talkId: number) => {
+    setCurrentTalk(talkId);
+    setIsChatRoomOpen(true);
+  };
+
+  const ChatRoomClose = () => {
+    setIsChatRoomOpen(false);
+    setCurrentTalk('');
+  };
 
   return (
     <Wrapper>
@@ -158,9 +175,6 @@ function NavBar() {
 
       {isLogin ? (
         <AuthContainer>
-          <IconButton>
-            <ForumIcon fontSize="large" />
-          </IconButton>
           <IconButton
             sx={{ position: 'relative' }}
             onMouseEnter={() => setIsUserDropDown(true)}
@@ -176,6 +190,21 @@ function NavBar() {
               ''
             )}
           </IconButton>
+          <div>
+            {isChatListOpen &&
+              (isChatRoomOpen ? (
+                <Chat talkId={currentTalk} close={ChatRoomClose} />
+              ) : (
+                <ChatList openChatRoom={chatRoomLink} />
+              ))}
+            <Fab
+              sx={{ position: 'fixed', bottom: 20, right: 22 }}
+              color="primary"
+              onClick={() => setIsChatListOpen(!isChatListOpen)}
+            >
+              {isChatListOpen ? <CloseIcon /> : <ChatIcon />}
+            </Fab>
+          </div>
         </AuthContainer>
       ) : (
         <div>
