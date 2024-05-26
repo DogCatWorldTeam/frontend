@@ -4,7 +4,7 @@ import PetsIcon from '@mui/icons-material/Pets';
 import Cat from '../../assets/sampleImg/Cat.png';
 
 const Wrapper = styled.div`
-  width: 50%;
+  width: 60%;
   margin: 3% auto;
   display: flex;
   flex-direction: column;

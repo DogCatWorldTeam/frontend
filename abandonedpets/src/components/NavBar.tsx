@@ -93,6 +93,7 @@ const DropDownMenu = styled.ul`
   list-style: none;
   background-color: #fff;
   padding: 0.5rem;
+  z-index: 1 !important;
 
   box-shadow:
     0 10px 20px rgba(0, 0, 0, 0.19),

@@ -5,10 +5,13 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
+import { Button, CardActions } from '@mui/material';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import Cat from '../../assets/sampleImg/Cat.png';
 
 const ShelterContainer = styled.div`
-  width: 50%;
+  width: 60%;
   margin: 3% auto;
   display: flex;
   flex-direction: column;
@@ -49,6 +52,7 @@ interface Pet {
   age: string;
   gender: string;
   kindCd: string;
+  bookMark: boolean;
 }
 
 interface Location {
@@ -69,6 +73,7 @@ const locations: Location[] = [
         age: '2024(년생)',
         gender: '남',
         kindCd: '믹스견',
+        bookMark: false,
       },
       {
         profile: Cat,
@@ -77,6 +82,7 @@ const locations: Location[] = [
         age: '2024(년생)',
         gender: '남',
         kindCd: '믹스견',
+        bookMark: true,
       },
       {
         profile: Cat,
@@ -85,6 +91,7 @@ const locations: Location[] = [
         age: '2024(년생)',
         gender: '남',
         kindCd: '믹스견',
+        bookMark: false,
       },
       {
         profile: Cat,
@@ -93,6 +100,7 @@ const locations: Location[] = [
         age: '2024(년생)',
         gender: '남',
         kindCd: '믹스견',
+        bookMark: false,
       },
       {
         profile: Cat,
@@ -101,6 +109,7 @@ const locations: Location[] = [
         age: '2024(년생)',
         gender: '남',
         kindCd: '믹스견',
+        bookMark: false,
       },
       {
         profile: Cat,
@@ -109,6 +118,7 @@ const locations: Location[] = [
         age: '2024(년생)',
         gender: '남',
         kindCd: '믹스견',
+        bookMark: false,
       },
       {
         profile: Cat,
@@ -117,6 +127,7 @@ const locations: Location[] = [
         age: '2024(년생)',
         gender: '남',
         kindCd: '믹스견',
+        bookMark: false,
       },
       {
         profile: Cat,
@@ -125,6 +136,7 @@ const locations: Location[] = [
         age: '2024(년생)',
         gender: '남',
         kindCd: '믹스견',
+        bookMark: false,
       },
     ],
   },
@@ -144,9 +156,17 @@ const locations: Location[] = [
 ];
 
 function ShelterList() {
+  const [locationsState, setLocationsState] = useState<Location[]>(locations);
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(
     null,
   );
+
+  const handleFavoriteClick = (locationIndex: number, petIndex: number) => {
+    const newLocations = [...locationsState];
+    newLocations[locationIndex].pet![petIndex].bookMark =
+      !newLocations[locationIndex].pet![petIndex].bookMark;
+    setLocationsState(newLocations);
+  };
 
   return (
     <ShelterContainer>
@@ -156,10 +176,10 @@ function ShelterList() {
         style={{ width: '800px', height: '600px' }}
         level={7}
       >
-        {locations.map((loc) => (
+        {locationsState.map((loc) => (
           <>
             <MapMarker
-              key={`${loc.title}-${loc.latlng}`}
+              key={`${loc.title}-${loc.latlng.lat}-${loc.latlng.lng}`}
               position={loc.latlng}
               image={{
                 src: DefaultMarkerUrl,
@@ -187,23 +207,41 @@ function ShelterList() {
           <h2>{selectedLocation.title}에서 친구들이 기다리고 있어요.</h2>
           <PetContainer>
             {selectedLocation.pet ? (
-              selectedLocation.pet.map((pet, index) => (
-                <Card sx={{ width: '16rem' }} key={index}>
-                  <CardMedia sx={{ height: 140 }} image={pet.profile} />
-                  <CardContent>
-                    <Typography variant="h5" component="div">
-                      {pet.desertionNo}
-                    </Typography>
-                  </CardContent>
-                  <CardContent>
-                    <Typography variant="body2" color="text.secondary">
-                      <InfoDetail>분류: {pet.state} </InfoDetail>
-                      <InfoDetail>이름: {pet.age}</InfoDetail>
-                      <InfoDetail>성별: {pet.gender}</InfoDetail>
-                      <InfoDetail>품종: {pet.kindCd}</InfoDetail>
-                    </Typography>
-                  </CardContent>
-                </Card>
+              selectedLocation.pet.map((pet, petIndex) => (
+                <>
+                  <Card sx={{ width: '16rem' }} key={petIndex}>
+                    <CardMedia sx={{ height: 140 }} image={pet.profile} />
+                    <CardContent>
+                      <Typography variant="h5" component="div">
+                        {pet.desertionNo}
+                      </Typography>
+                    </CardContent>
+                    <CardContent>
+                      <Typography variant="body2" color="text.secondary">
+                        <InfoDetail>분류: {pet.state}</InfoDetail>
+                        <InfoDetail>이름: {pet.age}</InfoDetail>
+                        <InfoDetail>성별: {pet.gender}</InfoDetail>
+                        <InfoDetail>품종: {pet.kindCd}</InfoDetail>
+                      </Typography>
+                    </CardContent>
+                    <CardActions>
+                      <Button
+                        onClick={() =>
+                          handleFavoriteClick(
+                            locationsState.indexOf(selectedLocation),
+                            petIndex,
+                          )
+                        }
+                      >
+                        {pet.bookMark ? (
+                          <FavoriteIcon />
+                        ) : (
+                          <FavoriteBorderIcon />
+                        )}
+                      </Button>
+                    </CardActions>
+                  </Card>
+                </>
               ))
             ) : (
               <p>No pets available</p>
