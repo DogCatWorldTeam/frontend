@@ -1,7 +1,9 @@
+import { ChangeEvent, FormEvent, useState } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const SignUpContainer = styled.div`
   display: flex;
@@ -57,22 +59,97 @@ const LoginText = styled(Link)`
   cursor: pointer;
   text-decoration: none;
   color: inherit;
+
+  &: hover {
+    text-decoration: underline;
+  }
 `;
 
+interface userForm {
+  name: string;
+  email: string;
+  password: string;
+  phone: string;
+}
+
 function RegisterForm() {
+  const navigate = useNavigate();
+  const [form, setForm] = useState<userForm>({
+    name: '',
+    email: '',
+    password: '',
+    phone: '',
+  });
+
+  const formChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+    console.log(e.target.name, e.target.value);
+  };
+
+  const submitHandler = async (e: FormEvent) => {
+    e.preventDefault();
+    console.log(form);
+
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/api/v1/users/register`,
+        {
+          username: form.name,
+          email: form.email,
+          password: form.password,
+          phoneNum: form.phone,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      alert(response.data);
+      navigate('/login');
+    } catch (err) {
+      console.log(err, '실패');
+    }
+  };
+
   return (
     <SignUpContainer>
       <Explan>회원가입</Explan>
-      <FormContainer>
-        <TextField variant="standard" label="이름" />
-        <TextField variant="standard" label="이메일" />
-        <TextField variant="standard" label="비밀번호" type="password" />
+      <FormContainer onSubmit={submitHandler}>
         <TextField
+          name="name"
+          variant="standard"
+          label="이름"
+          required
+          onChange={formChangeHandler}
+        />
+        <TextField
+          name="email"
+          variant="standard"
+          label="이메일"
+          required
+          onChange={formChangeHandler}
+        />
+        <TextField
+          name="password"
+          variant="standard"
+          label="비밀번호"
+          type="password"
+          required
+          onChange={formChangeHandler}
+        />
+        <TextField
+          name="phone"
           variant="standard"
           label="전화번호"
           placeholder="01012345678"
+          required
+          onChange={formChangeHandler}
         />
-        <Button variant="contained" color="warning" size="large">
+        <Button type="submit" variant="contained" color="warning" size="large">
           회원가입
         </Button>
       </FormContainer>
