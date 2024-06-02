@@ -133,7 +133,7 @@ const UserDropDownMenu = styled.ul`
 function NavBar() {
   const [isDropDown, setIsDropDown] = useState<boolean>(false); // navbar 드롭다운
   const [isUserDropDown, setIsUserDropDown] = useState<boolean>(false);
-  const [isLogin, setIsLogin] = useState<boolean>(true); // 로그인 여부 확인
+  const [isLogin, setIsLogin] = useState<boolean>(false); // 로그인 여부 확인
   const [isChatListOpen, setIsChatListOpen] = useState<boolean>(false); // 채팅 리스트 open 확인
   const [isChatRoomOpen, setIsChatRoomOpen] = useState<boolean>(false); // 채팅 리스트에서 채팅 방 연결, 채팅방 open 확인
   const [currentTalk, setCurrentTalk] = useState<number | string>(); // 채팅방 Id 연결
