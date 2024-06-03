@@ -13,11 +13,13 @@ import Chat from './components/modal/Chat';
 import ChatList from './components/modal/ChatList';
 import FavoriteList from './components/mypage/FavoriteList';
 import PetWrite from './pages/PetWrite';
+import TokenRefresher from './auth/TokenRefresher';
 
 function App() {
   return (
     <>
       <BrowserRouter>
+        <TokenRefresher />
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/login" element={<LoginPage />} />

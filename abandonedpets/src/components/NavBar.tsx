@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { Cookies } from 'react-cookie';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import PersonIcon from '@mui/icons-material/Person';
@@ -130,10 +131,15 @@ const UserDropDownMenu = styled.ul`
     0 6px 6px rgba(0, 0, 0, 0.23);
 `;
 
+const cookies = new Cookies();
+
 function NavBar() {
   const [isDropDown, setIsDropDown] = useState<boolean>(false); // navbar 드롭다운
   const [isUserDropDown, setIsUserDropDown] = useState<boolean>(false);
-  const [isLogin, setIsLogin] = useState<boolean>(false); // 로그인 여부 확인
+  // const [isLogin, setIsLogin] = useState<boolean>(false); // 로그인 여부 확인
+  const [isLogin, setIsLogin] = useState<boolean>(
+    localStorage.getItem('accessToken') !== null,
+  );
   const [isChatListOpen, setIsChatListOpen] = useState<boolean>(false); // 채팅 리스트 open 확인
   const [isChatRoomOpen, setIsChatRoomOpen] = useState<boolean>(false); // 채팅 리스트에서 채팅 방 연결, 채팅방 open 확인
   const [currentTalk, setCurrentTalk] = useState<number | string>(); // 채팅방 Id 연결
@@ -146,6 +152,12 @@ function NavBar() {
   const ChatRoomClose = () => {
     setIsChatRoomOpen(false);
     setCurrentTalk('');
+  };
+
+  const logoutHandler = () => {
+    localStorage.removeItem('accessToken');
+    cookies.remove('refreshToken', { path: '/' });
+    setIsLogin(false);
   };
 
   return (
@@ -184,7 +196,9 @@ function NavBar() {
             {isUserDropDown ? (
               <UserDropDownMenu>
                 <DropDownList to="/mypage">마이페이지</DropDownList>
-                <DropDownList to="/">로그아웃</DropDownList>
+                <DropDownList to="/" onClick={logoutHandler}>
+                  로그아웃
+                </DropDownList>
               </UserDropDownMenu>
             ) : (
               ''
