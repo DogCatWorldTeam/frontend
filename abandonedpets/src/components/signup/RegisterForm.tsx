@@ -108,10 +108,11 @@ function RegisterForm() {
           },
         },
       );
-      alert(response.data);
+      alert(response.data.message);
       navigate('/login');
     } catch (err) {
       console.log(err, '실패');
+      alert('회원가입 실패');
     }
   };
 

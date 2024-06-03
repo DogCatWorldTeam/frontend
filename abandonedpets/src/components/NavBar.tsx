@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import IconButton from '@mui/material/IconButton';
@@ -148,6 +148,15 @@ function NavBar() {
     setCurrentTalk('');
   };
 
+  const logoutHandler = () => {
+    localStorage.removeItem('accessToken');
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem('accessToken') !== null) setIsLogin(true);
+    else setIsLogin(false);
+  }, []);
+
   return (
     <Wrapper>
       <Link to="/">
@@ -184,7 +193,9 @@ function NavBar() {
             {isUserDropDown ? (
               <UserDropDownMenu>
                 <DropDownList to="/mypage">마이페이지</DropDownList>
-                <DropDownList to="/">로그아웃</DropDownList>
+                <DropDownList to="/" onClick={logoutHandler}>
+                  로그아웃
+                </DropDownList>
               </UserDropDownMenu>
             ) : (
               ''

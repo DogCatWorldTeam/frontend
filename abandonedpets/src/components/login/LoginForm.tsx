@@ -1,7 +1,11 @@
+import { useState, ChangeEvent, FormEvent } from 'react';
+import { Cookies } from 'react-cookie';
+import axios from 'axios';
 import styled from 'styled-components';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import api from '../../auth/TokenRefresher';
 
 const LoginContainer = styled.div`
   display: flex;
@@ -67,16 +71,82 @@ const SignUpText = styled(Link)`
   cursor: pointer;
   text-decoration: none;
   color: inherit;
+
+  &: hover {
+    text-decoration: underline;
+  }
 `;
 
+interface Form {
+  email: string;
+  password: string;
+}
+
+const cookies = new Cookies();
+
 function LoginForm() {
+  const navigate = useNavigate();
+  const [userForm, setUserForm] = useState<Form>({
+    email: '',
+    password: '',
+  });
+
+  const formChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setUserForm({
+      ...userForm,
+      [e.target.name]: e.target.value,
+    });
+    console.log(e.target.name, e.target.value);
+  };
+
+  const submitHandler = async (e: FormEvent) => {
+    console.log(userForm);
+
+    try {
+      e.preventDefault();
+      const response = await axios.post(
+        `http://localhost:8080/api/v1/users/login`,
+        {
+          email: userForm.email,
+          password: userForm.password,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+
+      localStorage.setItem('accessToken', response.data.access_token);
+      cookies.set('refreshToken', response.data.refresh_token, { path: '/' });
+
+      navigate('/dog');
+    } catch (err) {
+      console.log(err, '실패');
+      alert('로그인 실패');
+    }
+  };
+
   return (
     <LoginContainer>
       <Explan>로그인</Explan>
-      <FormContainer>
-        <TextField variant="standard" label="이메일" />
-        <TextField variant="standard" label="비밀번호" type="password" />
-        <Button variant="contained" color="warning" size="large">
+      <FormContainer onSubmit={submitHandler}>
+        <TextField
+          variant="standard"
+          label="이메일"
+          name="email"
+          required
+          onChange={formChangeHandler}
+        />
+        <TextField
+          variant="standard"
+          label="비밀번호"
+          type="password"
+          name="password"
+          required
+          onChange={formChangeHandler}
+        />
+        <Button type="submit" variant="contained" color="warning" size="large">
           로그인
         </Button>
       </FormContainer>
