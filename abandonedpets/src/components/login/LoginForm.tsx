@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { Link, useNavigate } from 'react-router-dom';
-import api from '../../auth/TokenRefresher';
 
 const LoginContainer = styled.div`
   display: flex;
