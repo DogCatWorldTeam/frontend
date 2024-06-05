@@ -142,10 +142,29 @@ function FuneralList() {
                         alt="Funeral Image"
                       />
                       <CardContent>
-                        <Typography gutterBottom variant="h5" component="div">
+                        <Typography
+                          gutterBottom
+                          variant="h5"
+                          component="div"
+                          sx={{
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                          }}
+                        >
                           {item.funeralName}
                         </Typography>
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography
+                          variant="body2"
+                          color="text.secondary"
+                          sx={{
+                            display: '-webkit-box',
+                            WebkitBoxOrient: 'vertical',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            WebkitLineClamp: 2, // Adjust the number of lines you want to show
+                          }}
+                        >
                           {item.phoneNum}
                           <br />
                           {item.address}
