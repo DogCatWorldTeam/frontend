@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useTransition, animated } from '@react-spring/web';
 import Stack from '@mui/material/Stack';
@@ -8,7 +8,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea, Grid } from '@mui/material';
-import Funeral from '../../assets/sampleImg/Funeral.png';
+import axios from 'axios';
 
 // 스타일드 컴포넌트 정의
 const PageWrapper = styled.div`
@@ -50,180 +50,37 @@ const StackWrapper = styled(Stack)`
   margin-top: 2rem;
 `;
 
-// 데이터 정의
-const FuneralData = {
-  funeral: [
-    {
-      name: '펫포유1',
-      img: Funeral,
-      phoneNum: '1533-4426',
-      address: '세종특별자치시 장군면 금암리',
-      region: '세종',
-      url: 'http://m.petforyou.kr/#__120305__item1',
-    },
-    {
-      name: '펫포유2',
-      img: Funeral,
-      phoneNum: '1533-4426',
-      address: '서울특별시 강남구',
-      region: '서울',
-      url: 'http://m.petforyou.kr/#__120305__item1',
-    },
-    {
-      name: '펫포유3',
-      img: Funeral,
-      phoneNum: '1533-4426',
-      address: '부산광역시 해운대구',
-      region: '부산',
-      url: 'http://m.petforyou.kr/#__120305__item1',
-    },
-    {
-      name: '펫포유4',
-      img: Funeral,
-      phoneNum: '1533-4426',
-      address: '인천광역시 연수구',
-      region: '인천',
-      url: 'http://m.petforyou.kr/#__120305__item1',
-    },
-    {
-      name: '펫포유5',
-      img: Funeral,
-      phoneNum: '1533-4426',
-      address: '경기도 수원시',
-      region: '경기',
-      url: 'http://m.petforyou.kr/#__120305__item1',
-    },
-    {
-      name: '펫포유6',
-      img: Funeral,
-      phoneNum: '1533-4426',
-      address: '강원도 춘천시',
-      region: '강원',
-      url: 'http://m.petforyou.kr/#__120305__item1',
-    },
-    {
-      name: '펫포유7',
-      img: Funeral,
-      phoneNum: '1533-4426',
-      address: '충청북도 청주시',
-      region: '충청',
-      url: 'http://m.petforyou.kr/#__120305__item1',
-    },
-    {
-      name: '펫포유8',
-      img: Funeral,
-      phoneNum: '1533-4426',
-      address: '전라남도 여수시',
-      region: '전라',
-      url: 'http://m.petforyou.kr/#__120305__item1',
-    },
-    {
-      name: '펫포유9',
-      img: Funeral,
-      phoneNum: '1533-4426',
-      address: '세종특별자치시 조치원읍',
-      region: '세종',
-      url: 'http://m.petforyou.kr/#__120305__item1',
-    },
-    {
-      name: '펫포유10',
-      img: Funeral,
-      phoneNum: '1533-4426',
-      address: '서울특별시 송파구',
-      region: '서울',
-      url: 'http://m.petforyou.kr/#__120305__item1',
-    },
-    {
-      name: '펫포유11',
-      img: Funeral,
-      phoneNum: '1533-4426',
-      address: '세종특별자치시 장군면 금암리',
-      region: '세종',
-      url: 'http://m.petforyou.kr/#__120305__item1',
-    },
-    {
-      name: '펫포유12',
-      img: Funeral,
-      phoneNum: '1533-4426',
-      address: '서울특별시 강남구',
-      region: '서울',
-      url: 'http://m.petforyou.kr/#__120305__item1',
-    },
-    {
-      name: '펫포유13',
-      img: Funeral,
-      phoneNum: '1533-4426',
-      address: '부산광역시 해운대구',
-      region: '부산',
-      url: 'http://m.petforyou.kr/#__120305__item1',
-    },
-    {
-      name: '펫포유14',
-      img: Funeral,
-      phoneNum: '1533-4426',
-      address: '인천광역시 연수구',
-      region: '인천',
-      url: 'http://m.petforyou.kr/#__120305__item1',
-    },
-    {
-      name: '펫포유15',
-      img: Funeral,
-      phoneNum: '1533-4426',
-      address: '경기도 수원시',
-      region: '경기',
-      url: 'http://m.petforyou.kr/#__120305__item1',
-    },
-    {
-      name: '펫포유16',
-      img: Funeral,
-      phoneNum: '1533-4426',
-      address: '강원도 춘천시',
-      region: '강원',
-      url: 'http://m.petforyou.kr/#__120305__item1',
-    },
-    {
-      name: '펫포유17',
-      img: Funeral,
-      phoneNum: '1533-4426',
-      address: '충청북도 청주시',
-      region: '충청',
-      url: 'http://m.petforyou.kr/#__120305__item1',
-    },
-    {
-      name: '펫포유18',
-      img: Funeral,
-      phoneNum: '1533-4426',
-      address: '전라남도 여수시',
-      region: '전라',
-      url: 'http://m.petforyou.kr/#__120305__item1',
-    },
-    {
-      name: '펫포유19',
-      img: Funeral,
-      phoneNum: '1533-4426',
-      address: '세종특별자치시 조치원읍',
-      region: '세종',
-      url: 'http://m.petforyou.kr/#__120305__item1',
-    },
-    {
-      name: '펫포유20',
-      img: Funeral,
-      phoneNum: '1533-4426',
-      address: '서울특별시 송파구',
-      region: '서울',
-      url: 'http://m.petforyou.kr/#__120305__item1',
-    },
-  ],
-};
+interface FuneralProps {
+  id: number;
+  funeralName: string;
+  phoneNum: string;
+  homepage: string;
+  address: string;
+  region: string;
+  image: string;
+}
 
 // 컴포넌트 정의
 function FuneralList() {
   const [selectedRegion, setSelectedRegion] = useState('');
-  const [filteredFunerals, setFilteredFunerals] = useState(FuneralData.funeral);
+  const [filteredFunerals, setFilteredFunerals] = useState<FuneralProps[]>([]);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [data, setData] = useState<FuneralProps[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await axios.get("http://localhost:8080/api/v1/pet-funeral");
+        setData(res.data); // assuming res.data is an array of funeral data
+        setFilteredFunerals(res.data); // initialize with all data
+      } catch (error) {
+        console.error("Failed to fetch data", error);
+      }
+    })();
+  }, []);
 
   const transitions = useTransition(isTransitioning ? [] : filteredFunerals, {
-    keys: (item) => item.name,
+    keys: (item) => item.id,
     from: { opacity: 0, transform: 'translateY(20px)' },
     enter: { opacity: 1, transform: 'translateY(0)' },
     leave: { opacity: 0, transform: 'translateY(-20px)' },
@@ -236,8 +93,8 @@ function FuneralList() {
       setSelectedRegion(region === selectedRegion ? '' : region);
       const newFilteredFunerals =
         region === selectedRegion
-          ? FuneralData.funeral
-          : FuneralData.funeral.filter((item) => item.region === region);
+          ? data
+          : data.filter((item) => item.region === region);
       setFilteredFunerals(newFilteredFunerals);
       setIsTransitioning(false);
     }, 400);
@@ -267,26 +124,26 @@ function FuneralList() {
               sm={6}
               md={4}
               lg={3}
-              key={item ? item.name : 'empty'}
+              key={item ? item.id : 'empty'}
             >
               <animated.div style={style}>
                 {item ? (
                   <Card sx={{ maxWidth: 345 }}>
                     <CardActionArea
                       component="a"
-                      href={item.url}
+                      href={item.homepage}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       <CardMedia
                         component="img"
                         height="140"
-                        image={item.img}
+                        image={item.image}
                         alt="Funeral Image"
                       />
                       <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
-                          {item.name}
+                          {item.funeralName}
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
                           {item.phoneNum}
