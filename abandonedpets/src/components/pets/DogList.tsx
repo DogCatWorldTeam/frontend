@@ -33,6 +33,7 @@ const PageButton = styled.button<{ isActive: boolean }>`
 `;
 
 interface PetInfo {
+  id: number;
   desertionNo: number;
   filename: string;
   popfile: string;
@@ -41,7 +42,7 @@ interface PetInfo {
   weight: string;
   sexCd: string;
   kindCd: string;
-  name: string; 
+  name: number; 
   img: string;   
   fav: string;  
 }
@@ -71,6 +72,7 @@ function DogList() {
         const response = await axios.get<ApiResponse>(`http://localhost:8080/api/v1/pet_board/list/type/개?page=${page - 1}&size=12`);
         if (response.data && response.data.result) {
           const petData = response.data.result.map(petBoard => ({
+            id: petBoard.petInfo.id,
             desertionNo: petBoard.petInfo.desertionNo,
             filename: petBoard.petInfo.filename,
             popfile: petBoard.petInfo.popfile,
@@ -81,7 +83,7 @@ function DogList() {
             kindCd: petBoard.petInfo.kindCd,
             img: petBoard.petInfo.popfile || '이미지 없음',
             fav: Favorite,
-            name: petBoard.petInfo.kindCd,
+            name: petBoard.petInfo.desertionNo,
           }));
           setPets(petData);
           setTotalPages(response.data.totalPages);
