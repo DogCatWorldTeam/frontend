@@ -57,7 +57,6 @@ function PetCard({ pet }: PetCardProps) {
             <InfoDetail>무게: {pet.weight}</InfoDetail>
             <InfoDetail>성별: {pet.sexCd}</InfoDetail>
             <InfoDetail>품종: {pet.kindCd}</InfoDetail>
-            <InfoDetail>ID: {pet.id}</InfoDetail>
           </Typography>
         </CardContent>
       </CardActionArea>
