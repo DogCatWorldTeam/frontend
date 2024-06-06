@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from 'styled-components';
 import Pagination from '@mui/material/Pagination';
 
@@ -7,12 +8,20 @@ const Wrapper = styled.div`
   margin-bottom: 3%;
 `;
 
-function SelectPage() {
+interface SelectPageProps {
+  count: number;
+  page: number;
+  onChange: (event: React.ChangeEvent<unknown>, value: number) => void;
+}
+
+function SelectPage({ count, page, onChange }: SelectPageProps) {
   return (
     <Wrapper>
-      <Pagination count={10} color="primary" size="large" />
+      <Pagination count={count} page={page} color="primary" size="large" onChange={onChange} />
     </Wrapper>
   );
 }
 
 export default SelectPage;
+
+

@@ -9,22 +9,25 @@ import { Button, CardActionArea, CardActions } from '@mui/material';
 import Favorite from '../../assets/Favorite.svg';
 import FavoriteFill from '../../assets/Favorite_fill.svg';
 
-const InfoDetail = styled.p`
+const InfoDetail = styled.div`
   margin-bottom: 0;
 `;
 
-interface petData {
-  pet: {
-    name: string;
-    age: string;
-    gender: string;
-    weight: string;
-    img: string;
-    fav: string;
-  };
+interface PetInfo {
+  name: string;
+  age: string;
+  sexCd: string;
+  weight: string;
+  kindCd: string;
+  img: string;
+  fav: string;
 }
 
-function PetCard({ pet }: petData) {
+interface PetCardProps {
+  pet: PetInfo;
+}
+
+function PetCard({ pet }: PetCardProps) {
   const [isFavorite, setIsFavorite] = useState<boolean>(
     pet.fav === FavoriteFill,
   );
@@ -39,7 +42,7 @@ function PetCard({ pet }: petData) {
       <CardActionArea onClick={() => navigate('/detail')}>
         <CardMedia
           component="img"
-          height="160"
+          height="550"
           image={pet.img}
           alt={`${pet.name} 이미지`}
         />
@@ -47,12 +50,12 @@ function PetCard({ pet }: petData) {
           <Typography gutterBottom variant="h5" component="div">
             {pet.name}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            <InfoDetail>분류: 입양 대기 </InfoDetail>
-            <InfoDetail>이름: </InfoDetail>
+          <Typography variant="body2" color="text.secondary" component="div">
+            <InfoDetail>분류: 입양 대기</InfoDetail>
             <InfoDetail>나이: {pet.age}</InfoDetail>
-            <InfoDetail>성별: {pet.gender}</InfoDetail>
-            <InfoDetail>품종: </InfoDetail>
+            <InfoDetail>무게: {pet.weight}</InfoDetail>
+            <InfoDetail>성별: {pet.sexCd}</InfoDetail>
+            <InfoDetail>품종: {pet.kindCd}</InfoDetail>
           </Typography>
         </CardContent>
       </CardActionArea>
