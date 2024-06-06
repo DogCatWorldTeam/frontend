@@ -28,7 +28,7 @@ function App() {
           <Route path="/funeral" element={<FuneralPage />} />
           <Route path="/dog" element={<Dog />} />
           <Route path="/cat" element={<Cat />} />
-          <Route path="/detail" element={<PetDetail />} />
+          <Route path="/detail/:id" element={<PetDetail />} />
           <Route path="/petwrite" element={<PetWrite />} />
           <Route path="/mypage" element={<Mypage />} />
           {/* chat는 모달이라 확인용 추후 지워줘야 함 */}

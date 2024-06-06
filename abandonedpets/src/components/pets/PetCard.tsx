@@ -14,6 +14,7 @@ const InfoDetail = styled.div`
 `;
 
 interface PetInfo {
+  id: number; 
   name: string;
   age: string;
   sexCd: string;
@@ -39,7 +40,7 @@ function PetCard({ pet }: PetCardProps) {
 
   return (
     <Card sx={{ width: '20rem' }}>
-      <CardActionArea onClick={() => navigate('/detail')}>
+      <CardActionArea onClick={() => navigate(`/detail/${pet.id}`)}>
         <CardMedia
           component="img"
           height="550"
@@ -48,7 +49,7 @@ function PetCard({ pet }: PetCardProps) {
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            {pet.name}
+            유기번호: {pet.name}
           </Typography>
           <Typography variant="body2" color="text.secondary" component="div">
             <InfoDetail>분류: 입양 대기</InfoDetail>
@@ -56,6 +57,7 @@ function PetCard({ pet }: PetCardProps) {
             <InfoDetail>무게: {pet.weight}</InfoDetail>
             <InfoDetail>성별: {pet.sexCd}</InfoDetail>
             <InfoDetail>품종: {pet.kindCd}</InfoDetail>
+            <InfoDetail>ID: {pet.id}</InfoDetail>
           </Typography>
         </CardContent>
       </CardActionArea>
