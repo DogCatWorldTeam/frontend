@@ -1,13 +1,19 @@
-import { useState } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import styled from 'styled-components';
 import { Map, MapMarker, CustomOverlayMap } from 'react-kakao-maps-sdk';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import { Button, CardActions } from '@mui/material';
+import {
+  Card,
+  CardMedia,
+  CardContent,
+  Typography,
+  CardActions,
+  Button,
+  CircularProgress,
+} from '@mui/material';
+
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import axios from 'axios';
 import Cat from '../../assets/sampleImg/Cat.png';
 
 const ShelterContainer = styled.div`
@@ -27,6 +33,7 @@ const MarkerInfo = styled.div`
   padding: 0.5rem;
   color: #fff;
   border-radius: 5px;
+  font-size: 0.875rem;
 `;
 
 const PetContainer = styled.div`
@@ -44,9 +51,8 @@ const InfoDetail = styled.p`
 const DefaultMarkerUrl =
   'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
 
-// 타입 정의
 interface Pet {
-  profile: string; // 이미지 URL이므로 string 타입
+  profile: string;
   desertionNo: string;
   state: string;
   age: string;
@@ -61,112 +67,51 @@ interface Location {
   pet?: Pet[];
 }
 
-const locations: Location[] = [
-  {
-    title: '경복궁',
-    latlng: { lat: 37.579617, lng: 126.977041 },
-    pet: [
-      {
-        profile: Cat,
-        desertionNo: '고유번호',
-        state: '보호중',
-        age: '2024(년생)',
-        gender: '남',
-        kindCd: '믹스견',
-        bookMark: false,
-      },
-      {
-        profile: Cat,
-        desertionNo: '고유번호',
-        state: '보호중',
-        age: '2024(년생)',
-        gender: '남',
-        kindCd: '믹스견',
-        bookMark: true,
-      },
-      {
-        profile: Cat,
-        desertionNo: '고유번호',
-        state: '보호중',
-        age: '2024(년생)',
-        gender: '남',
-        kindCd: '믹스견',
-        bookMark: false,
-      },
-      {
-        profile: Cat,
-        desertionNo: '고유번호',
-        state: '보호중',
-        age: '2024(년생)',
-        gender: '남',
-        kindCd: '믹스견',
-        bookMark: false,
-      },
-      {
-        profile: Cat,
-        desertionNo: '고유번호',
-        state: '보호중',
-        age: '2024(년생)',
-        gender: '남',
-        kindCd: '믹스견',
-        bookMark: false,
-      },
-      {
-        profile: Cat,
-        desertionNo: '고유번호',
-        state: '보호중',
-        age: '2024(년생)',
-        gender: '남',
-        kindCd: '믹스견',
-        bookMark: false,
-      },
-      {
-        profile: Cat,
-        desertionNo: '고유번호',
-        state: '보호중',
-        age: '2024(년생)',
-        gender: '남',
-        kindCd: '믹스견',
-        bookMark: false,
-      },
-      {
-        profile: Cat,
-        desertionNo: '고유번호',
-        state: '보호중',
-        age: '2024(년생)',
-        gender: '남',
-        kindCd: '믹스견',
-        bookMark: false,
-      },
-    ],
-  },
+interface Coordinate {
+  latitude: number;
+  longitude: number;
+}
 
-  { title: '서울 시청', latlng: { lat: 37.566295, lng: 126.977945 } },
-  { title: '남산타워', latlng: { lat: 37.551169, lng: 126.988227 } },
-  { title: '명동', latlng: { lat: 37.563656, lng: 126.982656 } },
-  { title: '이태원', latlng: { lat: 37.534552, lng: 126.994192 } },
-  {
-    title: '동대문 디자인 플라자',
-    latlng: { lat: 37.566295, lng: 127.009369 },
-  },
-  { title: '한강시민공원', latlng: { lat: 37.516066, lng: 126.966797 } },
-  { title: '롯데월드', latlng: { lat: 37.511074, lng: 127.098198 } },
-  { title: '서울숲', latlng: { lat: 37.544317, lng: 127.037448 } },
-  { title: '홍대입구', latlng: { lat: 37.556161, lng: 126.923642 } },
-];
+interface Shelter {
+  name: string;
+  coordinate: Coordinate;
+  careNm?: string;
+  careTel?: string;
+  careAddr?: string;
+  // 다른 필요한 필드들 추가
+}
 
 function ShelterList() {
-  const [locationsState, setLocationsState] = useState<Location[]>(locations);
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(
     null,
   );
+  const [locationsInfo, setLocationsInfo] = useState<Location[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleFavoriteClick = (locationIndex: number, petIndex: number) => {
-    const newLocations = [...locationsState];
-    newLocations[locationIndex].pet![petIndex].bookMark =
-      !newLocations[locationIndex].pet![petIndex].bookMark;
-    setLocationsState(newLocations);
-  };
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8080/api/v1/shelter_address`)
+      .then((res) => {
+        const locationData: Location[] = res.data.map((shelter: Shelter) => ({
+          title: shelter.name,
+          latlng: {
+            lng: shelter.coordinate.latitude,
+            lat: shelter.coordinate.longitude,
+          },
+        }));
+        setLocationsInfo(locationData);
+        setLoading(false);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  if (loading) {
+    return (
+      <ShelterContainer>
+        <CircularProgress />
+      </ShelterContainer>
+    );
+  }
 
   return (
     <ShelterContainer>
@@ -176,10 +121,9 @@ function ShelterList() {
         style={{ width: '800px', height: '600px' }}
         level={7}
       >
-        {locationsState.map((loc) => (
-          <>
+        {locationsInfo.map((loc) => (
+          <Fragment key={`${loc.title}-${loc.latlng.lat}-${loc.latlng.lng}`}>
             <MapMarker
-              key={`${loc.title}-${loc.latlng.lat}-${loc.latlng.lng}`}
               position={loc.latlng}
               image={{
                 src: DefaultMarkerUrl,
@@ -198,7 +142,7 @@ function ShelterList() {
                 {loc.title}
               </MarkerInfo>
             </CustomOverlayMap>
-          </>
+          </Fragment>
         ))}
       </Map>
 
@@ -210,7 +154,10 @@ function ShelterList() {
               selectedLocation.pet.map((pet, petIndex) => (
                 <>
                   <Card sx={{ width: '16rem' }} key={petIndex}>
-                    <CardMedia sx={{ height: 140 }} image={pet.profile} />
+                    <CardMedia
+                      sx={{ height: 140 }}
+                      image={pet.profile && Cat}
+                    />
                     <CardContent>
                       <Typography variant="h5" component="div">
                         {pet.desertionNo}
@@ -225,14 +172,7 @@ function ShelterList() {
                       </Typography>
                     </CardContent>
                     <CardActions>
-                      <Button
-                        onClick={() =>
-                          handleFavoriteClick(
-                            locationsState.indexOf(selectedLocation),
-                            petIndex,
-                          )
-                        }
-                      >
+                      <Button>
                         {pet.bookMark ? (
                           <FavoriteIcon />
                         ) : (
