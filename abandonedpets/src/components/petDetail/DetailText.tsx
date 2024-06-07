@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from 'styled-components';
 
 const TextArea = styled.div`
@@ -8,9 +9,22 @@ const TextArea = styled.div`
   min-height: 7rem;
   padding: 15px;
   font-size: 1rem;
+  display: flex;
+  justify-content: center; /* 수평 중앙 정렬 */
+  align-items: center; /* 수직 중앙 정렬 */
+  text-align: center;
 `;
-function DetailText() {
-  return <TextArea>성격과 특이사항에 대한 내용이 들어갑니다.</TextArea>;
+
+interface DetailTextProps {
+  specialMark: string;
 }
+
+const DetailText: React.FC<DetailTextProps> = ({ specialMark }) => {
+  if (!specialMark) {
+    return null;
+  }
+
+  return <TextArea>{specialMark}</TextArea>;
+};
 
 export default DetailText;

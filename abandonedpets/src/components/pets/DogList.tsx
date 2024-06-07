@@ -1,148 +1,118 @@
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 import PetCard from './PetCard';
-import Dog from '../../assets/sampleImg/Dog.png';
 import Favorite from '../../assets/Favorite.svg';
 import FavoriteFill from '../../assets/Favorite_fill.svg';
+import SelectPage from './SelectPage'; 
+
 
 const PetContainer = styled.div`
   max-width: 75%;
   width: 100%;
   display: grid;
   place-items: center;
-  grid-template-columns: repeat(3, 1fr); //4개의 열
+  grid-template-columns: repeat(3, 1fr); // 3개의 열
   gap: 20px;
   margin: 3% auto;
 `;
 
-/*
-const PetItem = styled.div`
-  width: 18rem;
-  height: 18rem;
-  border: 1px solid #000;
+const PaginationContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-
-  &:hover {
-    cursor: pointer;
-  }
+  margin-top: 20px;
 `;
 
-const PetImg = styled.img`
-  width: 13rem;
-  height: 13rem;
+const PageButton = styled.button<{ isActive: boolean }>`
+  background-color: ${({ isActive }) => (isActive ? '#000' : '#fff')};
+  color: ${({ isActive }) => (isActive ? '#fff' : '#000')};
+  border: 1px solid #000;
+  margin: 0 5px;
+  padding: 5px 10px;
+  cursor: pointer;
 `;
 
-const PetInfo = styled.div`
-  width: 90%;
-  display: flex;
-  justify-content: space-evenly;
-`;
-*/
+interface PetInfo {
+  id: number;
+  desertionNo: number;
+  filename: string;
+  popfile: string;
+  processState: string;
+  age: string;
+  weight: string;
+  sexCd: string;
+  kindCd: string;
+  name: number; 
+  img: string;   
+  fav: string;  
+}
 
-const PetData = {
-  pets: [
-    {
-      name: '강아지1',
-      age: '2살',
-      gender: '남',
-      weight: '6kg',
-      img: Dog,
-      fav: Favorite,
-    },
-    {
-      name: '강아지2',
-      age: '2살',
-      gender: '남',
-      weight: '6kg',
-      img: Dog,
-      fav: Favorite,
-    },
-    {
-      name: '강아지3',
-      age: '2살',
-      gender: '남',
-      weight: '6kg',
-      img: Dog,
-      fav: FavoriteFill,
-    },
-    {
-      name: '강아지4',
-      age: '2살',
-      gender: '남',
-      weight: '6kg',
-      img: Dog,
-      fav: FavoriteFill,
-    },
-    {
-      name: '강아지5',
-      age: '2살',
-      gender: '남',
-      weight: '6kg',
-      img: Dog,
-      fav: FavoriteFill,
-    },
-    {
-      name: '강아지6',
-      age: '2살',
-      gender: '남',
-      weight: '6kg',
-      img: Dog,
-      fav: Favorite,
-    },
-    {
-      name: '강아지7',
-      age: '2살',
-      gender: '남',
-      weight: '6kg',
-      img: Dog,
-      fav: FavoriteFill,
-    },
-    {
-      name: '강아지8',
-      age: '2살',
-      gender: '남',
-      weight: '6kg',
-      img: Dog,
-      fav: Favorite,
-    },
-    {
-      name: '강아지9',
-      age: '2살',
-      gender: '남',
-      weight: '6kg',
-      img: Dog,
-      fav: Favorite,
-    },
-    {
-      name: '강아지10',
-      age: '2살',
-      gender: '남',
-      weight: '6kg',
-      img: Dog,
-      fav: FavoriteFill,
-    },
-  ],
-};
+interface PetBoard {
+  petBoardId: number;
+  title: string;
+  description: string;
+  petInfo: PetInfo;
+  status: string;
+}
+
+interface ApiResponse {
+  message: string;
+  result: PetBoard[];
+  totalPages: number;
+}
 
 function DogList() {
+  const [pets, setPets] = useState<PetInfo[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+  useEffect(() => {
+    const fetchPets = async (page: number) => {
+      try {
+        const response = await axios.get<ApiResponse>(`http://localhost:8080/api/v1/pet_board/list/type/개?page=${page - 1}&size=12`);
+        if (response.data && response.data.result) {
+          const petData = response.data.result.map(petBoard => ({
+            id: petBoard.petInfo.id,
+            desertionNo: petBoard.petInfo.desertionNo,
+            filename: petBoard.petInfo.filename,
+            popfile: petBoard.petInfo.popfile,
+            processState: petBoard.petInfo.processState,
+            age: petBoard.petInfo.age,
+            weight: petBoard.petInfo.weight,
+            sexCd: petBoard.petInfo.sexCd,
+            kindCd: petBoard.petInfo.kindCd,
+            img: petBoard.petInfo.popfile || '이미지 없음',
+            fav: Favorite,
+            name: petBoard.petInfo.desertionNo,
+          }));
+          setPets(petData);
+          setTotalPages(response.data.totalPages);
+        } else {
+          console.error('Invalid response structure', response.data);
+        }
+      } catch (error) {
+        console.error('Error fetching pet data:', error);
+      }
+    };
+
+    fetchPets(currentPage).catch(error => {
+      console.error('Error fetching pet data:', error);
+    });
+  }, [currentPage]);
+
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setCurrentPage(value);
+  };
+
   return (
-    <PetContainer>
-      {PetData.pets.map((pet) => (
-        // <PetItem onClick={() => navigate('/detail')}>
-        //   <PetImg src={pet.img} />
-        //   <PetInfo key={pet.name}>
-        //     <InfoDetail>{pet.name}</InfoDetail>
-        //     <InfoDetail>{pet.age}</InfoDetail>
-        //     <InfoDetail>{pet.gender}</InfoDetail>
-        //     <InfoDetail>{pet.weight}</InfoDetail>
-        //     <img src={pet.fav} />
-        //   </PetInfo>
-        // </PetItem>
-        <PetCard key={pet.name} pet={pet} />
-      ))}
-    </PetContainer>
+    <div>
+      <PetContainer>
+        {pets.map((pet, index) => (
+          <PetCard key={index} pet={pet} />
+        ))}
+      </PetContainer>
+      <SelectPage count={totalPages} page={currentPage} onChange={handlePageChange} />
+    </div>
   );
 }
 
