@@ -1,11 +1,12 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import { Map, MapMarker } from 'react-kakao-maps-sdk';
 
 const FormWrapper = styled.form`
-  width: 50%;
+  width: 60%;
   margin: 3rem auto 5rem auto;
   display: flex;
   flex-direction: column;
@@ -160,7 +161,7 @@ const InputGenderBtn = styled.button<{ gender: boolean }>`
 `;
 
 const InputNeuterBtn = styled.button<{ neuter: boolean | string }>`
-  width: flex%;
+  width: 4rem;
   border: none;
   border-radius: 5px;
   color: #000;
@@ -175,14 +176,14 @@ const InputNeuterBtn = styled.button<{ neuter: boolean | string }>`
 `;
 
 const TextArea = styled.textarea`
-  width: 100%;
+  width: 90%;
   margin: 3% auto;
   background-color: #ffefde;
 
   border: 1px solid #ffcf85;
   border-radius: 10px;
   min-height: 7rem;
-  resize: none;
+  resize: vertical;
   outline: #ffc184;
   padding: 15px;
   font-size: 1rem;
@@ -243,8 +244,14 @@ function Form() {
     weight: '',
     kindCd: '',
     specialMark: '',
-    address: ''
+    address: '',
   });
+  const [position, setPosition] = useState<{ lat: number; lng: number }>({
+    lat: 37.5528803113882,
+    lng: 126.972601286522,
+  }); // 위도 경도 저장
+  const { kakao } = window;
+  const [address, setAddress] = useState<string | null>(null); // 현재 좌표의 주소를 저장할 상태
 
   const imgRef = useRef<HTMLInputElement>(null);
 
@@ -299,7 +306,9 @@ function Form() {
   };
 
   // 폼 데이터 변경 핸들러
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -325,21 +334,47 @@ function Form() {
       filename: imgFile,
       popfile: imgFile,
       isPublicApi: false,
-      petType: petType
+      petType,
     };
 
     const data = {
       title: formData.title,
       description: formData.description,
-      petInfo: petInfo
+      petInfo,
     };
 
     try {
-      const response = await axios.post('http://localhost:8080/api/v1/pet_board', data);
+      const response = await axios.post(
+        'http://localhost:8080/api/v1/pet_board',
+        data,
+      );
       console.log('Response:', response.data);
     } catch (error) {
       console.error('Error submitting form:', error);
     }
+  };
+
+  // 지도 클릭 시 마커를 주소로 변환
+  const getAddress = (lat: number, lng: number) => {
+    const geocoder = new kakao.maps.services.Geocoder(); // 좌표 -> 주소로 변환해주는 객체
+    const coord = new kakao.maps.LatLng(lat, lng); // 주소로 변환할 좌표 입력
+    const callback = function (result, status) {
+      if (status === kakao.maps.services.Status.OK) {
+        setAddress(result[0].address);
+      }
+    };
+    geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
+  };
+
+  const handleClick = (_, mouseEvent) => {
+    const latlng = mouseEvent.latLng;
+    const newPosition = {
+      lat: latlng.getLat(),
+      lng: latlng.getLng(),
+    };
+
+    setPosition(newPosition);
+    getAddress(newPosition.lat, newPosition.lng);
   };
 
   return (
@@ -423,11 +458,15 @@ function Form() {
             <PetDetailText>몸무게</PetDetailText>
             <PetDetailText>품종</PetDetailText>
             <PetDetailText>중성화 여부</PetDetailText>
-            <PetDetailText>주소</PetDetailText>
           </InfoDetail>
 
           <InfoDetail>
-            <InputInfo name="name" placeholder="이름" value={formData.name} onChange={handleInputChange} />
+            <InputInfo
+              name="name"
+              placeholder="이름"
+              value={formData.name}
+              onChange={handleInputChange}
+            />
             <InputBtnContainer>
               <InputGenderBtn
                 type="button"
@@ -444,9 +483,27 @@ function Form() {
                 여
               </InputGenderBtn>
             </InputBtnContainer>
-            <InputInfo type="text" name="age" placeholder="나이" value={formData.age} onChange={handleInputChange} />
-            <InputInfo type="text" name="weight" placeholder="몸무게" value={formData.weight} onChange={handleInputChange} />
-            <InputInfo type="text" name="kindCd" placeholder="품종" value={formData.kindCd} onChange={handleInputChange} />
+            <InputInfo
+              type="text"
+              name="age"
+              placeholder="나이"
+              value={formData.age}
+              onChange={handleInputChange}
+            />
+            <InputInfo
+              type="text"
+              name="weight"
+              placeholder="몸무게"
+              value={formData.weight}
+              onChange={handleInputChange}
+            />
+            <InputInfo
+              type="text"
+              name="kindCd"
+              placeholder="품종"
+              value={formData.kindCd}
+              onChange={handleInputChange}
+            />
             <InputBtnContainer>
               <InputNeuterBtn
                 type="button"
@@ -470,12 +527,29 @@ function Form() {
                 모름
               </InputNeuterBtn>
             </InputBtnContainer>
-            <InputInfo type="text" name="address" placeholder="주소" value={formData.address} onChange={handleInputChange} />
           </InfoDetail>
         </InfoContainer>
       </FromHeader>
 
-      <TextArea name="specialMark" placeholder="추가 설명을 작성해주세요. (예, 성격 또는 특이사항)" value={formData.specialMark} onChange={handleInputChange} />
+      <div>
+        <div>입양자와 만나기 좋은 장소를 골라주세요</div>
+        <Map
+          center={position}
+          style={{ width: '800px', height: '600px' }}
+          level={7}
+          onClick={handleClick}
+        >
+          <MapMarker position={position} />
+        </Map>
+        {address && <div>{address.address_name}</div>}
+      </div>
+
+      <TextArea
+        name="specialMark"
+        placeholder="추가 설명을 작성해주세요. (예, 성격 또는 특이사항)"
+        value={formData.specialMark}
+        onChange={handleInputChange}
+      />
 
       <InputImgList>
         {[...Array(6)].map((_, index) => (

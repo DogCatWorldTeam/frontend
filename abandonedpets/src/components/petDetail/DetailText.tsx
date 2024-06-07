@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const TextArea = styled.div`
-  width: 60%;
+  width: 70%;
   margin: 3% auto;
   background-color: #ffefde;
   border-radius: 10px;

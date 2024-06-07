@@ -3,9 +3,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import PetCard from './PetCard';
 import Favorite from '../../assets/Favorite.svg';
-import FavoriteFill from '../../assets/Favorite_fill.svg';
-import SelectPage from './SelectPage'; 
-
+import SelectPage from './SelectPage';
 
 const PetContainer = styled.div`
   max-width: 75%;
@@ -15,21 +13,6 @@ const PetContainer = styled.div`
   grid-template-columns: repeat(3, 1fr); // 3개의 열
   gap: 20px;
   margin: 3% auto;
-`;
-
-const PaginationContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-`;
-
-const PageButton = styled.button<{ isActive: boolean }>`
-  background-color: ${({ isActive }) => (isActive ? '#000' : '#fff')};
-  color: ${({ isActive }) => (isActive ? '#fff' : '#000')};
-  border: 1px solid #000;
-  margin: 0 5px;
-  padding: 5px 10px;
-  cursor: pointer;
 `;
 
 interface PetInfo {
@@ -42,9 +25,9 @@ interface PetInfo {
   weight: string;
   sexCd: string;
   kindCd: string;
-  name: string; 
-  img: string;   
-  fav: string;  
+  name: string;
+  img: string;
+  fav: string;
 }
 
 interface PetBoard {
@@ -69,9 +52,11 @@ function DogList() {
   useEffect(() => {
     const fetchPets = async (page: number) => {
       try {
-        const response = await axios.get<ApiResponse>(`http://localhost:8080/api/v1/pet_board/list/type/고양이?page=${page - 1}&size=12`);
+        const response = await axios.get<ApiResponse>(
+          `http://localhost:8080/api/v1/pet_board/list/type/고양이?page=${page - 1}&size=12`,
+        );
         if (response.data && response.data.result) {
-          const petData = response.data.result.map(petBoard => ({
+          const petData = response.data.result.map((petBoard) => ({
             id: petBoard.petInfo.id,
             desertionNo: petBoard.petInfo.desertionNo,
             filename: petBoard.petInfo.filename,
@@ -95,12 +80,15 @@ function DogList() {
       }
     };
 
-    fetchPets(currentPage).catch(error => {
+    fetchPets(currentPage).catch((error) => {
       console.error('Error fetching pet data:', error);
     });
   }, [currentPage]);
 
-  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number,
+  ) => {
     setCurrentPage(value);
   };
 
@@ -111,7 +99,11 @@ function DogList() {
           <PetCard key={index} pet={pet} />
         ))}
       </PetContainer>
-      <SelectPage count={totalPages} page={currentPage} onChange={handlePageChange} />
+      <SelectPage
+        count={totalPages}
+        page={currentPage}
+        onChange={handlePageChange}
+      />
     </div>
   );
 }

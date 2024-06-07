@@ -17,11 +17,15 @@ interface SelectPageProps {
 function SelectPage({ count, page, onChange }: SelectPageProps) {
   return (
     <Wrapper>
-      <Pagination count={count} page={page} color="primary" size="large" onChange={onChange} />
+      <Pagination
+        count={count}
+        page={page}
+        color="primary"
+        size="large"
+        onChange={onChange}
+      />
     </Wrapper>
   );
 }
 
 export default SelectPage;
-
-
