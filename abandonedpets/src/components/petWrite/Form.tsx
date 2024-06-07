@@ -482,6 +482,13 @@ function Form() {
               >
                 여
               </InputGenderBtn>
+              <InputGenderBtn
+                type="button"
+                gender={isGender === 'Q'}
+                onClick={() => genderBtnHendler('Q')}
+              >
+                미상
+              </InputGenderBtn>
             </InputBtnContainer>
             <InputInfo
               type="text"
