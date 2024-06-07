@@ -47,9 +47,9 @@ const Img = styled.img`
 `;
 
 const InfoContainer = styled.div`
-  width: flex;
   display: flex;
   justify-content: space-between;
+  gap: 15px;
 `;
 
 const InfoDetailContainer = styled.div`
@@ -115,7 +115,9 @@ const PetDetail: React.FC = () => {
   useEffect(() => {
     const fetchPetDetail = async () => {
       try {
-        const response = await axios.get<PetDetail>(`http://localhost:8080/api/v1/petinfo/${id}`);
+        const response = await axios.get<PetDetail>(
+          `http://localhost:8080/api/v1/petinfo/${id}`,
+        );
         setPetDetail(response.data);
         setIsAdoption(response.data.processState === '입양 완료');
       } catch (error) {
@@ -195,19 +197,22 @@ const PetDetail: React.FC = () => {
           <PetDetailText>{petDetail.colorCd}</PetDetailText>
           <PetDetailText>{petDetail.weight}</PetDetailText>
           <PetDetailText>{petDetail.kindCd}</PetDetailText>
-          <PetDetailText>{petDetail.neuterYn === 'Y' ? '예' : '아니오'}</PetDetailText>
+          <PetDetailText>
+            {petDetail.neuterYn === 'Y' ? '예' : '아니오'}
+          </PetDetailText>
           <PetDetailText>{petDetail.happenPlace}</PetDetailText>
           <PetDetailText>{petDetail.shelter.careNm}</PetDetailText>
           <PetDetailText>{petDetail.shelter.careAddr}</PetDetailText>
         </InfoDetailContainer>
       </InfoContainer>
-      {petDetail.specialMark && <DetailText specialMark={petDetail.specialMark} />}
+      {petDetail.specialMark && (
+        <DetailText specialMark={petDetail.specialMark} />
+      )}
     </Wrapper>
   );
 };
 
 export default PetDetail;
-
 
 // import { useState } from 'react';
 // import styled from 'styled-components';

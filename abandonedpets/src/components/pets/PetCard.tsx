@@ -14,7 +14,7 @@ const InfoDetail = styled.div`
 `;
 
 interface PetInfo {
-  id: number; 
+  id: number;
   name: string;
   age: string;
   sexCd: string;
