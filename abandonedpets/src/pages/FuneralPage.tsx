@@ -6,7 +6,7 @@ function FuneralPage() {
   return (
     <>
       <NavBar />
-      <FuneralList />
+      <FuneralList /> 
       <Footer />
     </>
   );

@@ -7,9 +7,9 @@ function Mypage() {
   return (
     <>
       <NavBar />
-      <Info />
+      {/* <Info /> */}
+      {/* <WriteList /> */}
       <FavoriteList />
-      <WriteList />
     </>
   );
 }
