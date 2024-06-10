@@ -16,6 +16,15 @@
 
 body {
   font-family: 'NanumBarunGothic';
-  min-width: 1440px;
+  width: 100%;
   min-height: 100vh;
+  font-size: 16px;
+
+  @media screen and (max-width: 1023px) {
+    font-size: 14px;
+  }
+
+  @media screen and (max-width: 767px) {
+    font-size: 11px;
+  }
 }

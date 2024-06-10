@@ -26,10 +26,12 @@ const SearchContainer = styled.div`
 `;
 
 const FilterImg = styled.img`
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.5em;
+  height: 2.5em;
   position: absolute;
   left: 0;
+  top: 50%;
+  transform: translate(0%, -50%);
 
   &: hover {
     cursor: pointer;
@@ -37,8 +39,8 @@ const FilterImg = styled.img`
 `;
 
 const SearchImg = styled.img`
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.5em;
+  height: 1.5em;
 
   &: hover {
     cursor: pointer;
@@ -58,41 +60,40 @@ const WriteBtn = styled.span`
 `;
 
 const Input = styled.input`
-  width: 50%;
+  width: 100%;
   border: none;
   outline: none;
-  font-size: 1.25rem;
+  font-size: 1.25em;
   margin-left: 0.5rem;
 `;
 
 const FilterForm = styled.form`
   width: 95%;
-  height: 5rem;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 1% auto;
+
+  @media screen and (max-width: 1023px) {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  @media screen and (max-width: 767px) {
+  }
 `;
 
 const FormItems = styled.div`
   display: flex;
   align-items: center;
+  gap: 5px;
 `;
 
 const FormInfo = styled.div`
-  font-size: 1.25rem;
+  font-size: 1.25em;
   margin-right: 0.3rem;
-`;
-
-const CheckBoxContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
-
-const Label = styled.label`
-  font-size: 1rem;
-  margin-top: 0.13rem;
 `;
 
 const top100Films = [
@@ -173,9 +174,9 @@ function Search() {
 
           <FormItems>
             <FormInfo>나이</FormInfo>
-            <TextField variant="outlined" placeholder="0" />
+            <TextField variant="outlined" placeholder="0" sx={{ width: 100 }} />
             <span>~</span>
-            <TextField variant="outlined" placeholder="" />
+            <TextField variant="outlined" placeholder="" sx={{ width: 100 }} />
           </FormItems>
 
           <FormItems>

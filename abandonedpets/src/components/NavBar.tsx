@@ -7,23 +7,29 @@ import CloseIcon from '@mui/icons-material/Close';
 import PersonIcon from '@mui/icons-material/Person';
 import Fab from '@mui/material/Fab';
 import ChatIcon from '@mui/icons-material/Chat';
+import MenuIcon from '@mui/icons-material/Menu';
 import Logo from '../assets/Logo.png';
 import Chat from '../components/modal/Chat';
 import ChatList from './modal/ChatList';
 
 const Wrapper = styled.div`
   width: 100%;
-  height: 5.625rem;
+
   background-color: #f9f0e7;
   border-bottom: solid 1px #b9b9b9;
   margin: 0px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media screen and (max-width: 767px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
 const LogoImg = styled.img`
-  height: 4.5rem;
+  height: 4.5em;
   margin-top: 0.4rem;
   margin-left: 1.2rem;
 
@@ -32,11 +38,38 @@ const LogoImg = styled.img`
   }
 `;
 
-const CategoryContainer = styled.ul``;
+const MenuBtn = styled.div`
+  display: none;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  @media screen and (max-width: 767px) {
+    display: block;
+    position: absolute;
+    right: 24px;
+    top: 16px;
+    font-size: 24px;
+  }
+`;
+
+const CategoryContainer = styled.ul<{ isOpen: boolean }>`
+  display: flex;
+
+  @media screen and (max-width: 767px) {
+    display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 8px;
+    padding: 0;
+  }
+`;
 
 const Category = styled(Link)`
   font-family: pretendard;
-  font-size: 1.25rem;
+  font-size: 1.25em;
   margin: 0 1.6rem;
   text-decoration: none;
   color: inherit;
@@ -47,15 +80,23 @@ const Category = styled(Link)`
   }
 `;
 
-const AuthContainer = styled.div`
+const AuthContainer = styled.div<{ isOpen: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-right: 1.6rem;
+
+  @media screen and (max-width: 767px) {
+    display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin: 0 0 0.5rem 0;
+  }
 `;
 
 const AuthItem = styled(Link)`
-  font-size: 1rem;
+  font-size: 1em;
   margin: 0 1.6rem;
   text-decoration: none;
   color: inherit;
@@ -68,7 +109,7 @@ const AuthItem = styled(Link)`
 
 const DropDown = styled.button`
   font-family: pretendard;
-  font-size: 1.25rem;
+  font-size: 1.25em;
   margin: 0 1.6rem;
   text-decoration: none;
   color: inherit;
@@ -105,7 +146,7 @@ const DropDownList = styled(Link)`
   width: 100%;
   text-decoration: none;
   color: inherit;
-  font-size: 1rem;
+  font-size: 1em;
 
   &: hover {
     background-color: #c9c9c9;
@@ -140,6 +181,7 @@ function NavBar() {
   const [isLogin, setIsLogin] = useState<boolean>(
     localStorage.getItem('accessToken') !== null,
   );
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false); // 메뉴 오픈 여부
   const [isChatListOpen, setIsChatListOpen] = useState<boolean>(false); // 채팅 리스트 open 확인
   const [isChatRoomOpen, setIsChatRoomOpen] = useState<boolean>(false); // 채팅 리스트에서 채팅 방 연결, 채팅방 open 확인
   const [currentTalk, setCurrentTalk] = useState<number | string>(); // 채팅방 Id 연결
@@ -162,10 +204,13 @@ function NavBar() {
 
   return (
     <Wrapper>
+      <MenuBtn onClick={() => setIsMenuOpen(!isMenuOpen)}>
+        <MenuIcon />
+      </MenuBtn>
       <Link to="/">
         <LogoImg src={Logo} alt="메인로고" />
       </Link>
-      <CategoryContainer>
+      <CategoryContainer isOpen={isMenuOpen}>
         <DropDown
           type="button"
           onMouseEnter={() => setIsDropDown(true)}
@@ -177,16 +222,14 @@ function NavBar() {
               <DropDownList to="/dog">강아지</DropDownList>
               <DropDownList to="/cat">고양이</DropDownList>
             </DropDownMenu>
-          ) : (
-            ''
-          )}
+          ) : null}
         </DropDown>
         <Category to="/shelter">인근 보호소</Category>
         <Category to="/funeral">장례식장</Category>
       </CategoryContainer>
 
       {isLogin ? (
-        <AuthContainer>
+        <AuthContainer isOpen={isMenuOpen}>
           <IconButton
             sx={{ position: 'relative' }}
             onMouseEnter={() => setIsUserDropDown(true)}
@@ -221,10 +264,10 @@ function NavBar() {
           </div>
         </AuthContainer>
       ) : (
-        <div>
+        <AuthContainer isOpen={isMenuOpen}>
           <AuthItem to="/login">로그인</AuthItem>
           <AuthItem to="/signup">회원가입</AuthItem>
-        </div>
+        </AuthContainer>
       )}
       {/* <AuthContainer>
         <AuthItem to="/login">로그인</AuthItem>
