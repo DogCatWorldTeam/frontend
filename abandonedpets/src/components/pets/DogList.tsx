@@ -10,9 +10,18 @@ const PetContainer = styled.div`
   width: 100%;
   display: grid;
   place-items: center;
+  // grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   grid-template-columns: repeat(3, 1fr); // 3개의 열
   gap: 20px;
   margin: 3% auto;
+
+  @media screen and (max-width: 1023px) {
+    grid-template-columns: repeat(2, 1fr); // 2개의 열
+  }
+
+  @media screen and (max-width: 767px) {
+    grid-template-columns: repeat(1, 1fr); // 1개의 열
+  }
 `;
 
 interface PetInfo {

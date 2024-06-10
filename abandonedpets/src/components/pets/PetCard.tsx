@@ -39,7 +39,7 @@ function PetCard({ pet }: PetCardProps) {
   };
 
   return (
-    <Card sx={{ width: '20rem' }}>
+    <Card sx={{ width: '100%' }}>
       <CardActionArea onClick={() => navigate(`/detail/${pet.id}`)}>
         <CardMedia
           component="img"
