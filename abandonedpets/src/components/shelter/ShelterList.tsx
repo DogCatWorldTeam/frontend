@@ -10,11 +10,10 @@ import {
   Button,
   CircularProgress,
 } from '@mui/material';
-
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import axios from 'axios';
-import Cat from '../../assets/sampleImg/Cat.png';
+import SelectPage from './SelectPage';
 
 const ShelterContainer = styled.div`
   width: 60%;
@@ -51,22 +50,6 @@ const InfoDetail = styled.p`
 const DefaultMarkerUrl =
   'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
 
-interface Pet {
-  profile: string;
-  desertionNo: string;
-  state: string;
-  age: string;
-  gender: string;
-  kindCd: string;
-  bookMark: boolean;
-}
-
-interface Location {
-  title: string;
-  latlng: { lat: number; lng: number };
-  pet?: Pet[];
-}
-
 interface Coordinate {
   latitude: number;
   longitude: number;
@@ -75,18 +58,38 @@ interface Coordinate {
 interface Shelter {
   name: string;
   coordinate: Coordinate;
-  careNm?: string;
-  careTel?: string;
-  careAddr?: string;
-  // 다른 필요한 필드들 추가
+}
+
+interface Location {
+  title: string;
+  latlng: {
+    lat: number;
+    lng: number;
+  };
+  data?: {
+    content: [
+      {
+        kindCd: string;
+        filename: string;
+        age: string;
+        sexCd: string;
+        processState: string;
+        desertionNo: number;
+      },
+    ]; // 실제 데이터 타입에 맞게 수정 필요
+    totalPages: number;
+  };
 }
 
 function ShelterList() {
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(
     null,
-  );
-  const [locationsInfo, setLocationsInfo] = useState<Location[]>([]);
-  const [loading, setLoading] = useState(true);
+  ); // 선택한 보호소 이름
+  const [locationsInfo, setLocationsInfo] = useState<Location[]>([]); // 모든 보호소 이름, 위치 저장
+  const [loading, setLoading] = useState<boolean>(true);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null); // 선택된 보호소의 index
 
   useEffect(() => {
     axios
@@ -105,6 +108,7 @@ function ShelterList() {
       .catch((err) => console.log(err));
   }, []);
 
+  console.log(locationsInfo);
   if (loading) {
     return (
       <ShelterContainer>
@@ -112,6 +116,45 @@ function ShelterList() {
       </ShelterContainer>
     );
   }
+
+  const handleMarkerClick = (loc: Location) => {
+    const index =
+      locationsInfo.findIndex((item) => item.title === loc.title) + 1;
+    setSelectedIndex(index); // index 상태 업데이트
+
+    setCurrentPage(1);
+    axios
+      .get(`http://localhost:8080/api/v1/shelter/${index}?&page=0&size=12`)
+      .then((response) => {
+        setSelectedLocation({ ...loc, data: response.data });
+        setTotalPages(response.data.totalPages);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  };
+
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number,
+  ) => {
+    setCurrentPage(value);
+
+    if (selectedIndex) {
+      axios
+        .get(
+          `http://localhost:8080/api/v1/shelter/${selectedIndex}?&page=${value - 1}&size=12`,
+        )
+        .then((response) => {
+          setSelectedLocation((prev) =>
+            prev ? { ...prev, data: response.data } : null,
+          );
+        })
+        .catch((error) => {
+          console.error('Error fetching data:', error);
+        });
+    }
+  };
 
   return (
     <ShelterContainer>
@@ -135,10 +178,10 @@ function ShelterList() {
                   },
                 },
               }}
-              onClick={() => setSelectedLocation(loc)}
+              onClick={() => handleMarkerClick(loc)}
             />
             <CustomOverlayMap position={loc.latlng} yAnchor={1}>
-              <MarkerInfo onClick={() => setSelectedLocation(loc)}>
+              <MarkerInfo onClick={() => handleMarkerClick(loc)}>
                 {loc.title}
               </MarkerInfo>
             </CustomOverlayMap>
@@ -150,44 +193,53 @@ function ShelterList() {
         <div>
           <h2>{selectedLocation.title}에서 친구들이 기다리고 있어요.</h2>
           <PetContainer>
-            {selectedLocation.pet ? (
-              selectedLocation.pet.map((pet, petIndex) => (
-                <>
-                  <Card sx={{ width: '16rem' }} key={petIndex}>
-                    <CardMedia
-                      sx={{ height: 140 }}
-                      image={pet.profile && Cat}
-                    />
-                    <CardContent>
-                      <Typography variant="h5" component="div">
-                        {pet.desertionNo}
-                      </Typography>
-                    </CardContent>
-                    <CardContent>
-                      <Typography variant="body2" color="text.secondary">
-                        <InfoDetail>분류: {pet.state}</InfoDetail>
-                        <InfoDetail>이름: {pet.age}</InfoDetail>
-                        <InfoDetail>성별: {pet.gender}</InfoDetail>
-                        <InfoDetail>품종: {pet.kindCd}</InfoDetail>
-                      </Typography>
-                    </CardContent>
-                    <CardActions>
-                      <Button>
-                        {pet.bookMark ? (
-                          <FavoriteIcon />
-                        ) : (
-                          <FavoriteBorderIcon />
-                        )}
-                      </Button>
-                    </CardActions>
-                  </Card>
-                </>
+            {selectedLocation.data?.content ? (
+              selectedLocation.data.content.map((pet, petIndex) => (
+                <Card key={petIndex}>
+                  <CardMedia
+                    component="img"
+                    sx={{ height: 200 }}
+                    image={pet.kindCd}
+                    alt={`${pet.desertionNo} 이미지`}
+                  />
+                  <CardContent>
+                    <Typography variant="h5" component="div">
+                      유기번호: {pet.desertionNo}
+                    </Typography>
+                  </CardContent>
+                  <CardContent>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      component="div"
+                    >
+                      <InfoDetail>분류: {pet.processState}</InfoDetail>
+                      <InfoDetail>나이: {pet.age}</InfoDetail>
+                      <InfoDetail>성별: {pet.sexCd}</InfoDetail>
+                      <InfoDetail>품종: {pet.filename}</InfoDetail>
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+                    <Button>
+                      {pet.bookMark ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                    </Button>
+                  </CardActions>
+                </Card>
               ))
             ) : (
               <p>No pets available</p>
             )}
           </PetContainer>
         </div>
+      )}
+      {selectedLocation ? (
+        <SelectPage
+          count={totalPages}
+          page={currentPage}
+          onChange={handlePageChange}
+        />
+      ) : (
+        ''
       )}
     </ShelterContainer>
   );
