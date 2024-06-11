@@ -135,7 +135,8 @@ const DropDownMenu = styled.ul`
   list-style: none;
   background-color: #fff;
   padding: 0.5rem;
-  z-index: 1 !important;
+  z-index: 1; !important;
+
 
   box-shadow:
     0 10px 20px rgba(0, 0, 0, 0.19),
@@ -146,7 +147,7 @@ const DropDownList = styled(Link)`
   width: 100%;
   text-decoration: none;
   color: inherit;
-  font-size: 1em;
+  font-size: 0.6em;
 
   &: hover {
     background-color: #c9c9c9;
@@ -154,18 +155,18 @@ const DropDownList = styled(Link)`
 `;
 
 const UserDropDownMenu = styled.ul`
-  display: block;
   width: 5rem;
   display: flex;
   flex-direction: column;
   gap: 10px;
   position: absolute;
-  top: 50%;
+  top: 45%;
   left: 45%;
   transform: translate(-50%, 0);
   list-style: none;
   background-color: #fff;
   padding: 0.5rem;
+  z-index: 1;
 
   box-shadow:
     0 10px 20px rgba(0, 0, 0, 0.19),
@@ -198,6 +199,7 @@ function NavBar() {
 
   const logoutHandler = () => {
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('userId');
     cookies.remove('refreshToken', { path: '/' });
     setIsLogin(false);
   };
@@ -235,7 +237,7 @@ function NavBar() {
             onMouseEnter={() => setIsUserDropDown(true)}
             onMouseLeave={() => setIsUserDropDown(false)}
           >
-            <PersonIcon fontSize="large" />
+            <PersonIcon fontSize="medium" />
             {isUserDropDown ? (
               <UserDropDownMenu>
                 <DropDownList to="/mypage">마이페이지</DropDownList>

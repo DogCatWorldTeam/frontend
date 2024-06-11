@@ -117,6 +117,7 @@ function LoginForm() {
       );
 
       localStorage.setItem('accessToken', response.data.access_token);
+      localStorage.setItem('userId', response.data.userId);
       cookies.set('refreshToken', response.data.refresh_token, { path: '/' });
 
       navigate('/dog');
