@@ -3,7 +3,6 @@ import NavBar from '../components/NavBar';
 import Info from '../components/petDetail/Info';
 import SendMessageBtn from '../components/petDetail/SendMessageBtn';
 import FavoriteBtn from '../components/petDetail/FavoriteBtn';
-import DetailText from '../components/petDetail/DetailText';
 import ImgList from '../components/petDetail/ImgList';
 
 const BtnWrapper = styled.div`
@@ -22,7 +21,6 @@ function PetDetail() {
         <SendMessageBtn />
         <FavoriteBtn />
       </BtnWrapper>
-      <DetailText />
       <ImgList />
     </>
   );

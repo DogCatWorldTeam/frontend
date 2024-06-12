@@ -25,7 +25,7 @@ const FromHeader = styled.div`
 
 const Title = styled.div`
   width: 100%;
-  font-size: 2rem;
+  font-size: 2em;
   font-weight: 900;
   display: flex;
   justify-content: center;
@@ -57,7 +57,7 @@ const StyledButton = styled.button<{ choice: boolean }>`
   color: #000;
   background-color: ${({ choice }) => (choice ? '#FFBE57' : '#fff')};
   transition: background-color 0.3s;
-  font-size: 1.2rem;
+  font-size: 1.2em;
 
   &: hover {
     cursor: pointer;
@@ -86,7 +86,7 @@ const ImgFile = styled.label`
 const ImgFileExplan = styled.div`
   width: 100%;
   text-align: center;
-  font-size: 0.875rem;
+  font-size: 0.875em;
 `;
 
 const ImgPreview = styled.img`
@@ -116,13 +116,13 @@ const InfoDetail = styled.div`
 `;
 
 const PetDetailText = styled.span`
-  font-size: 1.2rem;
+  font-size: 1.2em;
   padding: 0.25rem;
 `;
 
 const InputInfo = styled.input`
   width: 100%;
-  font-size: 1rem;
+  font-size: 1em;
   outline: none;
   border: 1px solid #ffcf85;
   border-radius: 5px;
@@ -146,13 +146,13 @@ const InputBtnContainer = styled.div`
 `;
 
 const InputGenderBtn = styled.button<{ gender: boolean }>`
-  width: 45%;
+  width: 4rem;
   border: none;
   border-radius: 5px;
   color: #000;
   background-color: ${({ gender }) => (gender ? '#FFBE57' : '#A9A9A9')};
   transition: background-color 0.3s;
-  font-size: 1.2rem;
+  font-size: 1.2em;
 
   &:hover {
     cursor: pointer;
@@ -167,7 +167,7 @@ const InputNeuterBtn = styled.button<{ neuter: boolean | string }>`
   color: #000;
   background-color: ${({ neuter }) => (neuter ? '#FFBE57' : '#A9A9A9')};
   transition: background-color 0.3s;
-  font-size: 1.2rem;
+  font-size: 1.2em;
 
   &:hover {
     cursor: pointer;
@@ -186,7 +186,7 @@ const TextArea = styled.textarea`
   resize: vertical;
   outline: #ffc184;
   padding: 15px;
-  font-size: 1rem;
+  font-size: 1em;
 
   &: hover {
     border-color: #ffac29;
@@ -225,7 +225,7 @@ const ImgPreviewList = styled.label`
 
 const SubmitBtn = styled.span`
   width: 10rem;
-  font-size: 1.25rem;
+  font-size: 1.25em;
 `;
 
 function Form() {
@@ -320,6 +320,17 @@ function Form() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // 주소 저장
+    if (address) {
+      formData.address = address.address_name;
+    }
+
+    const userId = localStorage.getItem('userId'); // 로컬스토리지의 유저 아이디 저장
+    const userPhone = localStorage.getItem('phone'); // 로컬스토리지의 유저 전화번호 저장
+
+    // 보호소 이름에 user_id, 보호소 전화번호에 user 전화번호, 보호소 주소에 보호자가 원하는 주소
+    // 위의 값을 넣어야 하는데, requestbody를 보고 넣으면 될지.. 이미 들어가 있는 address 때문에 헷갈림
+
     // 백엔드로 전송할 데이터 구성
     const petInfo = {
       name: formData.name,
@@ -334,7 +345,15 @@ function Form() {
       filename: imgFile,
       popfile: imgFile,
       isPublicApi: false,
-      petType,
+      petType: formData.petType,
+      // 350 ~ 356 주석시 글 작성은 성공함.
+      shelter: {
+        id: 0,
+        petInfoList: [''],
+        careNm: userId, // 보호소 이름: 유저 아이디
+        careTel: userPhone, // 보호소 전화번호: 유저 번호
+        careAddr: formData.address, // 주소
+      },
     };
 
     const data = {
@@ -343,12 +362,15 @@ function Form() {
       petInfo,
     };
 
+    console.log(data);
+
     try {
       const response = await axios.post(
         'http://localhost:8080/api/v1/pet_board',
         data,
       );
       console.log('Response:', response.data);
+      alert('글 작성 완료');
     } catch (error) {
       console.error('Error submitting form:', error);
     }

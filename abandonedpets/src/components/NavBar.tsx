@@ -200,6 +200,7 @@ function NavBar() {
   const logoutHandler = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('userId');
+    localStorage.removeItem('phone');
     cookies.remove('refreshToken', { path: '/' });
     setIsLogin(false);
   };
