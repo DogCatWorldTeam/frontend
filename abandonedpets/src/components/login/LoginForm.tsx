@@ -95,12 +95,9 @@ function LoginForm() {
       ...userForm,
       [e.target.name]: e.target.value,
     });
-    console.log(e.target.name, e.target.value);
   };
 
   const submitHandler = async (e: FormEvent) => {
-    console.log(userForm);
-
     try {
       e.preventDefault();
       const response = await axios.post(
@@ -118,6 +115,7 @@ function LoginForm() {
 
       localStorage.setItem('accessToken', response.data.access_token);
       localStorage.setItem('userId', response.data.userId);
+      localStorage.setItem('phone', response.data.phoneNum);
       cookies.set('refreshToken', response.data.refresh_token, { path: '/' });
 
       navigate('/dog');

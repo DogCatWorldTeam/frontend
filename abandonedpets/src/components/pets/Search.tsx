@@ -140,6 +140,13 @@ function Search() {
     setIsAdoption(e.target.value);
   };
 
+  const writeBtnClickHandler = () => {
+    if (localStorage.getItem('accessToken') === null) {
+      alert('로그인 후 이용 가능합니다.');
+      navigate('/login');
+    } else navigate('/petwrite');
+  };
+
   return (
     <SearchWrapper>
       <SearchContainer>
@@ -151,7 +158,7 @@ function Search() {
         <Button
           variant="outlined"
           color="warning"
-          onClick={() => navigate('/petwrite')}
+          onClick={writeBtnClickHandler}
         >
           <WriteBtn>글 작성하기</WriteBtn>
         </Button>
