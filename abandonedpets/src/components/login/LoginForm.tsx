@@ -95,12 +95,9 @@ function LoginForm() {
       ...userForm,
       [e.target.name]: e.target.value,
     });
-    console.log(e.target.name, e.target.value);
   };
 
   const submitHandler = async (e: FormEvent) => {
-    console.log(userForm);
-
     try {
       e.preventDefault();
       const response = await axios.post(

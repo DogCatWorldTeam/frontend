@@ -329,7 +329,6 @@ function Form() {
     const userPhone = localStorage.getItem('phone'); // 로컬스토리지의 유저 전화번호 저장
 
     // 보호소 이름에 user_id, 보호소 전화번호에 user 전화번호, 보호소 주소에 보호자가 원하는 주소
-    // 위의 값을 넣어야 하는데, requestbody를 보고 넣으면 될지.. 이미 들어가 있는 address 때문에 헷갈림
 
     // 백엔드로 전송할 데이터 구성
     const petInfo = {
@@ -346,7 +345,7 @@ function Form() {
       popfile: imgFile,
       isPublicApi: false,
       petType: formData.petType,
-      // 350 ~ 356 주석시 글 작성은 성공함.
+
       shelter: {
         id: 0,
         petInfoList: [''],
@@ -361,8 +360,6 @@ function Form() {
       description: formData.description,
       petInfo,
     };
-
-    console.log(data);
 
     try {
       const response = await axios.post(
