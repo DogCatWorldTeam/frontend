@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Dog from '../../assets/sampleImg/Dog.png';
 import FavoriteFill from '../../assets/Favorite_fill.svg';
 import Button from '@mui/material/Button';
+import axios from 'axios';
 
 const styles = {
   main: {
@@ -163,10 +164,32 @@ const UserData = {
   },
 };
 
+interface BookmarkProps {
+  id: number;
+  petBoard: {
+    title: string;
+  };
+}
+
 function FavoriteList() {
   const [currentPagePosts, setCurrentPagePosts] = useState(0);
   const [currentPageBookmarks, setCurrentPageBookmarks] = useState(0);
+  const [bookmarks, setBookmarks] = useState<BookmarkProps[]>([]);
   const itemsPerPage = 3;
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await axios.get("http://localhost:8080/api/v1/bookmark/32");
+        if (res.data.status === "OK") {
+          setBookmarks(res.data.result); 
+        }
+        console.log("test")
+      } catch (error) {
+        console.error("Failed to fetch data", error);
+      }
+    })();
+  }, []);
 
   const handlePrevPagePosts = () => {
     setCurrentPagePosts((prev) => Math.max(prev - 1, 0));
@@ -189,7 +212,7 @@ function FavoriteList() {
     (currentPagePosts + 1) * itemsPerPage
   );
 
-  const currentItemsBookmarks = PetData.pets.slice(
+  const currentItemsBookmarks = bookmarks.slice(
     currentPageBookmarks * itemsPerPage,
     (currentPageBookmarks + 1) * itemsPerPage
   );
@@ -233,17 +256,17 @@ function FavoriteList() {
           <div style={styles.contentBox}>
             <h3 style={styles.title}>북마크</h3>
             <div style={styles.grid}>
-              {currentItemsBookmarks.map((pet, index) => (
+              {currentItemsBookmarks.map((bookmark, index) => (
                 <div key={index} style={{ textAlign: 'center' }}>
-                  <img src={pet.img} alt={pet.name} style={{ width: '100px', height: '100px' }} />
-                  <p>{pet.name}</p>
-                  <img src={pet.fav} alt="Favorite" style={{ width: '20px', height: '20px' }} />
+                  {/* <img src={pet.img} alt={bookmark.petBoard.title} style={{ width: '100px', height: '100px' }} /> */}
+                  <p>{bookmark.petBoard.title}</p>
+                  {/* <img src={pet.fav} alt="Favorite" style={{ width: '20px', height: '20px' }} /> */}
                 </div>
               ))}
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
               <Button onClick={handlePrevPageBookmarks} disabled={currentPageBookmarks === 0}>이전</Button>
-              <Button onClick={handleNextPageBookmarks} disabled={(currentPageBookmarks + 1) * itemsPerPage >= PetData.pets.length}>다음</Button>
+              <Button onClick={handleNextPageBookmarks} disabled={(currentPageBookmarks + 1) * itemsPerPage >= bookmarks.length}>다음</Button>
             </div>
           </div>
         </div>
