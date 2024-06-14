@@ -268,7 +268,10 @@ function Form() {
   };
 
   const petTypeHandler = (type: string) => {
-    setPetType(type);
+    setFormData((prevData) => ({
+      ...prevData,
+      petType: type,
+    }));
   };
 
   // 썸네일 미리보기
@@ -347,8 +350,8 @@ function Form() {
       petType: formData.petType,
 
       shelter: {
-        id: 0,
-        petInfoList: [''],
+        // id: 0,
+        // petInfoList: [''],
         careNm: userId, // 보호소 이름: 유저 아이디
         careTel: userPhone, // 보호소 전화번호: 유저 번호
         careAddr: formData.address, // 주소
@@ -453,14 +456,14 @@ function Form() {
             <InputBtnContainer>
               <InputGenderBtn
                 type="button"
-                gender={petType === '개'}
+                gender={formData.petType === '개'}
                 onClick={() => petTypeHandler('개')}
               >
                 개
               </InputGenderBtn>
               <InputGenderBtn
                 type="button"
-                gender={petType === '고양이'}
+                gender={formData.petType === '고양이'}
                 onClick={() => petTypeHandler('고양이')}
               >
                 고양이
