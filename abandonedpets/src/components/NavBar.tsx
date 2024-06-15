@@ -175,6 +175,12 @@ const UserDropDownMenu = styled.ul`
 
 const cookies = new Cookies();
 
+export const logoutHandler = () => { // 변경된 부분
+  localStorage.removeItem('accessToken');
+  localStorage.removeItem('userId');
+  cookies.remove('refreshToken', { path: '/' });
+};
+
 function NavBar() {
   const [isDropDown, setIsDropDown] = useState<boolean>(false); // navbar 드롭다운
   const [isUserDropDown, setIsUserDropDown] = useState<boolean>(false);

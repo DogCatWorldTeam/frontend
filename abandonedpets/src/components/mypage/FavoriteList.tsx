@@ -4,6 +4,8 @@ import Dog from '../../assets/sampleImg/Dog.png';
 import FavoriteFill from '../../assets/Favorite_fill.svg';
 import Button from '@mui/material/Button';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { logoutHandler } from '../NavBar.tsx';
 
 const styles = {
   main: {
@@ -156,37 +158,59 @@ const PetData = {
   ],
 };
 
-const UserData = {
-  user: {
-    name: 'test',
-    email: 'test@example.com',
-    phoneNum: '010-1234-5678',
-  },
-};
-
 interface BookmarkProps {
   id: number;
   petBoard: {
     title: string;
+    image: string;
   };
+}
+
+interface UserProps {
+  id: number;
+  username: string;
+  email: string;
+  phoneNum: string;
 }
 
 function FavoriteList() {
   const [currentPagePosts, setCurrentPagePosts] = useState(0);
   const [currentPageBookmarks, setCurrentPageBookmarks] = useState(0);
   const [bookmarks, setBookmarks] = useState<BookmarkProps[]>([]);
+  const [user, setUser] = useState<string | null>(null);
+  const [userInfo, setUserInfo] = useState<UserProps | null>(null);
+  const navigate = useNavigate();
   const itemsPerPage = 3;
 
   useEffect(() => {
+    const userId = localStorage.getItem('userId');
+    setUser(userId);
+    if (!userId) {
+      console.error('No user ID found in local storage');
+      return;
+    }
+
+    // 유저 정보 가져오기
     (async () => {
       try {
-        const res = await axios.get("http://localhost:8080/api/v1/bookmark/32");
-        if (res.data.status === "OK") {
-          setBookmarks(res.data.result); 
+        const userRes = await axios.get(`http://localhost:8080/api/v1/users/${userId}`);
+        if (userRes.data.status === 'OK') {
+          setUserInfo(userRes.data.result);
         }
-        console.log("test")
       } catch (error) {
-        console.error("Failed to fetch data", error);
+        console.error('Failed to fetch user data', error);
+      }
+    })();
+
+    // 북마크 정보 가져오기
+    (async () => {
+      try {
+        const res = await axios.get(`http://localhost:8080/api/v1/bookmark/${userId}`);
+        if (res.data.status === 'OK') {
+          setBookmarks(res.data.result);
+        }
+      } catch (error) {
+        console.error('Failed to fetch data', error);
       }
     })();
   }, []);
@@ -217,22 +241,58 @@ function FavoriteList() {
     (currentPageBookmarks + 1) * itemsPerPage
   );
 
+  const handleEditProfile = async () => {
+    if (!user) return;
+
+    try {
+      const res = await axios.put(`http://localhost:8080/api/v1/users/${user}`, {
+        name: 'new name',
+        email: 'newemail@example.com',
+        phoneNum: '010-9876-5432',
+      });
+      if (res.data.status === 'OK') {
+        alert('회원 정보가 수정되었습니다.');
+      }
+    } catch (error) {
+      console.error('Failed to edit profile', error);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    if (!user) return;
+
+    try {
+      const res = await axios.delete(`http://localhost:8080/api/v1/users/${user}`);
+      if (res.data.status === 'OK') {
+        alert('회원 탈퇴가 완료되었습니다.');
+        logoutHandler(); // 로그아웃 처리
+        navigate('/'); // 메인 홈으로 이동
+      }
+    } catch (error) {
+      console.error('Failed to delete account', error);
+    }
+  };
+  
   return (
     <main style={styles.main}>
       <section style={styles.section}>
         <div style={styles.sidebar}>
           <div>
             <div style={styles.profileImage} />
-            <h3 style={{ ...styles.textCenter, ...styles.textLarge }}>{UserData.user.name}</h3>
-            <p style={{ ...styles.textCenter, ...styles.textSmall }}>{UserData.user.email}</p>
-            <p style={{ ...styles.textCenter, ...styles.textSmall }}>{UserData.user.phoneNum}</p>
+            {userInfo && ( // 수정된 부분: 조건부 렌더링 추가
+              <>
+                <h3 style={{ ...styles.textCenter, ...styles.textLarge }}>{userInfo.username}</h3>
+                <p style={{ ...styles.textCenter, ...styles.textSmall }}>{userInfo.email}</p>
+                <p style={{ ...styles.textCenter, ...styles.textSmall }}>{userInfo.phoneNum}</p>
+              </>
+            )}
           </div>
           <div style={styles.buttonGroup}>
             <div style={{ ...styles.textCenter, ...styles.textSmall, ...styles.textGray }}>
-              <Button variant="outlined">회원정보수정</Button>
+              <Button variant="outlined" onClick={handleEditProfile}>회원정보수정</Button>
             </div>
             <div style={{ ...styles.textCenter, ...styles.textSmall, ...styles.textGray }}>
-              <Button variant="outlined" color="error">회원탈퇴</Button>
+              <Button variant="outlined" color="error" onClick={handleDeleteAccount}>회원탈퇴</Button>
             </div>
           </div>
         </div>
