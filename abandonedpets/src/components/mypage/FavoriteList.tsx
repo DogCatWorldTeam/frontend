@@ -78,11 +78,13 @@ const styles = {
   } as React.CSSProperties,
 };
 
+
+
 interface BookmarkProps {
   id: number;
   petBoard: {
     title: string;
-    profile: string;
+    popfile: string;
   };
 }
 
@@ -173,7 +175,7 @@ function FavoriteList() {
   };
 
   const handleNextPageBookmarks = () => {
-    setCurrentPageBookmarks((prev) => Math.min(prev + 1, Math.floor(myPetBoard.length / itemsPerPage)));
+    setCurrentPageBookmarks((prev) => Math.min(prev + 1, Math.floor(bookmarks.length / itemsPerPage)));
   };
 
   const currentItemsPosts = myPetBoard.slice(
@@ -287,17 +289,17 @@ function FavoriteList() {
         <div style={styles.buttonGroup}>
             {isEditing ? (
               <>
-                <div style={{ ...styles.textCenter, ...styles.textSmall, ...styles.textGray }}>
-                  <Button variant="outlined" onClick={handleEditProfile}>저장</Button>
-                  <Button variant="outlined" color="error" onClick={handleCancelEdit}>취소</Button>
-                </div>
+              <div style={{ ...styles.textCenter, ...styles.textSmall, ...styles.textGray, display: 'flex', gap: '10px', justifyContent: 'center' }}>
+                <Button variant="outlined" onClick={handleEditProfile}>저장</Button>
+                <Button variant="outlined" color="error" onClick={handleCancelEdit}>취소</Button>
+              </div>
               </>
             ) : (
               <>
-                <div style={{ ...styles.textCenter, ...styles.textSmall, ...styles.textGray }}>
-                  <Button variant="outlined" onClick={() => setIsEditing(true)}>회원정보수정</Button>
-                  <Button variant="outlined" color="error" onClick={handleDeleteAccount}>회원탈퇴</Button>
-                </div>
+              <div style={{ ...styles.textCenter, ...styles.textSmall, ...styles.textGray, display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center' }}>
+                <Button variant="outlined" onClick={handleEditProfile}>회원정보수정</Button>
+                <Button variant="outlined" color="error" onClick={handleDeleteAccount }>회원탈퇴</Button>
+              </div>
               </>
             )}
           </div>
