@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Dog from '../../assets/sampleImg/Dog.png';
-import FavoriteFill from '../../assets/Favorite_fill.svg';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { logoutHandler } from '../NavBar.tsx';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
+import { CardActionArea } from '@mui/material';
 
 const styles = {
   main: {
@@ -18,7 +22,7 @@ const styles = {
   sidebar: {
     width: '25%',
     height: 'auto', // 높이를 자동으로 설정
-    maxHeight: '625px', // 최대 높이를 설정하여 작게 조정
+    maxHeight: '715px', // 최대 높이를 설정하여 작게 조정
     backgroundColor: '#ffffff',
     padding: '1rem',
     marginRight: '2rem',
@@ -74,96 +78,11 @@ const styles = {
   } as React.CSSProperties,
 };
 
-const PetData = {
-  pets: [
-    {
-      name: '강아지1',
-      age: '2살',
-      gender: '남',
-      weight: '6kg',
-      img: Dog,
-      fav: FavoriteFill,
-    },
-    {
-      name: '강아지2',
-      age: '2살',
-      gender: '남',
-      weight: '6kg',
-      img: Dog,
-      fav: FavoriteFill,
-    },
-    {
-      name: '강아지3',
-      age: '2살',
-      gender: '남',
-      weight: '6kg',
-      img: Dog,
-      fav: FavoriteFill,
-    },
-    {
-      name: '강아지4',
-      age: '2살',
-      gender: '남',
-      weight: '6kg',
-      img: Dog,
-      fav: FavoriteFill,
-    },
-    {
-      name: '강아지5',
-      age: '2살',
-      gender: '남',
-      weight: '6kg',
-      img: Dog,
-      fav: FavoriteFill,
-    },
-    {
-      name: '강아지6',
-      age: '2살',
-      gender: '남',
-      weight: '6kg',
-      img: Dog,
-      fav: FavoriteFill,
-    },
-    {
-      name: '강아지7',
-      age: '2살',
-      gender: '남',
-      weight: '6kg',
-      img: Dog,
-      fav: FavoriteFill,
-    },
-    {
-      name: '강아지8',
-      age: '2살',
-      gender: '남',
-      weight: '6kg',
-      img: Dog,
-      fav: FavoriteFill,
-    },
-    {
-      name: '강아지9',
-      age: '2살',
-      gender: '남',
-      weight: '6kg',
-      img: Dog,
-      fav: FavoriteFill,
-    },
-    {
-      name: '강아지10',
-      age: '2살',
-      gender: '남',
-      weight: '6kg',
-      img: Dog,
-      fav: FavoriteFill,
-    },
-  ],
-};
-
 interface BookmarkProps {
   id: number;
   petBoard: {
     title: string;
-    image: string;
+    profile: string;
   };
 }
 
@@ -174,14 +93,23 @@ interface UserProps {
   phoneNum: string;
 }
 
+interface MypetBoardProps {
+  petBoardId: number;
+  title: string;
+  petInfo: {
+    popfile: string;
+  } | null; 
+}
+
 function FavoriteList() {
   const [currentPagePosts, setCurrentPagePosts] = useState(0);
   const [currentPageBookmarks, setCurrentPageBookmarks] = useState(0);
   const [bookmarks, setBookmarks] = useState<BookmarkProps[]>([]);
+  const [myPetBoard, setmypetBoard] = useState<MypetBoardProps[]>([]);
   const [user, setUser] = useState<string | null>(null);
   const [userInfo, setUserInfo] = useState<UserProps | null>(null);
-  const [isEditing, setIsEditing] = useState<boolean>(false); // 추가된 부분
-  const [editedUserInfo, setEditedUserInfo] = useState<UserProps | null>(null); // 추가된 부분
+  const [isEditing, setIsEditing] = useState<boolean>(false); 
+  const [editedUserInfo, setEditedUserInfo] = useState<UserProps | null>(null); 
   const navigate = useNavigate();
   const itemsPerPage = 3;
 
@@ -199,7 +127,7 @@ function FavoriteList() {
         const userRes = await axios.get(`http://localhost:8080/api/v1/users/${userId}`);
         if (userRes.data.status === 'OK') {
           setUserInfo(userRes.data.result);
-          setEditedUserInfo(userRes.data.result); // 추가된 부분
+          setEditedUserInfo(userRes.data.result);
         }
       } catch (error) {
         console.error('Failed to fetch user data', error);
@@ -210,6 +138,7 @@ function FavoriteList() {
     (async () => {
       try {
         const res = await axios.get(`http://localhost:8080/api/v1/bookmark/${userId}`);
+
         if (res.data.status === 'OK') {
           setBookmarks(res.data.result);
         }
@@ -217,14 +146,26 @@ function FavoriteList() {
         console.error('Failed to fetch data', error);
       }
     })();
+
+    // 게시글 정보 가져오기
+    (async () => {
+      try {
+        const res = await axios.get(`http://localhost:8080/api/v1/pet_board/myPetBoard/${userId}`);
+        setmypetBoard(res.data);
+
+      } catch (error) {
+        console.error('Failed to fetch posts', error);
+      }
+    })();
   }, []);
+
 
   const handlePrevPagePosts = () => {
     setCurrentPagePosts((prev) => Math.max(prev - 1, 0));
   };
 
   const handleNextPagePosts = () => {
-    setCurrentPagePosts((prev) => Math.min(prev + 1, Math.floor(PetData.pets.length / itemsPerPage)));
+    setCurrentPagePosts((prev) => Math.min(prev + 1, Math.floor(myPetBoard.length / itemsPerPage)));
   };
 
   const handlePrevPageBookmarks = () => {
@@ -232,10 +173,10 @@ function FavoriteList() {
   };
 
   const handleNextPageBookmarks = () => {
-    setCurrentPageBookmarks((prev) => Math.min(prev + 1, Math.floor(PetData.pets.length / itemsPerPage)));
+    setCurrentPageBookmarks((prev) => Math.min(prev + 1, Math.floor(myPetBoard.length / itemsPerPage)));
   };
 
-  const currentItemsPosts = PetData.pets.slice(
+  const currentItemsPosts = myPetBoard.slice(
     currentPagePosts * itemsPerPage,
     (currentPagePosts + 1) * itemsPerPage
   );
@@ -285,6 +226,10 @@ function FavoriteList() {
     } catch (error) {
       console.error('Failed to delete account', error);
     }
+  };
+
+  const handleCardClick = (id: number) => {
+    navigate(`/detail/${id}`);
   };
   
   return (
@@ -357,33 +302,65 @@ function FavoriteList() {
             )}
           </div>
         </div>
-
         <div style={styles.contentArea}>
           <div style={styles.contentBox}>
             <h3 style={styles.title}>내 작성 글</h3>
             <div style={styles.grid}>
-              {currentItemsPosts.map((pet, index) => (
-                <div key={index} style={{ textAlign: 'center' }}>
-                  <img src={pet.img} alt={pet.name} style={{ width: '100px', height: '100px' }} />
-                  <p>{pet.name}</p>
-                </div>
-              ))}
+              {currentItemsPosts.length > 0 ? (
+                currentItemsPosts.map((post, index) => (
+                  <div key={index} style={{ textAlign: 'center' }}>
+                   <Card sx={{ maxWidth: 250 }} onClick={() => handleCardClick(post.petBoardId)}>
+                      <CardActionArea>
+                        <CardMedia
+                          component="img"
+                          height="140"
+                          image={post.petInfo ? post.petInfo.popfile : Dog}
+                          alt={post.title}
+                        />
+                        <CardContent>
+                          <Typography gutterBottom variant="h5" component="div">
+                            {post.title}
+                          </Typography>
+                        </CardContent>
+                      </CardActionArea>
+                    </Card>
+                  </div>
+                ))
+              ) : (
+                <p style={styles.textCenter}>작성한 글이 없습니다.</p>
+              )}
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
               <Button onClick={handlePrevPagePosts} disabled={currentPagePosts === 0}>이전</Button>
-              <Button onClick={handleNextPagePosts} disabled={(currentPagePosts + 1) * itemsPerPage >= PetData.pets.length}>다음</Button>
+              <Button onClick={handleNextPagePosts} disabled={(currentPagePosts + 1) * itemsPerPage >= myPetBoard.length}>다음</Button>
             </div>
           </div>
           <div style={styles.contentBox}>
             <h3 style={styles.title}>북마크</h3>
             <div style={styles.grid}>
-              {currentItemsBookmarks.map((bookmark, index) => (
-                <div key={index} style={{ textAlign: 'center' }}>
-                  {/* <img src={pet.img} alt={bookmark.petBoard.title} style={{ width: '100px', height: '100px' }} /> */}
-                  <p>{bookmark.petBoard.title}</p>
-                  {/* <img src={pet.fav} alt="Favorite" style={{ width: '20px', height: '20px' }} /> */}
-                </div>
-              ))}
+              {currentItemsBookmarks.length > 0 ? (
+                currentItemsBookmarks.map((bookmark, index) => (
+                  <div key={index} style={{ textAlign: 'center' }}>
+                    <Card sx={{ maxWidth: 250 }} onClick={() => handleCardClick(bookmark.id)}>
+                      <CardActionArea>
+                        <CardMedia
+                          component="img"
+                          height="140"
+                          image={bookmark.petBoard.popfile}
+                          alt={bookmark.petBoard.title}
+                        />
+                        <CardContent>
+                          <Typography gutterBottom variant="h5" component="div">
+                            {bookmark.petBoard.title}
+                          </Typography>
+                        </CardContent>
+                      </CardActionArea>
+                    </Card>
+                  </div>
+                ))
+              ) : (
+                <p style={styles.textCenter}>북마크한 글이 없습니다.</p>
+              )}
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
               <Button onClick={handlePrevPageBookmarks} disabled={currentPageBookmarks === 0}>이전</Button>
@@ -395,5 +372,4 @@ function FavoriteList() {
     </main>
   );
 }
-
 export default FavoriteList;
