@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Dog from '../../assets/sampleImg/Dog.png';
 import FavoriteFill from '../../assets/Favorite_fill.svg';
 import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { logoutHandler } from '../NavBar.tsx';
@@ -179,6 +180,8 @@ function FavoriteList() {
   const [bookmarks, setBookmarks] = useState<BookmarkProps[]>([]);
   const [user, setUser] = useState<string | null>(null);
   const [userInfo, setUserInfo] = useState<UserProps | null>(null);
+  const [isEditing, setIsEditing] = useState<boolean>(false); // 추가된 부분
+  const [editedUserInfo, setEditedUserInfo] = useState<UserProps | null>(null); // 추가된 부분
   const navigate = useNavigate();
   const itemsPerPage = 3;
 
@@ -196,6 +199,7 @@ function FavoriteList() {
         const userRes = await axios.get(`http://localhost:8080/api/v1/users/${userId}`);
         if (userRes.data.status === 'OK') {
           setUserInfo(userRes.data.result);
+          setEditedUserInfo(userRes.data.result); // 추가된 부분
         }
       } catch (error) {
         console.error('Failed to fetch user data', error);
@@ -242,20 +246,30 @@ function FavoriteList() {
   );
 
   const handleEditProfile = async () => {
-    if (!user) return;
+    if (isEditing) {
+      if (!user) return;
 
-    try {
-      const res = await axios.put(`http://localhost:8080/api/v1/users/${user}`, {
-        name: 'new name',
-        email: 'newemail@example.com',
-        phoneNum: '010-9876-5432',
-      });
-      if (res.data.status === 'OK') {
-        alert('회원 정보가 수정되었습니다.');
+      try {
+        const res = await axios.put(`http://localhost:8080/api/v1/users/${user}`, editedUserInfo);
+        if (res.data.status === 'OK') {
+          alert('회원 정보가 수정되었습니다.');
+          setUserInfo(editedUserInfo);
+        }
+      } catch (error) {
+        console.error('Failed to edit profile', error);
       }
-    } catch (error) {
-      console.error('Failed to edit profile', error);
     }
+    setIsEditing(!isEditing);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setEditedUserInfo((prev) => prev ? { ...prev, [name]: value } : null);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditedUserInfo(userInfo);
   };
 
   const handleDeleteAccount = async () => {
@@ -279,21 +293,68 @@ function FavoriteList() {
         <div style={styles.sidebar}>
           <div>
             <div style={styles.profileImage} />
-            {userInfo && ( // 수정된 부분: 조건부 렌더링 추가
+            {userInfo && ( // 수정된 부분: 조건부 렌더링 추가 및 간격 조정
               <>
-                <h3 style={{ ...styles.textCenter, ...styles.textLarge }}>{userInfo.username}</h3>
-                <p style={{ ...styles.textCenter, ...styles.textSmall }}>{userInfo.email}</p>
-                <p style={{ ...styles.textCenter, ...styles.textSmall }}>{userInfo.phoneNum}</p>
+                {isEditing ? (
+                  <>
+                    <TextField
+                      label="이름"
+                      name="username"
+                      value={editedUserInfo?.username}
+                      onChange={handleChange}
+                      fullWidth
+                      margin="normal"
+                    />
+                    <TextField
+                      label="이메일"
+                      name="email"
+                      value={editedUserInfo?.email}
+                      onChange={handleChange}
+                      fullWidth
+                      margin="normal"
+                    />
+                    <TextField
+                      label="전화번호"
+                      name="phoneNum"
+                      value={editedUserInfo?.phoneNum}
+                      onChange={handleChange}
+                      fullWidth
+                      margin="normal"
+                    />
+                  </>
+                ) : (
+                  <>
+                    <h3 style={{ ...styles.textCenter, ...styles.textLarge, margin: '32px 0' }}>
+                      {userInfo.username}
+                    </h3>
+                    <p style={{ ...styles.textCenter, ...styles.textSmall, margin: '32px 0' }}>
+                      {userInfo.email}
+                    </p>
+                    <p style={{ ...styles.textCenter, ...styles.textSmall, margin: '32px 0' }}>
+                      {userInfo.phoneNum}
+                    </p>
+                  </>
+                )}
               </>
             )}
           </div>
-          <div style={styles.buttonGroup}>
-            <div style={{ ...styles.textCenter, ...styles.textSmall, ...styles.textGray }}>
-              <Button variant="outlined" onClick={handleEditProfile}>회원정보수정</Button>
-            </div>
-            <div style={{ ...styles.textCenter, ...styles.textSmall, ...styles.textGray }}>
-              <Button variant="outlined" color="error" onClick={handleDeleteAccount}>회원탈퇴</Button>
-            </div>
+
+        <div style={styles.buttonGroup}>
+            {isEditing ? (
+              <>
+                <div style={{ ...styles.textCenter, ...styles.textSmall, ...styles.textGray }}>
+                  <Button variant="outlined" onClick={handleEditProfile}>저장</Button>
+                  <Button variant="outlined" color="error" onClick={handleCancelEdit}>취소</Button>
+                </div>
+              </>
+            ) : (
+              <>
+                <div style={{ ...styles.textCenter, ...styles.textSmall, ...styles.textGray }}>
+                  <Button variant="outlined" onClick={() => setIsEditing(true)}>회원정보수정</Button>
+                  <Button variant="outlined" color="error" onClick={handleDeleteAccount}>회원탈퇴</Button>
+                </div>
+              </>
+            )}
           </div>
         </div>
 
