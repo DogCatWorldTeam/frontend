@@ -1,7 +1,6 @@
 import NavBar from '../components/NavBar';
-import Info from '../components/mypage/Info';
-import FavoriteList from '../components/mypage/FavoriteList';
-import WriteList from '../components/mypage/WriteList';
+import Footer from '../components/Footer';
+import MyPageList from '../components/mypage/MyPageList';
 
 function Mypage() {
   return (
@@ -9,7 +8,8 @@ function Mypage() {
       <NavBar />
       {/* <Info /> */}
       {/* <WriteList /> */}
-      <FavoriteList />
+      <MyPageList />
+      <Footer />
     </>
   );
 }
