@@ -46,11 +46,11 @@ const Sidebar = styled.div`
 `;
 
 const ProfileImage = styled.div`
-  width: 6rem;
-  height: 6rem;
+  width: 12rem;
+  height: 12rem;
   background-color: #d1d5db;
   border-radius: 50%;
-  margin: 0 auto 1rem auto;
+  margin: 0 auto 5rem auto;
 `;
 
 const TextCenter = styled.div`
@@ -58,15 +58,15 @@ const TextCenter = styled.div`
 `;
 
 const TextLarge = styled.h3`
-  font-size: 1.25rem;
-  margin-bottom: 1rem;
+  font-size: 1.5rem; /* Increased font size */
+  margin-bottom: 3rem; /* Increased margin */
   text-align: center;
 `;
 
 const TextSmall = styled.p`
-  font-size: 0.875rem;
+  font-size: 1rem; /* Increased font size */
   color: #6b7280;
-  margin-bottom: 1rem; /* Margin reduced */
+  margin-bottom: 3rem; /* Increased margin */
   text-align: center;
 `;
 
@@ -81,6 +81,9 @@ const ButtonGroup = styled.div`
 
 const ContentArea = styled.div`
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   @media (min-width: 768px) {
     width: 75%;
   }
@@ -89,9 +92,9 @@ const ContentArea = styled.div`
 const ContentBox = styled.div`
   background-color: #ffffff;
   padding: 1rem;
-  margin-bottom: 1rem; /* Margin reduced */
   border: 1px solid #d1d5db;
   border-radius: 0.25rem;
+  flex: 1;
 `;
 
 const Grid = styled.div`
@@ -132,7 +135,7 @@ interface MypetBoardProps {
   } | null;
 }
 
-function FavoriteList() {
+function MyPageList() {
   const [currentPagePosts, setCurrentPagePosts] = useState(0);
   const [currentPageBookmarks, setCurrentPageBookmarks] = useState(0);
   const [bookmarks, setBookmarks] = useState<BookmarkProps[]>([]);
@@ -347,7 +350,7 @@ function FavoriteList() {
                   </div>
                 ))
               ) : (
-                <p style={{ textAlign: 'center' }}>작성한 글이 없습니다.</p>
+                <p style={{ textAlign: 'center', marginTop: '5rem' }}>작성한 글이 없습니다.</p>
               )}
             </Grid>
             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
@@ -379,7 +382,7 @@ function FavoriteList() {
                   </div>
                 ))
               ) : (
-                <p style={{ textAlign: 'center' }}>북마크한 글이 없습니다.</p>
+                <p style={{ textAlign: 'center', marginTop: '5rem' }}>북마크한 글이 없습니다.</p>
               )}
             </Grid>
             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
@@ -393,4 +396,4 @@ function FavoriteList() {
   );
 }
 
-export default FavoriteList;
+export default MyPageList;
