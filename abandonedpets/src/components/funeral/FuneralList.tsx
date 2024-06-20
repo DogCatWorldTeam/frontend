@@ -7,7 +7,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { CardActionArea, Grid } from '@mui/material';
+import { CardActionArea, Grid, ImageList, ImageListItem } from '@mui/material';
 import axios from 'axios';
 
 // 스타일드 컴포넌트 정의
@@ -49,6 +49,12 @@ const AreaWrapper = styled.div`
 const StackWrapper = styled(Stack)`
   margin-top: 2rem;
 `;
+
+const CustomImageList = styled(ImageList)`
+  :last-child{
+    margin-bottom: 16px;
+  }
+`
 
 interface FuneralProps {
   id: number;
@@ -103,7 +109,7 @@ function FuneralList() {
   return (
     <PageWrapper>
       <StackWrapper spacing={2} direction="row" justifyContent="center">
-        {['서울', '부산', '인천', '경기', '세종', '강원', '충청', '전라'].map(
+        {['세종', '부산', '대구', '인천', '광주', '울산', '경기', '강원', '충청', '전라', '경상'].map(
           (region) => (
             <Button
               key={region}
@@ -117,6 +123,7 @@ function FuneralList() {
       </StackWrapper>
       <AreaWrapper>
         <Grid container spacing={2}>
+            <CustomImageList variant="masonry" cols={4}>
           {transitions((style, item) => (
             <Grid
               item
@@ -126,21 +133,27 @@ function FuneralList() {
               lg={3}
               key={item ? item.id : 'empty'}
             >
-              <animated.div style={style}>
-                {item ? (
-                  <Card sx={{ maxWidth: 345 }}>
+              <animated.div style={style} >
+                {item && (
+                  <Card sx={{ minWidth: 280 }}>
                     <CardActionArea
                       component="a"
                       href={item.homepage}
                       target="_blank"
                       rel="noopener noreferrer"
-                    >
-                      <CardMedia
+                      >
+                      {/* <CardMedia
                         component="img"
-                        height="140"
                         image={item.image}
                         alt="Funeral Image"
-                      />
+                        /> */}
+                      <ImageListItem key={item.image}>
+                        <img
+                          src={item.image}
+                          alt={item.funeralName}
+                          loading="lazy"
+                        />
+                      </ImageListItem>
                       <CardContent>
                         <Typography
                           gutterBottom
@@ -150,8 +163,8 @@ function FuneralList() {
                             whiteSpace: 'nowrap',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
-                          }}
-                        >
+                            }}
+                            >
                           {item.funeralName}
                         </Typography>
                         <Typography
@@ -163,8 +176,8 @@ function FuneralList() {
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                             WebkitLineClamp: 2, // Adjust the number of lines you want to show
-                          }}
-                        >
+                            }}
+                            >
                           {item.phoneNum}
                           <br />
                           {item.address}
@@ -172,10 +185,11 @@ function FuneralList() {
                       </CardContent>
                     </CardActionArea>
                   </Card>
-                ) : null}
+                ) }
               </animated.div>
             </Grid>
           ))}
+        </CustomImageList>
         </Grid>
       </AreaWrapper>
     </PageWrapper>

@@ -12,73 +12,105 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 
-const styles = {
-  main: {
-    padding: '2rem',
-  } as React.CSSProperties,
-  section: {
-    display: 'flex',
-  } as React.CSSProperties,
-  sidebar: {
-    width: '25%',
-    height: 'auto', // 높이를 자동으로 설정
-    maxHeight: '715px', // 최대 높이를 설정하여 작게 조정
-    backgroundColor: '#ffffff',
-    padding: '1rem',
-    marginRight: '2rem',
-    border: '1px solid #d1d5db', // Add border
-    borderRadius: '0.25rem', // Optional: to add rounded corners
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-  } as React.CSSProperties,
-  profileImage: {
-    width: '6rem',
-    height: '6rem',
-    backgroundColor: '#d1d5db',
-    borderRadius: '50%',
-    margin: '0 auto 1rem auto',
-  } as React.CSSProperties,
-  textCenter: {
-    textAlign: 'center',
-  } as React.CSSProperties,
-  textLarge: {
-    fontSize: '1.25rem',
-    marginBottom: '1rem',
-  } as React.CSSProperties,
-  textSmall: {
-    fontSize: '0.875rem',
-    color: '#6b7280',
-    marginBottom: '2rem',
-  } as React.CSSProperties,
-  textGray: {
-    color: '#6b7280',
-  } as React.CSSProperties,
-  buttonGroup: {
-    marginTop: 'auto',
-  } as React.CSSProperties,
-  contentArea: {
-    width: '75%',
-  } as React.CSSProperties,
-  contentBox: {
-    backgroundColor: '#ffffff',
-    padding: '1rem',
-    marginBottom: '2rem',
-    border: '1px solid #d1d5db', // Add border
-    borderRadius: '0.25rem', // Optional: to add rounded corners
-  } as React.CSSProperties,
-  grid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(3, 1fr)',
-    gap: '1rem',
-  } as React.CSSProperties,
-  title: {
-    fontSize: '1.25rem',
-    marginBottom: '1rem',
-  } as React.CSSProperties,
-};
+const Main = styled.main`
+  padding: 1rem; /* Padding reduced */
+`;
 
+const Section = styled.section`
+  display: flex;
+  flex-direction: column;
 
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
+`;
+
+const Sidebar = styled.div`
+  width: 100%;
+  height: 100vh; /* Full viewport height */
+  background-color: #ffffff;
+  padding: 1rem;
+  margin-bottom: 1rem; /* Margin reduced */
+  border: 1px solid #d1d5db;
+  border-radius: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  @media (min-width: 768px) {
+    width: 25%;
+    margin-right: 1rem; /* Margin reduced */
+    margin-bottom: 0;
+    height: 100vh; /* Full viewport height for larger screens */
+  }
+`;
+
+const ProfileImage = styled.div`
+  width: 12rem;
+  height: 12rem;
+  background-color: #d1d5db;
+  border-radius: 50%;
+  margin: 0 auto 5rem auto;
+`;
+
+const TextCenter = styled.div`
+  text-align: center;
+`;
+
+const TextLarge = styled.h3`
+  font-size: 1.5rem; /* Increased font size */
+  margin-bottom: 3rem; /* Increased margin */
+  text-align: center;
+`;
+
+const TextSmall = styled.p`
+  font-size: 1rem; /* Increased font size */
+  color: #6b7280;
+  margin-bottom: 3rem; /* Increased margin */
+  text-align: center;
+`;
+
+const ButtonGroup = styled.div`
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Gap reduced */
+  align-items: center;
+  margin-bottom: 10px; /* Margin reduced */
+`;
+
+const ContentArea = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  @media (min-width: 768px) {
+    width: 75%;
+  }
+`;
+
+const ContentBox = styled.div`
+  background-color: #ffffff;
+  padding: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.25rem;
+  flex: 1;
+`;
+
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 0.5rem; /* Gap reduced */
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+`;
+
+const Title = styled.h3`
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem; /* Margin reduced */
+`;
 
 interface BookmarkProps {
   id: number;
@@ -100,18 +132,18 @@ interface MypetBoardProps {
   title: string;
   petInfo: {
     popfile: string;
-  } | null; 
+  } | null;
 }
 
-function FavoriteList() {
+function MyPageList() {
   const [currentPagePosts, setCurrentPagePosts] = useState(0);
   const [currentPageBookmarks, setCurrentPageBookmarks] = useState(0);
   const [bookmarks, setBookmarks] = useState<BookmarkProps[]>([]);
   const [myPetBoard, setmypetBoard] = useState<MypetBoardProps[]>([]);
   const [user, setUser] = useState<string | null>(null);
   const [userInfo, setUserInfo] = useState<UserProps | null>(null);
-  const [isEditing, setIsEditing] = useState<boolean>(false); 
-  const [editedUserInfo, setEditedUserInfo] = useState<UserProps | null>(null); 
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [editedUserInfo, setEditedUserInfo] = useState<UserProps | null>(null);
   const navigate = useNavigate();
   const itemsPerPage = 3;
 
@@ -160,7 +192,6 @@ function FavoriteList() {
       }
     })();
   }, []);
-
 
   const handlePrevPagePosts = () => {
     setCurrentPagePosts((prev) => Math.max(prev - 1, 0));
@@ -233,14 +264,14 @@ function FavoriteList() {
   const handleCardClick = (id: number) => {
     navigate(`/detail/${id}`);
   };
-  
+
   return (
-    <main style={styles.main}>
-      <section style={styles.section}>
-        <div style={styles.sidebar}>
+    <Main>
+      <Section>
+        <Sidebar>
           <div>
-            <div style={styles.profileImage} />
-            {userInfo && ( // 수정된 부분: 조건부 렌더링 추가 및 간격 조정
+            <ProfileImage />
+            {userInfo && (
               <>
                 {isEditing ? (
                   <>
@@ -268,50 +299,40 @@ function FavoriteList() {
                       fullWidth
                       margin="normal"
                     />
-                  </>
+                                   </>
                 ) : (
                   <>
-                    <h3 style={{ ...styles.textCenter, ...styles.textLarge, margin: '32px 0' }}>
-                      {userInfo.username}
-                    </h3>
-                    <p style={{ ...styles.textCenter, ...styles.textSmall, margin: '32px 0' }}>
-                      {userInfo.email}
-                    </p>
-                    <p style={{ ...styles.textCenter, ...styles.textSmall, margin: '32px 0' }}>
-                      {userInfo.phoneNum}
-                    </p>
+                    <TextLarge>{userInfo.username}</TextLarge>
+                    <TextSmall>{userInfo.email}</TextSmall>
+                    <TextSmall>{userInfo.phoneNum}</TextSmall>
                   </>
                 )}
               </>
             )}
           </div>
 
-        <div style={styles.buttonGroup}>
+          <ButtonGroup>
             {isEditing ? (
               <>
-              <div style={{ ...styles.textCenter, ...styles.textSmall, ...styles.textGray, display: 'flex', gap: '10px', justifyContent: 'center' }}>
                 <Button variant="outlined" onClick={handleEditProfile}>저장</Button>
                 <Button variant="outlined" color="error" onClick={handleCancelEdit}>취소</Button>
-              </div>
               </>
             ) : (
               <>
-              <div style={{ ...styles.textCenter, ...styles.textSmall, ...styles.textGray, display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center' }}>
                 <Button variant="outlined" onClick={handleEditProfile}>회원정보수정</Button>
-                <Button variant="outlined" color="error" onClick={handleDeleteAccount }>회원탈퇴</Button>
-              </div>
+                <Button variant="outlined" color="error" onClick={handleDeleteAccount}>회원탈퇴</Button>
               </>
             )}
-          </div>
-        </div>
-        <div style={styles.contentArea}>
-          <div style={styles.contentBox}>
-            <h3 style={styles.title}>내 작성 글</h3>
-            <div style={styles.grid}>
+          </ButtonGroup>
+        </Sidebar>
+        <ContentArea>
+          <ContentBox>
+            <Title>내 작성 글</Title>
+            <Grid>
               {currentItemsPosts.length > 0 ? (
                 currentItemsPosts.map((post, index) => (
                   <div key={index} style={{ textAlign: 'center' }}>
-                   <Card sx={{ maxWidth: 250 }} onClick={() => handleCardClick(post.petBoardId)}>
+                    <Card sx={{ maxWidth: 250 }} onClick={() => handleCardClick(post.petBoardId)}>
                       <CardActionArea>
                         <CardMedia
                           component="img"
@@ -329,17 +350,17 @@ function FavoriteList() {
                   </div>
                 ))
               ) : (
-                <p style={styles.textCenter}>작성한 글이 없습니다.</p>
+                <p style={{ textAlign: 'center', marginTop: '5rem' }}>작성한 글이 없습니다.</p>
               )}
-            </div>
+            </Grid>
             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
               <Button onClick={handlePrevPagePosts} disabled={currentPagePosts === 0}>이전</Button>
               <Button onClick={handleNextPagePosts} disabled={(currentPagePosts + 1) * itemsPerPage >= myPetBoard.length}>다음</Button>
             </div>
-          </div>
-          <div style={styles.contentBox}>
-            <h3 style={styles.title}>북마크</h3>
-            <div style={styles.grid}>
+          </ContentBox>
+          <ContentBox>
+            <Title>북마크</Title>
+            <Grid>
               {currentItemsBookmarks.length > 0 ? (
                 currentItemsBookmarks.map((bookmark, index) => (
                   <div key={index} style={{ textAlign: 'center' }}>
@@ -361,17 +382,18 @@ function FavoriteList() {
                   </div>
                 ))
               ) : (
-                <p style={styles.textCenter}>북마크한 글이 없습니다.</p>
+                <p style={{ textAlign: 'center', marginTop: '5rem' }}>북마크한 글이 없습니다.</p>
               )}
-            </div>
+            </Grid>
             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
               <Button onClick={handlePrevPageBookmarks} disabled={currentPageBookmarks === 0}>이전</Button>
               <Button onClick={handleNextPageBookmarks} disabled={(currentPageBookmarks + 1) * itemsPerPage >= bookmarks.length}>다음</Button>
             </div>
-          </div>
-        </div>
-      </section>
-    </main>
+          </ContentBox>
+        </ContentArea>
+      </Section>
+    </Main>
   );
 }
-export default FavoriteList;
+
+export default MyPageList;
