@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import ListItem from '../chat/ListItem';
 
 const ChatContainer = styled.div`
@@ -39,24 +41,60 @@ const ListWrapper = styled.div`
   overflow-y: auto;
 `;
 
-const MockData = {
-  ChatLists: [
-    { id: 1, title: '제목 1' },
-    { id: 2, title: '제목 2' },
-    { id: 3, title: '제목 3' },
-    { id: 4, title: '제목 4' },
-    { id: 1, title: '제목 1' },
-    { id: 2, title: '제목 2' },
-    { id: 3, title: '제목 3' },
-    { id: 4, title: '제목 4' },
-    { id: 1, title: '제목 1' },
-    { id: 2, title: '제목 2' },
-    { id: 3, title: '제목 3' },
-    { id: 4, title: '제목 4' },
-  ],
-};
+interface ChatRoom {
+  chatRoomId: number;
+  receiverId: number;
+  senderId: number;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  deleted: boolean;
+}
 
 function ChatList({ openChatRoom }) {
+  const [chatRoomList, setChatRoomList] = useState<ChatRoom[]>();
+
+  const userId = localStorage.getItem('userId');
+
+  useEffect(() => {
+    const loadChatRoomHistory = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8080/api/v1/chatrooms/participants/${userId}`,
+        );
+        if (
+          response.data ===
+          'User has no active chat rooms or has left all chat rooms.'
+        ) {
+          return;
+        }
+        const RoomList: ChatRoom[] = response.data.map((item) => {
+          return {
+            chatRoomId: item.chatRoomId,
+            receiverId: item.receiverId,
+            senderId: item.senderId,
+            name: item.name,
+            createdAt: item.createdAt,
+            updatedAt: item.updatedAt,
+            deleted: item.deleted,
+          } as ChatRoom;
+        });
+        setChatRoomList(RoomList);
+      } catch (error) {
+        console.error('채팅 내역 로드 실패', error);
+        // setChatRoomList(response.data);
+      }
+    };
+    loadChatRoomHistory();
+  }, [userId]);
+
+  const removeRoomHandler = (chatRoomId) => {
+    setChatRoomList(
+      chatRoomList.filter((room) => room.chatRoomId !== chatRoomId),
+    );
+  };
+
+  console.log(chatRoomList);
   return (
     <>
       <ChatContainer>
@@ -64,9 +102,18 @@ function ChatList({ openChatRoom }) {
           <InfoText>채팅 목록</InfoText>
         </header>
         <ListWrapper>
-          {MockData.ChatLists.map((chat) => (
-            <ListItem {...chat} openChatRoom={openChatRoom} />
-          ))}
+          {chatRoomList ? (
+            chatRoomList.map((chat, idx) => (
+              <ListItem
+                key={idx}
+                chat={chat}
+                openChatRoom={openChatRoom}
+                onRemoveRoom={removeRoomHandler}
+              />
+            ))
+          ) : (
+            <div>채팅 목록 없음</div>
+          )}
         </ListWrapper>
       </ChatContainer>
     </>

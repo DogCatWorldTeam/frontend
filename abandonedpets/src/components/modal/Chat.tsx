@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+import { Stomp, Client, IMessage } from '@stomp/stompjs';
+import { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
 import InfoBar from '../chat/InfoBar';
 import Messages from '../chat/Messges';
 import Input from '../chat/Input';
@@ -17,14 +20,132 @@ const ChatContainer = styled.div`
   padding: 16px;
 `;
 
-function Chat({ talkId, close }) {
-  console.log(talkId);
+interface chat {
+  talkId: number; // 채팅방 고유 id
+  close: boolean;
+  roomName: string;
+}
+
+interface ChatMessageReqeust {
+  chatRoomId: number;
+  chatRoomName: string;
+  senderId: number;
+  message: string;
+  type: string;
+}
+interface ChatMessageResponse {
+  chatRoomId: number;
+  chatRoomName: string;
+  senderId: number;
+  receiverId: number;
+  message: string;
+  type: string;
+}
+
+function Chat({ talkId, close, roomName }: chat) {
+  console.log(roomName);
+  console.log(talkId); // roomId를 가지고 있는 talkId
+  // const [stompClient, setStompClient] = useState<Client | null>(null);
+  const [messages, setMessages] = useState<ChatMessageResponse[]>([]);
+
+  const stompClient = useRef<Stomp | null>(null);
+
+  const userId = Number(localStorage.getItem('userId'));
+
+  useEffect(() => {
+    const loadChatHistory = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8080/api/v1/chatrooms/messages/${talkId}`,
+        );
+        // console.log(response);
+        const message = response.data as ChatMessageResponse[];
+        setMessages(message);
+      } catch (error) {
+        console.error('채팅 내역 로드 실패', error);
+      }
+    };
+
+    loadChatHistory();
+
+    const connect = () => {
+      const socket = new WebSocket('ws://localhost:8080/ws');
+      stompClient.current = Stomp.over(socket);
+      stompClient.current.connect({}, () => {
+        console.log('서버 연결 성공');
+        stompClient.current.subscribe(
+          `/topic/chat/room/${talkId}`,
+          (message) => {
+            const newMessage = JSON.parse(message.body);
+            setMessages((prevMessage) => [...prevMessage, newMessage]);
+          },
+        );
+      });
+    };
+
+    connect();
+
+    // const client = new Client({
+    //   brokerURL: 'ws://localhost:8080/ws', // 서버 WebSocket URL
+    //   reconnectDelay: 5000,
+    //   onConnect: () => {
+    //     client.subscribe(`/topic/chat/rooms/${talkId}`, (message: IMessage) => {
+    //       const msg: ChatMessageResponse = JSON.parse(message.body);
+    //       setMessages((prevMessages) => [...prevMessages, msg]);
+    //     });
+    //   },
+    // });
+    // client.activate();
+    // setStompClient(client);
+
+    // 웹 소켓 연결 해제
+    // return () => {
+    //   client.deactivate();
+    // };
+  }, [talkId]);
+
+  const sendMessage = (message: string) => {
+    console.log(message);
+    if (stompClient.current && message) {
+      console.log(
+        `chatRoonId${talkId}, chatRoomName${roomName}, senderId:${userId}, message: ${message}, `,
+      );
+
+      stompClient.current.send(
+        '/app/message',
+        {},
+        JSON.stringify({
+          chatRoomId: talkId,
+          chatRoomName: roomName,
+          senderId: userId,
+          message,
+          type: 'TALK',
+        }),
+      );
+      alert('메세지 전송 성공');
+    } else alert('메세지 전송 실패');
+    // if (stompClient && newMessage) {
+    //   const chatMessage: ChatMessageReqeust = {
+    //     chatRoomId: talkId,
+    //     chatRoomName: roomName,
+    //     senderId: userId,
+    //     message: newMessage,
+    //     type: 'TALK',
+    //   };
+    //   stompClient.publish({
+    //     destination: `/app/message`,
+    //     body: JSON.stringify(chatMessage),
+    //   });
+    //   console.log(messages);
+    //   // setNewMessage('');
+    // }
+  };
 
   return (
     <ChatContainer>
       <InfoBar close={close} />
-      <Messages />
-      <Input />
+      <Messages content={messages} />
+      <Input sendMessage={sendMessage} />
     </ChatContainer>
   );
 }
