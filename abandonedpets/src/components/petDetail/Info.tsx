@@ -107,30 +107,49 @@ interface PetDetail {
   publicApi: boolean;
 }
 
-const PetDetail: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-  const [petDetail, setPetDetail] = useState<PetDetail | null>(null);
-  const [isAdoption, setIsAdoption] = useState<boolean>(false);
+interface InfoProps {
+  petInfo: PetDetail;
+  petState: boolean;
+}
 
-  useEffect(() => {
-    const fetchPetDetail = async () => {
-      try {
-        const response = await axios.get<PetDetail>(
-          `http://localhost:8080/api/v1/petinfo/${id}`,
-        );
-        setPetDetail(response.data);
-        setIsAdoption(response.data.processState === '입양 완료');
-      } catch (error) {
-        console.error('Error fetching pet details:', error);
-      }
-    };
+const PetDetail: React.FC<InfoProps> = ({ petInfo, petState }) => {
+  // console.log(petInfo);
+  // console.log(petState);
+  const petDetail = petInfo;
+  const isAdoption = petState;
 
-    fetchPetDetail();
-  }, [id]);
+  // const { id } = useParams<{ id: string }>();
+  // const [petDetail, setPetDetail] = useState<PetDetail | null>(null);
+  // const [isAdoption, setIsAdoption] = useState<boolean>(false);
 
-  if (!petDetail) {
-    return <div>Loading...</div>;
-  }
+  // useEffect(() => {
+  //   const fetchPetDetail = async () => {
+  //     try {
+  //       const response = await axios.get<PetDetail>(
+  //         `http://localhost:8080/api/v1/petinfo/${id}`,
+  //       );
+  //       setPetDetail(response.data);
+  //       setIsAdoption(response.data.processState === '입양 완료');
+  //     } catch (error) {
+  //       console.error('Error fetching pet details:', error);
+  //     }
+  //   };
+
+  //   fetchPetDetail();
+  // }, [id]);
+
+  // if (!petDetail) {
+  //   return <div>Loading...</div>;
+  // }
+
+  // console.log(petInfo.petInfo);
+  // const petDetail = petInfo.petInfo;
+  // // const isAdoption = petInfo.petInfo;
+  // console.log(petState);
+  // console.log(petDetail);
+  // console.log(petInfo.petInfo);
+  // console.log(isAdoption);
+  // console.log(petState);
 
   return (
     <Wrapper>

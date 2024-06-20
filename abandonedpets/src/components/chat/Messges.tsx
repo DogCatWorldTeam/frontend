@@ -31,14 +31,54 @@ const ReceiveMessage = styled(Message)`
   border-radius: 8px 8px 8px 0;
 `;
 
-function Messages() {
+const InfoMessage = styled.div`
+  font-size: 0.875rem;
+  text-align: center;
+`;
+
+interface ChatMessageResponse {
+  content: {
+    chatRoomId: number;
+    chatRoomName: string;
+    senderId: number;
+    receiverId: number;
+    message: string;
+    type: string;
+  };
+}
+
+function Messages({ content }: ChatMessageResponse) {
+  content.map((msg, idx) => {
+    return console.log(msg);
+  });
+
+  const userId = Number(localStorage.getItem('userId'));
   return (
     <MessagesContainer>
-      <SendMessage>안녕하세요 ddddddddddddddddddddddddddddddddd</SendMessage>
+      {/* {content.map((msg, idx) => (
+        if(msg.type === 'ENTER' || msg.type === 'LEAVE')
+          return <InfoMessage>{msg.content}</InfoMessage>
+          else if (msg.senderId === localStorage.getItem('userId'))
+            <SendMessage>{msg.content}</SendMessage>
+            else
+            <ReceiveMessage>{msg.content}</ReceiveMessage>
+      ))} */}
+
+      {content.map((msg, idx) => {
+        if (msg.type === 'ENTER' || msg.type === 'LEAVE') {
+          return <InfoMessage key={idx}>{msg.content}</InfoMessage>;
+        }
+        if (msg.senderId === userId) {
+          return <SendMessage key={idx}>{msg.content}</SendMessage>;
+        }
+        return <ReceiveMessage key={idx}>{msg.content}</ReceiveMessage>;
+      })}
+      {/* <SendMessage>안녕하세요 ddddddddddddddddddddddddddddddddd</SendMessage>
       <ReceiveMessage>
         네 안녕하세요! ddddddddddddddddddddddddddddddddd
       </ReceiveMessage>
       <ReceiveMessage>무슨일이세요?</ReceiveMessage>
+      <InfoMessage>누가 들어왔습니다.</InfoMessage> */}
     </MessagesContainer>
   );
 }

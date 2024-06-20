@@ -54,11 +54,11 @@ const MenuBtn = styled.div`
   }
 `;
 
-const CategoryContainer = styled.ul<{ isOpen: boolean }>`
+const CategoryContainer = styled.ul<{ isopen: boolean }>`
   display: flex;
 
   @media screen and (max-width: 767px) {
-    display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
+    display: ${({ isopen }) => (isopen ? 'flex' : 'none')};
     flex-direction: column;
     align-items: center;
     width: 100%;
@@ -80,14 +80,14 @@ const Category = styled(Link)`
   }
 `;
 
-const AuthContainer = styled.div<{ isOpen: boolean }>`
+const AuthContainer = styled.div<{ isopen: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-right: 1.6rem;
 
   @media screen and (max-width: 767px) {
-    display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
+    display: ${({ isopen }) => (isopen ? 'flex' : 'none')};
     width: 100%;
     align-items: center;
     justify-content: center;
@@ -160,7 +160,7 @@ const UserDropDownMenu = styled.ul`
   flex-direction: column;
   gap: 10px;
   position: absolute;
-  top: 45%;
+  top: 38%;
   left: 45%;
   transform: translate(-50%, 0);
   list-style: none;
@@ -186,9 +186,13 @@ function NavBar() {
   const [isChatListOpen, setIsChatListOpen] = useState<boolean>(false); // 채팅 리스트 open 확인
   const [isChatRoomOpen, setIsChatRoomOpen] = useState<boolean>(false); // 채팅 리스트에서 채팅 방 연결, 채팅방 open 확인
   const [currentTalk, setCurrentTalk] = useState<number | string>(); // 채팅방 Id 연결
+  const [chatName, setchatName] = useState<string>('');
 
-  const chatRoomLink = (talkId: number) => {
+  const chatRoomLink = (talkId: number, name: string) => {
+    // 채팅방 리스트에서 대화하기를 클릭하면 talkId는 chatRoomId 저장하고 있음
+    // 이 talkId를 채팅방으로 전달
     setCurrentTalk(talkId);
+    setchatName(name);
     setIsChatRoomOpen(true);
   };
 
@@ -213,7 +217,7 @@ function NavBar() {
       <Link to="/">
         <LogoImg src={Logo} alt="메인로고" />
       </Link>
-      <CategoryContainer isOpen={isMenuOpen}>
+      <CategoryContainer isopen={isMenuOpen}>
         <DropDown
           type="button"
           onMouseEnter={() => setIsDropDown(true)}
@@ -232,7 +236,7 @@ function NavBar() {
       </CategoryContainer>
 
       {isLogin ? (
-        <AuthContainer isOpen={isMenuOpen}>
+        <AuthContainer isopen={isMenuOpen}>
           <IconButton
             sx={{ position: 'relative' }}
             onMouseEnter={() => setIsUserDropDown(true)}
@@ -253,7 +257,11 @@ function NavBar() {
           <div>
             {isChatListOpen &&
               (isChatRoomOpen ? (
-                <Chat talkId={currentTalk} close={ChatRoomClose} />
+                <Chat
+                  talkId={currentTalk}
+                  close={ChatRoomClose}
+                  roomName={chatName}
+                />
               ) : (
                 <ChatList openChatRoom={chatRoomLink} />
               ))}
@@ -267,7 +275,7 @@ function NavBar() {
           </div>
         </AuthContainer>
       ) : (
-        <AuthContainer isOpen={isMenuOpen}>
+        <AuthContainer isopen={isMenuOpen}>
           <AuthItem to="/login">로그인</AuthItem>
           <AuthItem to="/signup">회원가입</AuthItem>
         </AuthContainer>

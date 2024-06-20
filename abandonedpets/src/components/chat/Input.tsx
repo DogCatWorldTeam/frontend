@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import Button from '@mui/material/Button';
+import { useState } from 'react';
 import UpArrow from '../../assets/UpArrow.png';
 
 const InputContainer = styled.div`
@@ -40,15 +41,35 @@ const SendImg = styled.img`
   }
 `;
 
-function Input() {
+const Input = ({ sendMessage }) => {
+  const [message, setMessage] = useState('');
+
+  const inputHandler = (e) => {
+    setMessage(e.target.value);
+  };
+
+  const sendHandler = () => {
+    sendMessage(message);
+    setMessage('');
+  };
+
+  const enterHandler = (e) => {
+    if (e.key === 'Enter') sendHandler();
+  };
+
   return (
     <InputContainer>
-      <InputText placeholder="메세지 입력" />
-      <Button variant="outlined" size="small">
+      <InputText
+        onChange={inputHandler}
+        value={message}
+        placeholder="메세지 입력"
+        onKeyDown={enterHandler}
+      />
+      <Button onClick={sendHandler} variant="outlined" size="small">
         전송
       </Button>
     </InputContainer>
   );
-}
+};
 
 export default Input;
