@@ -14,6 +14,7 @@ const TextArea = styled.div`
   justify-content: center; /* 수평 중앙 정렬 */
   align-items: center; /* 수직 중앙 정렬 */
   text-align: center;
+  white-space: pre-line; // \n 줄바꿈 적용
 `;
 
 interface DetailTextProps {

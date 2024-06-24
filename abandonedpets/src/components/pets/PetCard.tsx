@@ -6,6 +6,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { Button, CardActionArea, CardActions } from '@mui/material';
+import axios from 'axios';
 import Favorite from '../../assets/Favorite.svg';
 import FavoriteFill from '../../assets/Favorite_fill.svg';
 
@@ -29,13 +30,28 @@ interface PetCardProps {
 }
 
 function PetCard({ pet }: PetCardProps) {
-  const [isFavorite, setIsFavorite] = useState<boolean>(
-    pet.fav === FavoriteFill,
-  );
+  const [isFavorite, setIsFavorite] = useState<boolean>(false);
   const navigate = useNavigate();
+  const userId = Number(localStorage.getItem('userId'));
 
-  const handleFavoriteClick = () => {
-    setIsFavorite(!isFavorite);
+  const handleFavoriteClick = async () => {
+    await setIsFavorite(!isFavorite);
+    console.log(isFavorite);
+    if (!isFavorite) {
+      axios
+        .post(`http://localhost:8080/api/v1/bookmark`, {
+          userId,
+          petBoardId: pet.id,
+        })
+        .then((res) => console.log(res));
+    } else {
+      axios.delete(`http://localhost:8080/api/v1/bookmark/${userId}`, {
+        data: {
+          userId,
+          petBoardId: pet.id,
+        },
+      });
+    }
   };
 
   return (

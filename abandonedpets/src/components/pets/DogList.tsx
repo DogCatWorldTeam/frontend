@@ -65,7 +65,7 @@ function DogList() {
           `http://localhost:8080/api/v1/pet_board/list/type/개?page=${page - 1}&size=12`,
         );
         if (response.data && response.data.result) {
-          console.log(response.data.result);
+          // console.log(response.data.result);
           const petData = response.data.result.map((petBoard) => ({
             id: petBoard.petInfo.id,
             desertionNo: petBoard.petInfo.desertionNo,
@@ -94,8 +94,6 @@ function DogList() {
       console.error('Error fetching pet data:', error);
     });
   }, [currentPage]);
-
-  console.log(pets);
 
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
