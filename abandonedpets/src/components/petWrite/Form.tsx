@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import Button from '@mui/material/Button';
@@ -229,7 +229,7 @@ const SubmitBtn = styled.span`
 `;
 
 function Form() {
-  const [petType, setPetType] = useState<string | null>(null); // 펫 타입 체크
+  // const [petType, setPetType] = useState<string | null>(null); // 펫 타입 체크
   const [isSelected, setIsSelected] = useState<string | null>(null); // 입양 상태 버튼
   const [imgFile, setImgFile] = useState<string | null>(null); // 썸네일 미리보기
   const [imgList, setImgList] = useState<(string | undefined)[]>([]); // 이미지 리스트
@@ -277,6 +277,7 @@ function Form() {
   // 썸네일 미리보기
   const handleFileChange = () => {
     if (imgRef.current && imgRef.current.files) {
+      // console.log(imgRef.current.files);
       const file: File | null = imgRef.current.files[0]; // 파일 가져오기
       if (file) {
         const reader = new FileReader();
@@ -284,6 +285,7 @@ function Form() {
         reader.onloadend = () => {
           const result: string | null = reader.result as string; // 결과
           setImgFile(result); // 이미지 파일 설정
+          // console.log(URL.createObjectURL(file));
         };
       }
     }
@@ -325,7 +327,7 @@ function Form() {
 
     // 주소 저장
     if (address) {
-      formData.address = address.address_name;
+      formData.address = (address as any).address_name;
     }
 
     const userId = localStorage.getItem('userId'); // 로컬스토리지의 유저 아이디 저장
@@ -365,10 +367,17 @@ function Form() {
       userId,
     };
 
+    console.log(data);
+
     try {
       const response = await axios.post(
         'http://localhost:8080/api/v1/pet_board',
         data,
+        // {
+        //   headers: {
+        //     'Content-Type': 'multipart/form-data',
+        //   },
+        // },
       );
       console.log('Response:', response.data);
       alert('글 작성 완료');
@@ -381,7 +390,7 @@ function Form() {
   const getAddress = (lat: number, lng: number) => {
     const geocoder = new kakao.maps.services.Geocoder(); // 좌표 -> 주소로 변환해주는 객체
     const coord = new kakao.maps.LatLng(lat, lng); // 주소로 변환할 좌표 입력
-    const callback = function (result, status) {
+    const callback = (result: any, status: any) => {
       if (status === kakao.maps.services.Status.OK) {
         setAddress(result[0].address);
       }
@@ -389,7 +398,7 @@ function Form() {
     geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
   };
 
-  const handleClick = (_, mouseEvent) => {
+  const handleClick = (mouseEvent: any) => {
     const latlng = mouseEvent.latLng;
     const newPosition = {
       lat: latlng.getLat(),
@@ -571,7 +580,7 @@ function Form() {
         >
           <MapMarker position={position} />
         </Map>
-        {address && <div>{address.address_name}</div>}
+        {address && <div>{(address as any).address_name}</div>}
       </div>
 
       <TextArea

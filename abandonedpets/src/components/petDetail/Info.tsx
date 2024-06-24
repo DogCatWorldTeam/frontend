@@ -1,12 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import React from 'react';
 import styled from 'styled-components';
 import PetsIcon from '@mui/icons-material/Pets';
 import DetailText from './DetailText';
 
 const Wrapper = styled.div`
-  width: 60%;
   margin: 3% auto;
   display: flex;
   flex-direction: column;
@@ -48,27 +45,27 @@ const Img = styled.img`
 
 const InfoContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 15px;
 `;
 
 const InfoDetailContainer = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
   align-items: flex-start;
+  gap: 30px;
 `;
 
 const PetDetailExplan = styled.span`
-  font-size: 1.2rem;
+  font-size: 1.2em;
   color: #a1a1a1;
-  margin: 10px 0;
   display: flex;
   align-items: center;
 `;
 
 const PetDetailText = styled.span`
-  font-size: 1.2rem;
-  margin: 10px 0;
+  font-size: 1.2em;
   display: flex;
   align-items: center;
 `;
@@ -117,6 +114,8 @@ const PetDetail: React.FC<InfoProps> = ({ petInfo, petState }) => {
   // console.log(petState);
   const petDetail = petInfo;
   const isAdoption = petState;
+
+  // console.log(petDetail);
 
   // const { id } = useParams<{ id: string }>();
   // const [petDetail, setPetDetail] = useState<PetDetail | null>(null);
@@ -167,10 +166,13 @@ const PetDetail: React.FC<InfoProps> = ({ petInfo, petState }) => {
 
       <InfoContainer>
         <InfoDetailContainer>
-          <PetDetailExplan>
-            <PetsIcon fontSize="small" />
-            유기번호
-          </PetDetailExplan>
+          {petDetail.desertionNo ? (
+            <PetDetailExplan>
+              <PetsIcon fontSize="small" />
+              유기번호
+            </PetDetailExplan>
+          ) : null}
+
           <PetDetailExplan>
             <PetsIcon fontSize="small" />
             성별
@@ -179,10 +181,13 @@ const PetDetail: React.FC<InfoProps> = ({ petInfo, petState }) => {
             <PetsIcon fontSize="small" />
             나이
           </PetDetailExplan>
-          <PetDetailExplan>
-            <PetsIcon fontSize="small" />
-            색상
-          </PetDetailExplan>
+          {petDetail.colorCd ? (
+            <PetDetailExplan>
+              <PetsIcon fontSize="small" />
+              색상
+            </PetDetailExplan>
+          ) : null}
+
           <PetDetailExplan>
             <PetsIcon fontSize="small" />
             몸무게
@@ -195,10 +200,14 @@ const PetDetail: React.FC<InfoProps> = ({ petInfo, petState }) => {
             <PetsIcon fontSize="small" />
             중성화 여부
           </PetDetailExplan>
-          <PetDetailExplan>
-            <PetsIcon fontSize="small" />
-            발견장소
-          </PetDetailExplan>
+
+          {petDetail.happenPlace ? (
+            <PetDetailExplan>
+              <PetsIcon fontSize="small" />
+              발견장소
+            </PetDetailExplan>
+          ) : null}
+
           <PetDetailExplan>
             <PetsIcon fontSize="small" />
             보호소 이름
@@ -210,16 +219,22 @@ const PetDetail: React.FC<InfoProps> = ({ petInfo, petState }) => {
         </InfoDetailContainer>
 
         <InfoDetailContainer>
-          <PetDetailText>{petDetail.desertionNo}</PetDetailText>
+          {petDetail.desertionNo ? (
+            <PetDetailText>{petDetail.desertionNo}</PetDetailText>
+          ) : null}
           <PetDetailText>{petDetail.sexCd}</PetDetailText>
           <PetDetailText>{petDetail.age}</PetDetailText>
-          <PetDetailText>{petDetail.colorCd}</PetDetailText>
+          {petDetail.colorCd ? (
+            <PetDetailText>{petDetail.colorCd}</PetDetailText>
+          ) : null}
           <PetDetailText>{petDetail.weight}</PetDetailText>
           <PetDetailText>{petDetail.kindCd}</PetDetailText>
           <PetDetailText>
             {petDetail.neuterYn === 'Y' ? '예' : '아니오'}
           </PetDetailText>
-          <PetDetailText>{petDetail.happenPlace}</PetDetailText>
+          {petDetail.happenPlace ? (
+            <PetDetailText>{petDetail.happenPlace}</PetDetailText>
+          ) : null}
           <PetDetailText>{petDetail.shelter.careNm}</PetDetailText>
           <PetDetailText>{petDetail.shelter.careAddr}</PetDetailText>
         </InfoDetailContainer>

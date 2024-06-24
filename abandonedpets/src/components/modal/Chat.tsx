@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Stomp, Client, IMessage } from '@stomp/stompjs';
+import { Stomp } from '@stomp/stompjs';
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import InfoBar from '../chat/InfoBar';
@@ -20,19 +20,19 @@ const ChatContainer = styled.div`
   padding: 16px;
 `;
 
-interface chat {
-  talkId: number; // 채팅방 고유 id
-  close: boolean;
+interface ChatProps {
+  talkId: number | string | undefined; // 채팅방 고유 id
+  close: () => void;
   roomName: string;
 }
 
-interface ChatMessageReqeust {
-  chatRoomId: number;
-  chatRoomName: string;
-  senderId: number;
-  message: string;
-  type: string;
-}
+// interface ChatMessageReqeust {
+//   chatRoomId: number;
+//   chatRoomName: string;
+//   senderId: number;
+//   message: string;
+//   type: string;
+// }
 interface ChatMessageResponse {
   chatRoomId: number;
   chatRoomName: string;
@@ -40,15 +40,13 @@ interface ChatMessageResponse {
   receiverId: number;
   message: string;
   type: string;
+  content: string;
 }
 
-function Chat({ talkId, close, roomName }: chat) {
-  console.log(roomName);
-  console.log(talkId); // roomId를 가지고 있는 talkId
-  // const [stompClient, setStompClient] = useState<Client | null>(null);
+function Chat({ talkId, close, roomName }: ChatProps) {
   const [messages, setMessages] = useState<ChatMessageResponse[]>([]);
 
-  const stompClient = useRef<Stomp | null>(null);
+  const stompClient = useRef<any>(null);
 
   const userId = Number(localStorage.getItem('userId'));
 
@@ -62,7 +60,7 @@ function Chat({ talkId, close, roomName }: chat) {
         const message = response.data as ChatMessageResponse[];
         setMessages(message);
       } catch (error) {
-        console.error('채팅 내역 로드 실패', error);
+        // console.error('채팅 내역 로드 실패', error);
       }
     };
 
@@ -75,8 +73,8 @@ function Chat({ talkId, close, roomName }: chat) {
         console.log('서버 연결 성공');
         stompClient.current.subscribe(
           `/topic/chat/room/${talkId}`,
-          (message) => {
-            const newMessage = JSON.parse(message.body);
+          (message: any) => {
+            const newMessage = JSON.parse(message.body) as ChatMessageResponse;
             setMessages((prevMessage) => [...prevMessage, newMessage]);
           },
         );

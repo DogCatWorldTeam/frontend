@@ -26,14 +26,19 @@ const BtnContainer = styled.div`
 `;
 
 interface ListProps {
-  chatRoomId: number;
-  title: string;
+  chat: {
+    chatRoomId: number;
+    name: string;
+  };
+  // openRoom: any;
+  openChatRoom: (chatRoomId: number, chatRoomName: string) => void;
+  onRemoveRoom: (chatRoomId: number) => void;
 }
 
 function ListItem({ chat, openChatRoom, onRemoveRoom }: ListProps) {
   console.log(chat);
 
-  const stompClient = useRef<Stomp | null>(null);
+  const stompClient = useRef<Stomp | any>(null);
   const userId = Number(localStorage.getItem('userId'));
 
   useEffect(() => {

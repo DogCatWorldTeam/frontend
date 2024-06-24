@@ -2,7 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 const TextArea = styled.div`
-  width: 70%;
+  width: 60%;
+  min-width: 30rem;
   margin: 3% auto;
   background-color: #ffefde;
   border-radius: 10px;
@@ -13,6 +14,7 @@ const TextArea = styled.div`
   justify-content: center; /* 수평 중앙 정렬 */
   align-items: center; /* 수직 중앙 정렬 */
   text-align: center;
+  white-space: pre-line; // \n 줄바꿈 적용
 `;
 
 interface DetailTextProps {

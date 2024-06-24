@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import Dog from '../../assets/sampleImg/Dog.png';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { logoutHandler } from '../NavBar.tsx';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
+import { logoutHandler } from '../NavBar.tsx';
+import Dog from '../../assets/sampleImg/Dog.png';
 
 const Main = styled.main`
   padding: 1rem; /* Padding reduced */
@@ -51,10 +51,6 @@ const ProfileImage = styled.div`
   background-color: #d1d5db;
   border-radius: 50%;
   margin: 0 auto 5rem auto;
-`;
-
-const TextCenter = styled.div`
-  text-align: center;
 `;
 
 const TextLarge = styled.h3`
@@ -158,7 +154,9 @@ function MyPageList() {
     // 유저 정보 가져오기
     (async () => {
       try {
-        const userRes = await axios.get(`http://localhost:8080/api/v1/users/${userId}`);
+        const userRes = await axios.get(
+          `http://localhost:8080/api/v1/users/${userId}`,
+        );
         if (userRes.data.status === 'OK') {
           setUserInfo(userRes.data.result);
           setEditedUserInfo(userRes.data.result);
@@ -171,7 +169,9 @@ function MyPageList() {
     // 북마크 정보 가져오기
     (async () => {
       try {
-        const res = await axios.get(`http://localhost:8080/api/v1/bookmark/${userId}`);
+        const res = await axios.get(
+          `http://localhost:8080/api/v1/bookmark/${userId}`,
+        );
 
         if (res.data.status === 'OK') {
           setBookmarks(res.data.result);
@@ -184,9 +184,10 @@ function MyPageList() {
     // 게시글 정보 가져오기
     (async () => {
       try {
-        const res = await axios.get(`http://localhost:8080/api/v1/pet_board/myPetBoard/${userId}`);
+        const res = await axios.get(
+          `http://localhost:8080/api/v1/pet_board/myPetBoard/${userId}`,
+        );
         setmypetBoard(res.data);
-
       } catch (error) {
         console.error('Failed to fetch posts', error);
       }
@@ -198,7 +199,9 @@ function MyPageList() {
   };
 
   const handleNextPagePosts = () => {
-    setCurrentPagePosts((prev) => Math.min(prev + 1, Math.floor(myPetBoard.length / itemsPerPage)));
+    setCurrentPagePosts((prev) =>
+      Math.min(prev + 1, Math.floor(myPetBoard.length / itemsPerPage)),
+    );
   };
 
   const handlePrevPageBookmarks = () => {
@@ -206,17 +209,19 @@ function MyPageList() {
   };
 
   const handleNextPageBookmarks = () => {
-    setCurrentPageBookmarks((prev) => Math.min(prev + 1, Math.floor(bookmarks.length / itemsPerPage)));
+    setCurrentPageBookmarks((prev) =>
+      Math.min(prev + 1, Math.floor(bookmarks.length / itemsPerPage)),
+    );
   };
 
   const currentItemsPosts = myPetBoard.slice(
     currentPagePosts * itemsPerPage,
-    (currentPagePosts + 1) * itemsPerPage
+    (currentPagePosts + 1) * itemsPerPage,
   );
 
   const currentItemsBookmarks = bookmarks.slice(
     currentPageBookmarks * itemsPerPage,
-    (currentPageBookmarks + 1) * itemsPerPage
+    (currentPageBookmarks + 1) * itemsPerPage,
   );
 
   const handleEditProfile = async () => {
@@ -224,7 +229,10 @@ function MyPageList() {
       if (!user) return;
 
       try {
-        const res = await axios.put(`http://localhost:8080/api/v1/users/${user}`, editedUserInfo);
+        const res = await axios.put(
+          `http://localhost:8080/api/v1/users/${user}`,
+          editedUserInfo,
+        );
         if (res.data.status === 'OK') {
           alert('회원 정보가 수정되었습니다.');
           setUserInfo(editedUserInfo);
@@ -238,7 +246,7 @@ function MyPageList() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setEditedUserInfo((prev) => prev ? { ...prev, [name]: value } : null);
+    setEditedUserInfo((prev) => (prev ? { ...prev, [name]: value } : null));
   };
 
   const handleCancelEdit = () => {
@@ -250,7 +258,9 @@ function MyPageList() {
     if (!user) return;
 
     try {
-      const res = await axios.delete(`http://localhost:8080/api/v1/users/${user}`);
+      const res = await axios.delete(
+        `http://localhost:8080/api/v1/users/${user}`,
+      );
       if (res.data.status === 'OK') {
         alert('회원 탈퇴가 완료되었습니다.');
         logoutHandler(); // 로그아웃 처리
@@ -299,7 +309,7 @@ function MyPageList() {
                       fullWidth
                       margin="normal"
                     />
-                                   </>
+                  </>
                 ) : (
                   <>
                     <TextLarge>{userInfo.username}</TextLarge>
@@ -314,13 +324,29 @@ function MyPageList() {
           <ButtonGroup>
             {isEditing ? (
               <>
-                <Button variant="outlined" onClick={handleEditProfile}>저장</Button>
-                <Button variant="outlined" color="error" onClick={handleCancelEdit}>취소</Button>
+                <Button variant="outlined" onClick={handleEditProfile}>
+                  저장
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  onClick={handleCancelEdit}
+                >
+                  취소
+                </Button>
               </>
             ) : (
               <>
-                <Button variant="outlined" onClick={handleEditProfile}>회원정보수정</Button>
-                <Button variant="outlined" color="error" onClick={handleDeleteAccount}>회원탈퇴</Button>
+                <Button variant="outlined" onClick={handleEditProfile}>
+                  회원정보수정
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  onClick={handleDeleteAccount}
+                >
+                  회원탈퇴
+                </Button>
               </>
             )}
           </ButtonGroup>
@@ -332,7 +358,10 @@ function MyPageList() {
               {currentItemsPosts.length > 0 ? (
                 currentItemsPosts.map((post, index) => (
                   <div key={index} style={{ textAlign: 'center' }}>
-                    <Card sx={{ maxWidth: 250 }} onClick={() => handleCardClick(post.petBoardId)}>
+                    <Card
+                      sx={{ maxWidth: 250 }}
+                      onClick={() => handleCardClick(post.petBoardId)}
+                    >
                       <CardActionArea>
                         <CardMedia
                           component="img"
@@ -350,12 +379,32 @@ function MyPageList() {
                   </div>
                 ))
               ) : (
-                <p style={{ textAlign: 'center', marginTop: '5rem' }}>작성한 글이 없습니다.</p>
+                <p style={{ textAlign: 'center', marginTop: '5rem' }}>
+                  작성한 글이 없습니다.
+                </p>
               )}
             </Grid>
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
-              <Button onClick={handlePrevPagePosts} disabled={currentPagePosts === 0}>이전</Button>
-              <Button onClick={handleNextPagePosts} disabled={(currentPagePosts + 1) * itemsPerPage >= myPetBoard.length}>다음</Button>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                marginTop: '1rem',
+              }}
+            >
+              <Button
+                onClick={handlePrevPagePosts}
+                disabled={currentPagePosts === 0}
+              >
+                이전
+              </Button>
+              <Button
+                onClick={handleNextPagePosts}
+                disabled={
+                  (currentPagePosts + 1) * itemsPerPage >= myPetBoard.length
+                }
+              >
+                다음
+              </Button>
             </div>
           </ContentBox>
           <ContentBox>
@@ -364,7 +413,10 @@ function MyPageList() {
               {currentItemsBookmarks.length > 0 ? (
                 currentItemsBookmarks.map((bookmark, index) => (
                   <div key={index} style={{ textAlign: 'center' }}>
-                    <Card sx={{ maxWidth: 250 }} onClick={() => handleCardClick(bookmark.id)}>
+                    <Card
+                      sx={{ maxWidth: 250 }}
+                      onClick={() => handleCardClick(bookmark.id)}
+                    >
                       <CardActionArea>
                         <CardMedia
                           component="img"
@@ -382,12 +434,32 @@ function MyPageList() {
                   </div>
                 ))
               ) : (
-                <p style={{ textAlign: 'center', marginTop: '5rem' }}>북마크한 글이 없습니다.</p>
+                <p style={{ textAlign: 'center', marginTop: '5rem' }}>
+                  북마크한 글이 없습니다.
+                </p>
               )}
             </Grid>
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
-              <Button onClick={handlePrevPageBookmarks} disabled={currentPageBookmarks === 0}>이전</Button>
-              <Button onClick={handleNextPageBookmarks} disabled={(currentPageBookmarks + 1) * itemsPerPage >= bookmarks.length}>다음</Button>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                marginTop: '1rem',
+              }}
+            >
+              <Button
+                onClick={handlePrevPageBookmarks}
+                disabled={currentPageBookmarks === 0}
+              >
+                이전
+              </Button>
+              <Button
+                onClick={handleNextPageBookmarks}
+                disabled={
+                  (currentPageBookmarks + 1) * itemsPerPage >= bookmarks.length
+                }
+              >
+                다음
+              </Button>
             </div>
           </ContentBox>
         </ContentArea>

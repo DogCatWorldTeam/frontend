@@ -83,7 +83,7 @@ function PetDetail() {
       <NavBar />
       <Info petInfo={petDetail} petState={isAdoption} />
       <BtnWrapper>
-        <SendMessageBtn chatInfo={petDetail} />
+        {petDetail.publicApi ? null : <SendMessageBtn chatInfo={petDetail} />}
         <FavoriteBtn />
       </BtnWrapper>
       <ImgList />

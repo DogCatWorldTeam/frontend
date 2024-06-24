@@ -17,16 +17,6 @@ const ChatContainer = styled.div`
   padding: 16px;
 `;
 
-const InfoContainer = styled.div`
-  width: 100%;
-  height: 4rem;
-  background-color: #fbe8e8;
-  text-align: center;
-  line-height: 4rem;
-  margin-bottom: 0.7rem;
-  position: relative;
-`;
-
 const InfoText = styled.span`
   font-size: 2.2rem;
 `;
@@ -51,7 +41,11 @@ interface ChatRoom {
   deleted: boolean;
 }
 
-function ChatList({ openChatRoom }) {
+interface Props {
+  openChatRoom: (chatRoomId: number, chatRoomName: string) => void;
+}
+
+function ChatList({ openChatRoom }: Props) {
   const [chatRoomList, setChatRoomList] = useState<ChatRoom[]>();
 
   const userId = localStorage.getItem('userId');
@@ -68,7 +62,7 @@ function ChatList({ openChatRoom }) {
         ) {
           return;
         }
-        const RoomList: ChatRoom[] = response.data.map((item) => {
+        const RoomList: ChatRoom[] = response.data.map((item: ChatRoom) => {
           return {
             chatRoomId: item.chatRoomId,
             receiverId: item.receiverId,
@@ -88,13 +82,14 @@ function ChatList({ openChatRoom }) {
     loadChatRoomHistory();
   }, [userId]);
 
-  const removeRoomHandler = (chatRoomId) => {
-    setChatRoomList(
-      chatRoomList.filter((room) => room.chatRoomId !== chatRoomId),
+  const removeRoomHandler = (chatRoomId: number) => {
+    setChatRoomList((prevChatRoomList) =>
+      prevChatRoomList
+        ? prevChatRoomList.filter((room) => room.chatRoomId !== chatRoomId)
+        : prevChatRoomList,
     );
   };
 
-  console.log(chatRoomList);
   return (
     <>
       <ChatContainer>

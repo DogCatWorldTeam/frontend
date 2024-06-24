@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Cookies } from 'react-cookie';
@@ -175,7 +175,8 @@ const UserDropDownMenu = styled.ul`
 
 const cookies = new Cookies();
 
-export const logoutHandler = () => { // 변경된 부분
+export const logoutHandler = () => {
+  // 변경된 부분
   localStorage.removeItem('accessToken');
   localStorage.removeItem('userId');
   cookies.remove('refreshToken', { path: '/' });
@@ -207,7 +208,7 @@ function NavBar() {
     setCurrentTalk('');
   };
 
-  const logoutHandler = () => {
+  const logOutHandler = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('userId');
     localStorage.removeItem('phone');
@@ -252,7 +253,7 @@ function NavBar() {
             {isUserDropDown ? (
               <UserDropDownMenu>
                 <DropDownList to="/mypage">마이페이지</DropDownList>
-                <DropDownList to="/" onClick={logoutHandler}>
+                <DropDownList to="/" onClick={logOutHandler}>
                   로그아웃
                 </DropDownList>
               </UserDropDownMenu>
