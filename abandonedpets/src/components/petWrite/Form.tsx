@@ -362,6 +362,7 @@ function Form() {
       title: formData.title,
       description: formData.description,
       petInfo,
+      userId,
     };
 
     try {
