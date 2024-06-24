@@ -4,6 +4,7 @@ import axios from 'axios';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
+import { json } from 'react-router-dom';
 
 const FormWrapper = styled.form`
   width: 60%;
@@ -277,6 +278,7 @@ function Form() {
   // 썸네일 미리보기
   const handleFileChange = () => {
     if (imgRef.current && imgRef.current.files) {
+      console.log(imgRef.current.files);
       const file: File | null = imgRef.current.files[0]; // 파일 가져오기
       if (file) {
         const reader = new FileReader();
@@ -284,6 +286,7 @@ function Form() {
         reader.onloadend = () => {
           const result: string | null = reader.result as string; // 결과
           setImgFile(result); // 이미지 파일 설정
+          // console.log(URL.createObjectURL(file));
         };
       }
     }
@@ -364,10 +367,17 @@ function Form() {
       petInfo,
     };
 
+    console.log(data);
+
     try {
       const response = await axios.post(
         'http://localhost:8080/api/v1/pet_board',
         data,
+        // {
+        //   headers: {
+        //     'Content-Type': 'multipart/form-data',
+        //   },
+        // },
       );
       console.log('Response:', response.data);
       alert('글 작성 완료');

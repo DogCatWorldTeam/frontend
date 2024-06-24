@@ -45,7 +45,7 @@ function PetCard({ pet }: PetCardProps) {
           component="img"
           height="550"
           image={pet.img}
-          alt={`${pet.name} 이미지`}
+          alt={`${pet.img}`}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
