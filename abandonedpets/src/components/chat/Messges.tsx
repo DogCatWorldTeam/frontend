@@ -37,20 +37,23 @@ const InfoMessage = styled.div`
 `;
 
 interface ChatMessageResponse {
-  content: {
-    chatRoomId: number;
-    chatRoomName: string;
-    senderId: number;
-    receiverId: number;
-    message: string;
-    type: string;
-  };
+  chatRoomId: number;
+  chatRoomName: string;
+  senderId: number;
+  receiverId: number;
+  message: string;
+  type: string;
+  content: string;
 }
 
-function Messages({ content }: ChatMessageResponse) {
-  content.map((msg, idx) => {
-    return console.log(msg);
-  });
+interface Message {
+  content: ChatMessageResponse[];
+}
+
+function Messages({ content }: Message) {
+  // content.map((msg, idx) => {
+  //   return console.log(msg);
+  // });
 
   const userId = Number(localStorage.getItem('userId'));
   return (

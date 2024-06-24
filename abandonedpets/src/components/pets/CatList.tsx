@@ -25,7 +25,7 @@ interface PetInfo {
   weight: string;
   sexCd: string;
   kindCd: string;
-  name: string;
+  name: number | string;
   img: string;
   fav: string;
 }
@@ -85,10 +85,7 @@ function DogList() {
     });
   }, [currentPage]);
 
-  const handlePageChange = (
-    event: React.ChangeEvent<unknown>,
-    value: number,
-  ) => {
+  const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
     setCurrentPage(value);
   };
 

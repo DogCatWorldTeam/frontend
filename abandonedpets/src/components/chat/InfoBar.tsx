@@ -17,7 +17,7 @@ const InfoText = styled.div`
   font-size: 1rem;
 `;
 
-function InfoBar({ close }) {
+function InfoBar({ close }: any) {
   return (
     <InfoContainer>
       <Button

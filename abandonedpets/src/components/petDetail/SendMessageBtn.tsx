@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
 import { Stomp } from '@stomp/stompjs';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import axios from 'axios';
 import Send from '../../assets/Send.png';
 
@@ -34,7 +33,7 @@ const SendIng = styled.img`
   transform: translate(0%, -50%);
 `;
 
-function SendMessageBtn({ chatInfo }) {
+function SendMessageBtn({ chatInfo }: any) {
   // const [stompClient, setStompClient] = useState<Client | null>(null);
   // const [chatRoomId, setChatRoomId] = useState(2); // 예시로 chatRoomId 2 설정
   // const [receiverId, setReceiverId] = useState(1); // 예시로 receiverId 3 설정
@@ -42,12 +41,12 @@ function SendMessageBtn({ chatInfo }) {
   // const [chatRoomId, setChatRoomId] = useState();
 
   const userId = Number(localStorage.getItem('userId'));
-  const { id } = useParams<{ id: string }>(); // 게시글 상세정보 고유 id
+  // const { id } = useParams<{ id: string }>(); // 게시글 상세정보 고유 id
   // console.log(id);
 
   // console.log(typeof Number(chatInfo.shelter.careNm));
   // dd
-  const stompClient = useRef<Stomp | null>(null);
+  const stompClient = useRef<any>(null);
 
   useEffect(() => {
     // useEffect로 소켓서버를 띄우지말고, 그냥 메세지 전송 버튼을 눌렀을 때, 동기처리하면 되지않을까?
@@ -216,7 +215,7 @@ function SendMessageBtn({ chatInfo }) {
             `http://localhost:8080/api/v1/chatrooms/participants/${userId}`,
           );
           console.log(response.data);
-          response.data.forEach((item) => {
+          response.data.forEach((item: any) => {
             if (item.receiverId === Number(chatInfo.shelter.careNm)) {
               console.log(item.chatRoomId);
               roomId = item.chatRoomId;

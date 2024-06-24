@@ -75,6 +75,7 @@ interface Location {
         sexCd: string;
         processState: string;
         desertionNo: number;
+        bookMark: boolean;
       },
     ]; // 실제 데이터 타입에 맞게 수정 필요
     totalPages: number;
@@ -108,7 +109,7 @@ function ShelterList() {
       .catch((err) => console.log(err));
   }, []);
 
-  console.log(locationsInfo);
+  // console.log(locationsInfo);
   if (loading) {
     return (
       <ShelterContainer>
@@ -139,6 +140,7 @@ function ShelterList() {
     value: number,
   ) => {
     setCurrentPage(value);
+    console.log(event);
 
     if (selectedIndex) {
       axios

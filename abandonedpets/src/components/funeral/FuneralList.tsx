@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useTransition, animated } from '@react-spring/web';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea, Grid, ImageList, ImageListItem } from '@mui/material';
 import axios from 'axios';
@@ -17,23 +16,6 @@ const PageWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   background-color: #f5f5f5;
-`;
-
-const Header = styled.header`
-  width: 100%;
-  padding: 1rem 0;
-  background-color: #ffe3e3;
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: bold;
-`;
-
-const Footer = styled.footer`
-  width: 100%;
-  padding: 1rem 0;
-  background-color: #ffe3e3;
-  text-align: center;
-  font-size: 1rem;
 `;
 
 const AreaWrapper = styled.div`
@@ -51,10 +33,10 @@ const StackWrapper = styled(Stack)`
 `;
 
 const CustomImageList = styled(ImageList)`
-  :last-child{
+  :last-child {
     margin-bottom: 16px;
   }
-`
+`;
 
 interface FuneralProps {
   id: number;
@@ -76,11 +58,11 @@ function FuneralList() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get("http://localhost:8080/api/v1/pet-funeral");
+        const res = await axios.get('http://localhost:8080/api/v1/pet-funeral');
         setData(res.data); // assuming res.data is an array of funeral data
         setFilteredFunerals(res.data); // initialize with all data
       } catch (error) {
-        console.error("Failed to fetch data", error);
+        console.error('Failed to fetch data', error);
       }
     })();
   }, []);
@@ -109,87 +91,97 @@ function FuneralList() {
   return (
     <PageWrapper>
       <StackWrapper spacing={2} direction="row" justifyContent="center">
-        {['세종', '부산', '대구', '인천', '광주', '울산', '경기', '강원', '충청', '전라', '경상'].map(
-          (region) => (
-            <Button
-              key={region}
-              variant={selectedRegion === region ? 'contained' : 'outlined'}
-              onClick={() => handleButtonClick(region)}
-            >
-              {region}
-            </Button>
-          ),
-        )}
+        {[
+          '세종',
+          '부산',
+          '대구',
+          '인천',
+          '광주',
+          '울산',
+          '경기',
+          '강원',
+          '충청',
+          '전라',
+          '경상',
+        ].map((region) => (
+          <Button
+            key={region}
+            variant={selectedRegion === region ? 'contained' : 'outlined'}
+            onClick={() => handleButtonClick(region)}
+          >
+            {region}
+          </Button>
+        ))}
       </StackWrapper>
       <AreaWrapper>
         <Grid container spacing={2}>
-            <CustomImageList variant="masonry" cols={4}>
-          {transitions((style, item) => (
-            <Grid
-              item
-              xs={12}
-              sm={6}
-              md={4}
-              lg={3}
-              key={item ? item.id : 'empty'}
-            >
-              <animated.div style={style} >
-                {item && (
-                  <Card sx={{ minWidth: 280 }}>
-                    <CardActionArea
-                      component="a"
-                      href={item.homepage}
-                      target="_blank"
-                      rel="noopener noreferrer"
+          <CustomImageList variant="masonry" cols={4}>
+            {transitions((style, item) => (
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                md={4}
+                lg={3}
+                key={item ? item.id : 'empty'}
+              >
+                <animated.div style={style}>
+                  {item && (
+                    <Card sx={{ minWidth: 280 }}>
+                      <CardActionArea
+                        component="a"
+                        href={item.homepage}
+                        target="_blank"
+                        rel="noopener noreferrer"
                       >
-                      {/* <CardMedia
+                        {/* <CardMedia
                         component="img"
                         image={item.image}
                         alt="Funeral Image"
                         /> */}
-                      <ImageListItem key={item.image}>
-                        <img
-                          src={item.image}
-                          alt={item.funeralName}
-                          loading="lazy"
-                        />
-                      </ImageListItem>
-                      <CardContent>
-                        <Typography
-                          gutterBottom
-                          variant="h5"
-                          component="div"
-                          sx={{
-                            whiteSpace: 'nowrap',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
+                        <ImageListItem key={item.image}>
+                          <img
+                            src={item.image}
+                            alt={item.funeralName}
+                            loading="lazy"
+                          />
+                        </ImageListItem>
+                        <CardContent>
+                          <Typography
+                            gutterBottom
+                            variant="h5"
+                            component="div"
+                            sx={{
+                              whiteSpace: 'nowrap',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
                             }}
-                            >
-                          {item.funeralName}
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          color="text.secondary"
-                          sx={{
-                            display: '-webkit-box',
-                            WebkitBoxOrient: 'vertical',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            WebkitLineClamp: 2, // Adjust the number of lines you want to show
+                          >
+                            {item.funeralName}
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            color="text.secondary"
+                            sx={{
+                              display: '-webkit-box',
+                              WebkitBoxOrient: 'vertical',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              WebkitLineClamp: 2, // Adjust the number of lines you want to show
                             }}
-                            >
-                          {item.phoneNum}
-                          <br />
-                          {item.address}
-                        </Typography>
-                      </CardContent>
-                    </CardActionArea>
-                  </Card>
-                ) }
-              </animated.div>
-            </Grid>
-          ))}
-        </CustomImageList>
+                          >
+                            {item.phoneNum}
+                            <br />
+                            {item.address}
+                          </Typography>
+                        </CardContent>
+                      </CardActionArea>
+                    </Card>
+                  )}
+                </animated.div>
+              </Grid>
+            ))}
+          </CustomImageList>
         </Grid>
       </AreaWrapper>
     </PageWrapper>

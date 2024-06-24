@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import React from 'react';
 import styled from 'styled-components';
 import PetsIcon from '@mui/icons-material/Pets';
 import DetailText from './DetailText';
@@ -117,7 +115,7 @@ const PetDetail: React.FC<InfoProps> = ({ petInfo, petState }) => {
   const petDetail = petInfo;
   const isAdoption = petState;
 
-  console.log(petDetail);
+  // console.log(petDetail);
 
   // const { id } = useParams<{ id: string }>();
   // const [petDetail, setPetDetail] = useState<PetDetail | null>(null);

@@ -1,10 +1,7 @@
 import axios from 'axios';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router';
 
 export default function TokenRefresher() {
-  const navigate = useNavigate();
-
   useEffect(() => {
     const refreshAPI = axios.create({
       baseURL: 'http://localhost:8080/api/v1',

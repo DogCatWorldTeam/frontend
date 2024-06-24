@@ -1,6 +1,6 @@
 import NavBar from '../components/NavBar';
 import RegisterForm from '../components/signup/RegisterForm';
-import Footer from '../components/Footer';
+// import Footer from '../components/Footer';
 
 function SignUpPage() {
   return (

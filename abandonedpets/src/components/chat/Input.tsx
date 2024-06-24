@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import Button from '@mui/material/Button';
-import { useState } from 'react';
-import UpArrow from '../../assets/UpArrow.png';
+import { ChangeEvent, useState } from 'react';
 
 const InputContainer = styled.div`
   display: flex;
@@ -30,21 +29,10 @@ const InputText = styled.input`
   }
 `;
 
-const SendImg = styled.img`
-  position: absolute;
-  right: 2%;
-  background-color: #ffdada;
-  border-radius: 25px;
-
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-const Input = ({ sendMessage }) => {
+const Input = ({ sendMessage }: any) => {
   const [message, setMessage] = useState('');
 
-  const inputHandler = (e) => {
+  const inputHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
   };
 
@@ -53,7 +41,7 @@ const Input = ({ sendMessage }) => {
     setMessage('');
   };
 
-  const enterHandler = (e) => {
+  const enterHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') sendHandler();
   };
 
