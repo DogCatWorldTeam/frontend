@@ -23,6 +23,7 @@ interface PetInfo {
   kindCd: string;
   img: string;
   fav: string;
+  processState: string;
 }
 
 interface PetCardProps {
@@ -68,7 +69,7 @@ function PetCard({ pet }: PetCardProps) {
             유기번호: {pet.name}
           </Typography>
           <Typography variant="body2" color="text.secondary" component="div">
-            <InfoDetail>분류: 입양 대기</InfoDetail>
+            <InfoDetail>분류: {pet.processState}</InfoDetail>
             <InfoDetail>나이: {pet.age}</InfoDetail>
             <InfoDetail>무게: {pet.weight}</InfoDetail>
             <InfoDetail>성별: {pet.sexCd}</InfoDetail>
