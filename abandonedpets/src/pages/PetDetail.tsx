@@ -62,7 +62,7 @@ function PetDetail() {
         );
         console.log(response);
         setPetDetail(response.data);
-        setIsAdoption(response.data.processState === '입양 완료');
+        setIsAdoption(response.data.processState.includes('종료'));
       } catch (error) {
         console.error('Error fetching pet details:', error);
       }
