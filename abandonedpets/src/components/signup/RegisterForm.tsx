@@ -73,6 +73,8 @@ interface userForm {
 }
 
 function RegisterForm() {
+  axios.defaults.baseURL = import.meta.env.VITE_APP_API_URL;
+
   const navigate = useNavigate();
   const [form, setForm] = useState<userForm>({
     name: '',
@@ -86,16 +88,14 @@ function RegisterForm() {
       ...form,
       [e.target.name]: e.target.value,
     });
-    console.log(e.target.name, e.target.value);
   };
 
   const submitHandler = async (e: FormEvent) => {
     e.preventDefault();
-    console.log(form);
 
     try {
       const response = await axios.post(
-        `http://localhost:8080/api/v1/users/register`,
+        `/api/v1/users/register`,
         {
           username: form.name,
           email: form.email,
@@ -111,7 +111,6 @@ function RegisterForm() {
       alert(response.data.message);
       navigate('/login');
     } catch (err) {
-      console.log(err, '실패');
       alert('회원가입 실패');
     }
   };

@@ -22,8 +22,6 @@ function Dog() {
     setSearchParams(params);
   };
 
-  console.log(searchParams);
-
   return (
     <>
       <NavBar />

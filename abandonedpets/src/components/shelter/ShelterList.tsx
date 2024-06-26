@@ -83,6 +83,8 @@ interface Location {
 }
 
 function ShelterList() {
+  axios.defaults.baseURL = import.meta.env.VITE_APP_API_URL;
+
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(
     null,
   ); // 선택한 보호소 이름
@@ -94,7 +96,7 @@ function ShelterList() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/api/v1/shelter_address`)
+      .get(`/api/v1/shelter_address`)
       .then((res) => {
         const locationData: Location[] = res.data.map((shelter: Shelter) => ({
           title: shelter.name,
@@ -106,7 +108,7 @@ function ShelterList() {
         setLocationsInfo(locationData);
         setLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch();
   }, []);
 
   // console.log(locationsInfo);
@@ -125,35 +127,30 @@ function ShelterList() {
 
     setCurrentPage(1);
     axios
-      .get(`http://localhost:8080/api/v1/shelter/${index}?&page=0&size=12`)
+      .get(`/api/v1/shelter/${index}?&page=0&size=12`)
       .then((response) => {
         setSelectedLocation({ ...loc, data: response.data });
         setTotalPages(response.data.totalPages);
       })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
+      .catch(() => {
+        // console.error('Error fetching data:', error);
       });
   };
 
-  const handlePageChange = (
-    event: React.ChangeEvent<unknown>,
-    value: number,
-  ) => {
+  const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
     setCurrentPage(value);
-    console.log(event);
+    // console.log(event);
 
     if (selectedIndex) {
       axios
-        .get(
-          `http://localhost:8080/api/v1/shelter/${selectedIndex}?&page=${value - 1}&size=12`,
-        )
+        .get(`/api/v1/shelter/${selectedIndex}?&page=${value - 1}&size=12`)
         .then((response) => {
           setSelectedLocation((prev) =>
             prev ? { ...prev, data: response.data } : null,
           );
         })
-        .catch((error) => {
-          console.error('Error fetching data:', error);
+        .catch(() => {
+          // console.error('Error fetching data:', error);
         });
     }
   };

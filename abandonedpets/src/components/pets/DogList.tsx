@@ -51,6 +51,8 @@ interface SearchParams {
 }
 
 function DogList({ searchParams }: { searchParams: SearchParams }) {
+  axios.defaults.baseURL = import.meta.env.VITE_APP_API_URL;
+
   const [pets, setPets] = useState<PetInfo[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -70,16 +72,14 @@ function DogList({ searchParams }: { searchParams: SearchParams }) {
   //     console.log(err);
   //   }
   // };
-  console.log(searchParams);
 
   useEffect(() => {
     const fetchPets = async (page: number, params: SearchParams) => {
-      console.log(params);
       try {
         const endpoint =
           Object.keys(params).length === 0
-            ? `http://localhost:8080/api/v1/pet_board/list/type/개?page=${page - 1}&size=12`
-            : `http://localhost:8080/api/v1/pet_board/search`;
+            ? `/api/v1/pet_board/list/type/개?page=${page - 1}&size=12`
+            : `/api/v1/pet_board/search`;
 
         if (Object.keys(params).length === 0) {
           try {
@@ -105,10 +105,10 @@ function DogList({ searchParams }: { searchParams: SearchParams }) {
               setPets(petData);
               setTotalPages(response.data.totalPages);
             } else {
-              console.error('Invalid response structure', response.data);
+              // console.error('Invalid response structure', response.data);
             }
           } catch (error) {
-            console.error('Error fetching pet data:', error);
+            // console.error('Error fetching pet data:', error);
           }
         } else {
           try {
@@ -118,7 +118,7 @@ function DogList({ searchParams }: { searchParams: SearchParams }) {
                 page: page - 1,
               },
             });
-            console.log(`if문 내부`, response);
+            // console.log(`if문 내부`, response);
 
             if (response.data) {
               if (response.data.content.length === 0) {
@@ -143,7 +143,7 @@ function DogList({ searchParams }: { searchParams: SearchParams }) {
               setPets(petData);
               setTotalPages(response.data.totalPages);
             } else {
-              console.error('Invalid response structure', response.data);
+              // console.error('Invalid response structure', response.data);
             }
           } catch (err) {
             console.log(err);
@@ -157,42 +157,8 @@ function DogList({ searchParams }: { searchParams: SearchParams }) {
       }
     };
 
-    // const response = await axios.get<ApiResponse>(endpoint, {
-    //   params: {
-    //     ...params,
-    //     page: page - 1,
-    //     size: 12,
-    //   },
-    // });
-    // console.log(response);
-    //     if (response.data && response.data.result) {
-    //       // console.log(response.data.result);
-    //       const petData = response.data.result.map((petBoard) => ({
-    //         id: petBoard.petInfo.id,
-    //         desertionNo: petBoard.petInfo.desertionNo,
-    //         filename: petBoard.petInfo.filename,
-    //         popfile: petBoard.petInfo.popfile,
-    //         processState: petBoard.petInfo.processState,
-    //         age: petBoard.petInfo.age,
-    //         weight: petBoard.petInfo.weight,
-    //         sexCd: petBoard.petInfo.sexCd,
-    //         kindCd: petBoard.petInfo.kindCd,
-    //         img: petBoard.petInfo.popfile || '이미지 없음',
-    //         fav: Favorite,
-    //         name: petBoard.petInfo.desertionNo || petBoard.title,
-    //       }));
-    //       setPets(petData);
-    //       setTotalPages(response.data.totalPages);
-    //     } else {
-    //       console.error('Invalid response structure', response.data);
-    //     }
-    //   } catch (error) {
-    //     console.error('Error fetching pet data:', error);
-    //   }
-    // };
-
-    fetchPets(currentPage, searchParams).catch((error) => {
-      console.error('Error fetching pet data:', error);
+    fetchPets(currentPage, searchParams).catch(() => {
+      // console.error('Error fetching pet data:', error);
     });
   }, [currentPage, searchParams]);
 

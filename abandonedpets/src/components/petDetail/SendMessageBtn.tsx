@@ -34,6 +34,8 @@ const SendIng = styled.img`
 `;
 
 function SendMessageBtn({ chatInfo }: any) {
+  axios.defaults.baseURL = import.meta.env.VITE_APP_API_URL;
+
   // const [stompClient, setStompClient] = useState<Client | null>(null);
   // const [chatRoomId, setChatRoomId] = useState(2); // 예시로 chatRoomId 2 설정
   // const [receiverId, setReceiverId] = useState(1); // 예시로 receiverId 3 설정
@@ -117,9 +119,9 @@ function SendMessageBtn({ chatInfo }: any) {
   const connectToChat = async () => {
     if (stompClient) {
       const createRoom = async () => {
-        console.log(
-          `보내는 쪽 데이터 senderId: ${userId}, chatRoomName: ${chatInfo.kindCd}, receiverId: ${Number(chatInfo.shelter.careNm)}, `,
-        );
+        // console.log(
+        //   `보내는 쪽 데이터 senderId: ${userId}, chatRoomName: ${chatInfo.kindCd}, receiverId: ${Number(chatInfo.shelter.careNm)}, `,
+        // );
         await stompClient.current.send(
           `/app/message`,
           {},
@@ -132,7 +134,6 @@ function SendMessageBtn({ chatInfo }: any) {
             type: 'ENTER',
           }),
         );
-        console.log('보내는 데이터 전송 완료');
       };
       // 채팅방 입장 메시지 전송
       // stompClient.current.send(
@@ -212,24 +213,24 @@ function SendMessageBtn({ chatInfo }: any) {
         try {
           let roomId = 0;
           const response = await axios.get(
-            `http://localhost:8080/api/v1/chatrooms/participants/${userId}`,
+            `/api/v1/chatrooms/participants/${userId}`,
           );
-          console.log(response.data);
+          // console.log(response.data);
           response.data.forEach((item: any) => {
             if (item.receiverId === Number(chatInfo.shelter.careNm)) {
-              console.log(item.chatRoomId);
+              // console.log(item.chatRoomId);
               roomId = item.chatRoomId;
               // setChatRoomId(item.chatRoomId);
             }
           });
           // console.log(`chatRoomid: ${chatRoomId}`);
-          console.log(`roomid: ${roomId}`);
+          // console.log(`roomid: ${roomId}`);
 
           // After chatRoomId is set, send the second message
           if (roomId) {
-            console.log(
-              `참가자 정보 chatRoomId: ${roomId}, senderId: ${Number(chatInfo.shelter.careNm)}, chatRoomName:${chatInfo.kindCd}, `,
-            );
+            // console.log(
+            //   `참가자 정보 chatRoomId: ${roomId}, senderId: ${Number(chatInfo.shelter.careNm)}, chatRoomName:${chatInfo.kindCd}, `,
+            // );
             stompClient.current.send(
               `/app/message`,
               {},
@@ -244,7 +245,7 @@ function SendMessageBtn({ chatInfo }: any) {
             alert('채팅방 생성 성공');
           } else console.log('받는 쪽 채팅 방 생성 실패');
         } catch (err) {
-          console.log(err);
+          // console.log(err);
         }
       };
 
@@ -253,7 +254,7 @@ function SendMessageBtn({ chatInfo }: any) {
         await loadChatRoomHistory();
       }, 2000);
     } else {
-      console.log('채팅방 만들기 데이터 전송 실패');
+      // console.log('채팅방 만들기 데이터 전송 실패');
     }
   };
 

@@ -31,6 +31,8 @@ interface PetCardProps {
 }
 
 function PetCard({ pet }: PetCardProps) {
+  axios.defaults.baseURL = import.meta.env.VITE_APP_API_URL;
+
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
   const navigate = useNavigate();
   const userId = Number(localStorage.getItem('userId'));
@@ -40,13 +42,13 @@ function PetCard({ pet }: PetCardProps) {
     console.log(isFavorite);
     if (!isFavorite) {
       axios
-        .post(`http://localhost:8080/api/v1/bookmark`, {
+        .post(`/api/v1/bookmark`, {
           userId,
           petBoardId: pet.id,
         })
         .then((res) => console.log(res));
     } else {
-      axios.delete(`http://localhost:8080/api/v1/bookmark/${userId}`, {
+      axios.delete(`/api/v1/bookmark/${userId}`, {
         data: {
           userId,
           petBoardId: pet.id,
