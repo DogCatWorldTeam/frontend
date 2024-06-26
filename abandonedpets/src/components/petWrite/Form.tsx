@@ -229,6 +229,8 @@ const SubmitBtn = styled.span`
 `;
 
 function Form() {
+  axios.defaults.baseURL = import.meta.env.VITE_APP_API_URL;
+
   // const [petType, setPetType] = useState<string | null>(null); // 펫 타입 체크
   const [isSelected, setIsSelected] = useState<string | null>(null); // 입양 상태 버튼
   const [imgFile, setImgFile] = useState<string | null>(null); // 썸네일 미리보기
@@ -371,7 +373,7 @@ function Form() {
 
     try {
       const response = await axios.post(
-        'http://localhost:8080/api/v1/pet_board',
+        '/api/v1/pet_board',
         data,
         // {
         //   headers: {

@@ -114,6 +114,7 @@ const PetDetail: React.FC<InfoProps> = ({ petInfo, petState }) => {
   // console.log(petState);
   const petDetail = petInfo;
   const isAdoption = petState;
+  console.log(isAdoption);
 
   // console.log(petDetail);
 
@@ -154,9 +155,13 @@ const PetDetail: React.FC<InfoProps> = ({ petInfo, petState }) => {
     <Wrapper>
       <Title>
         {isAdoption ? (
-          <TitleStatus isAdoption={isAdoption}>[입양 완료]</TitleStatus>
+          <TitleStatus isAdoption={isAdoption}>
+            [{petDetail.processState}]
+          </TitleStatus>
         ) : (
-          <TitleStatus isAdoption={isAdoption}>[입양 대기]</TitleStatus>
+          <TitleStatus isAdoption={isAdoption}>
+            [{petDetail.processState}]
+          </TitleStatus>
         )}
         <TitleText>{petDetail.kindCd} 잘 키워 주실 분을 찾습니다</TitleText>
       </Title>

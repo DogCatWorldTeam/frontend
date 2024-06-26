@@ -50,6 +50,8 @@ interface FuneralProps {
 
 // 컴포넌트 정의
 function FuneralList() {
+  axios.defaults.baseURL = import.meta.env.VITE_APP_API_URL;
+
   const [selectedRegion, setSelectedRegion] = useState('');
   const [filteredFunerals, setFilteredFunerals] = useState<FuneralProps[]>([]);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -58,7 +60,7 @@ function FuneralList() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get('http://localhost:8080/api/v1/pet-funeral');
+        const res = await axios.get('/api/v1/pet-funeral');
         setData(res.data); // assuming res.data is an array of funeral data
         setFilteredFunerals(res.data); // initialize with all data
       } catch (error) {

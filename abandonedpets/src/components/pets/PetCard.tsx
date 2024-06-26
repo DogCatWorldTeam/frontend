@@ -23,6 +23,7 @@ interface PetInfo {
   kindCd: string;
   img: string;
   fav: string;
+  processState: string;
 }
 
 interface PetCardProps {
@@ -30,6 +31,8 @@ interface PetCardProps {
 }
 
 function PetCard({ pet }: PetCardProps) {
+  axios.defaults.baseURL = import.meta.env.VITE_APP_API_URL;
+
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
   const navigate = useNavigate();
   const userId = Number(localStorage.getItem('userId'));
@@ -39,13 +42,13 @@ function PetCard({ pet }: PetCardProps) {
     console.log(isFavorite);
     if (!isFavorite) {
       axios
-        .post(`http://localhost:8080/api/v1/bookmark`, {
+        .post(`/api/v1/bookmark`, {
           userId,
           petBoardId: pet.id,
         })
         .then((res) => console.log(res));
     } else {
-      axios.delete(`http://localhost:8080/api/v1/bookmark/${userId}`, {
+      axios.delete(`/api/v1/bookmark/${userId}`, {
         data: {
           userId,
           petBoardId: pet.id,
@@ -68,7 +71,7 @@ function PetCard({ pet }: PetCardProps) {
             유기번호: {pet.name}
           </Typography>
           <Typography variant="body2" color="text.secondary" component="div">
-            <InfoDetail>분류: 입양 대기</InfoDetail>
+            <InfoDetail>분류: {pet.processState}</InfoDetail>
             <InfoDetail>나이: {pet.age}</InfoDetail>
             <InfoDetail>무게: {pet.weight}</InfoDetail>
             <InfoDetail>성별: {pet.sexCd}</InfoDetail>

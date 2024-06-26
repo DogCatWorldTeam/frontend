@@ -50,6 +50,8 @@ interface PetDetail {
 }
 
 function PetDetail() {
+  axios.defaults.baseURL = import.meta.env.VITE_APP_API_URL;
+
   const { id } = useParams<{ id: string }>();
   const [petDetail, setPetDetail] = useState<PetDetail | null>(null);
   const [isAdoption, setIsAdoption] = useState<boolean>(false);
@@ -57,14 +59,12 @@ function PetDetail() {
   useEffect(() => {
     const fetchPetDetail = async () => {
       try {
-        const response = await axios.get<PetDetail>(
-          `http://localhost:8080/api/v1/petinfo/${id}`,
-        );
-        console.log(response);
+        const response = await axios.get<PetDetail>(`/api/v1/petinfo/${id}`);
+        // console.log(response);
         setPetDetail(response.data);
-        setIsAdoption(response.data.processState === '입양 완료');
+        setIsAdoption(response.data.processState.includes('종료'));
       } catch (error) {
-        console.error('Error fetching pet details:', error);
+        // console.error('Error fetching pet details:', error);
       }
     };
 
@@ -74,9 +74,6 @@ function PetDetail() {
   if (!petDetail) {
     return <div>Loading...</div>;
   }
-  // console.log(petDetail);
-  // console.log(isAdoption);
-  console.log(petDetail);
 
   return (
     <>

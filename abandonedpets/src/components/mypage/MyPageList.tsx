@@ -132,6 +132,8 @@ interface MypetBoardProps {
 }
 
 function MyPageList() {
+  axios.defaults.baseURL = import.meta.env.VITE_APP_API_URL;
+
   const [currentPagePosts, setCurrentPagePosts] = useState(0);
   const [currentPageBookmarks, setCurrentPageBookmarks] = useState(0);
   const [bookmarks, setBookmarks] = useState<BookmarkProps[]>([]);
@@ -147,49 +149,43 @@ function MyPageList() {
     const userId = localStorage.getItem('userId');
     setUser(userId);
     if (!userId) {
-      console.error('No user ID found in local storage');
+      // console.error('No user ID found in local storage');
       return;
     }
 
     // 유저 정보 가져오기
     (async () => {
       try {
-        const userRes = await axios.get(
-          `http://localhost:8080/api/v1/users/${userId}`,
-        );
+        const userRes = await axios.get(`/api/v1/users/${userId}`);
         if (userRes.data.status === 'OK') {
           setUserInfo(userRes.data.result);
           setEditedUserInfo(userRes.data.result);
         }
       } catch (error) {
-        console.error('Failed to fetch user data', error);
+        // console.error('Failed to fetch user data', error);
       }
     })();
 
     // 북마크 정보 가져오기
     (async () => {
       try {
-        const res = await axios.get(
-          `http://localhost:8080/api/v1/bookmark/${userId}`,
-        );
+        const res = await axios.get(`/api/v1/bookmark/${userId}`);
 
         if (res.data.status === 'OK') {
           setBookmarks(res.data.result);
         }
       } catch (error) {
-        console.error('Failed to fetch data', error);
+        // console.error('Failed to fetch data', error);
       }
     })();
 
     // 게시글 정보 가져오기
     (async () => {
       try {
-        const res = await axios.get(
-          `http://localhost:8080/api/v1/pet_board/myPetBoard/${userId}`,
-        );
+        const res = await axios.get(`/api/v1/pet_board/myPetBoard/${userId}`);
         setmypetBoard(res.data);
       } catch (error) {
-        console.error('Failed to fetch posts', error);
+        // console.error('Failed to fetch posts', error);
       }
     })();
   }, []);
@@ -229,16 +225,13 @@ function MyPageList() {
       if (!user) return;
 
       try {
-        const res = await axios.put(
-          `http://localhost:8080/api/v1/users/${user}`,
-          editedUserInfo,
-        );
+        const res = await axios.put(`/api/v1/users/${user}`, editedUserInfo);
         if (res.data.status === 'OK') {
           alert('회원 정보가 수정되었습니다.');
           setUserInfo(editedUserInfo);
         }
       } catch (error) {
-        console.error('Failed to edit profile', error);
+        // console.error('Failed to edit profile', error);
       }
     }
     setIsEditing(!isEditing);
@@ -258,16 +251,14 @@ function MyPageList() {
     if (!user) return;
 
     try {
-      const res = await axios.delete(
-        `http://localhost:8080/api/v1/users/${user}`,
-      );
+      const res = await axios.delete(`/api/v1/users/${user}`);
       if (res.data.status === 'OK') {
         alert('회원 탈퇴가 완료되었습니다.');
         logoutHandler(); // 로그아웃 처리
         navigate('/'); // 메인 홈으로 이동
       }
     } catch (error) {
-      console.error('Failed to delete account', error);
+      // console.error('Failed to delete account', error);
     }
   };
 
