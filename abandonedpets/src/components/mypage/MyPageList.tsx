@@ -8,6 +8,8 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton'; 
+import DeleteIcon from '@mui/icons-material/Delete'; 
 import { CardActionArea } from '@mui/material';
 import { logoutHandler } from '../NavBar.tsx';
 import Dog from '../../assets/sampleImg/Dog.png';
@@ -266,6 +268,35 @@ function MyPageList() {
     navigate(`/detail/${id}`);
   };
 
+  const handleDeletePost = async (petBoardId: number) => {
+    const confirmDelete = window.confirm('정말로 삭제하시겠습니까?');
+  
+    if (!confirmDelete) {
+      return;
+    }
+  
+    try {
+      console.log(`Attempting to delete post with id: ${petBoardId}`);
+      const res = await axios.delete(`/api/v1/pet_board/${petBoardId}`);
+      console.log('Delete response:', res); 
+      if (res.status === 200 && res.data === '게시물 삭제에 성공하였습니다.') {
+        alert('게시글이 삭제되었습니다.');
+        setmypetBoard((prev) => {
+          const updatedList = prev.filter((post) => post.petBoardId !== petBoardId);
+          console.log('Updated List:', updatedList); 
+          return updatedList;
+        });
+        console.log(`Deleted post with id: ${petBoardId}`); 
+      } else {
+        console.error('Failed to delete post', res.data);
+        alert('삭제하는 중 오류가 발생했습니다. 다시 시도해주세요.');
+      }
+    } catch (error) {
+      console.error('Failed to delete post', error);
+      alert('삭제하는 중 오류가 발생했습니다. 다시 시도해주세요.');
+    }
+  };
+
   return (
     <Main>
       <Section>
@@ -364,6 +395,15 @@ function MyPageList() {
                           <Typography gutterBottom variant="h5" component="div">
                             {post.title}
                           </Typography>
+                          <IconButton
+                            aria-label="delete"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDeletePost(post.petBoardId);
+                            }}
+                          >
+                            <DeleteIcon />
+                          </IconButton> 
                         </CardContent>
                       </CardActionArea>
                     </Card>
