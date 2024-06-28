@@ -27,7 +27,7 @@ interface PetInfo {
   kindCd: string;
   name: number | string;
   img: string;
-  fav: string;
+  fav: boolean;
 }
 
 interface SearchParams {

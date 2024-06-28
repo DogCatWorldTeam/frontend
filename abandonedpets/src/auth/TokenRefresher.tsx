@@ -1,14 +1,31 @@
 import axios from 'axios';
 import { useEffect } from 'react';
+import { Cookies } from 'react-cookie';
+
+const cookies = new Cookies();
 
 export default function TokenRefresher() {
+  // import.meta.env.VITE_APP_API_URL
+
   useEffect(() => {
     const refreshAPI = axios.create({
-      baseURL: 'http://localhost:8080/api/v1',
+      baseURL: import.meta.env.VITE_APP_API_URL,
       headers: { 'Content-Type': 'application/json' }, // header의 Content-Type을 JSON 형식의 데이터를 전송한다
     });
 
-    const interceptor = axios.interceptors.response.use(
+    const requestInterceptor = axios.interceptors.request.use(
+      (config) => {
+        const accessToken = localStorage.getItem('accessToken');
+        // const refreshToken = cookies.get('refreshToken');
+
+        config.headers.Authorization = `${accessToken}`;
+
+        return config;
+      },
+      (error) => Promise.reject(error),
+    );
+
+    const responseInterceptor = axios.interceptors.response.use(
       // 성공적인 응답 처리
       (response) => {
         // console.log('Starting Request', response)
@@ -36,7 +53,9 @@ export default function TokenRefresher() {
                 // console.log("res : ", res);
                 // 새 토큰 저장
                 localStorage.setItem('accessToken', res.headers.authorization);
-                localStorage.setItem('Refresh', res.headers.refresh);
+                cookies.set('refreshToken', res.data.refresh_token, {
+                  path: '/',
+                });
 
                 // 새로 응답받은 데이터로 토큰 만료로 실패한 요청에 대한 인증 시도 (header에 토큰 담아 보낼 때 사용)
                 originalConfig.headers.authorization = `Bearer ${res.headers.authorization}`;
@@ -70,7 +89,8 @@ export default function TokenRefresher() {
       },
     );
     return () => {
-      axios.interceptors.response.eject(interceptor);
+      axios.interceptors.request.eject(requestInterceptor);
+      axios.interceptors.response.eject(responseInterceptor);
     };
   }, []);
   return <div></div>;
