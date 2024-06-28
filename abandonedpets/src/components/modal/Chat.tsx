@@ -120,7 +120,6 @@ function Chat({ talkId, close, roomName }: ChatProps) {
           type: 'TALK',
         }),
       );
-      alert('메세지 전송 성공');
     } else alert('메세지 전송 실패');
     // if (stompClient && newMessage) {
     //   const chatMessage: ChatMessageReqeust = {
