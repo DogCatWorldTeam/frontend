@@ -240,7 +240,7 @@ function Search({ onSearch }: SearchProps) {
           </FormControl>
 
           <FormControl sx={{ minWidth: 140 }}>
-            <InputLabel id="isYoung">젊은 동물</InputLabel>
+            <InputLabel id="isYoung">60일 미만</InputLabel>
             <Select
               id="isYoung"
               value={isYoung === null ? '' : isYoung.toString()}
