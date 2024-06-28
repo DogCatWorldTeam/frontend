@@ -69,12 +69,12 @@ function Messages({ content }: Message) {
 
       {content.map((msg, idx) => {
         if (msg.type === 'ENTER' || msg.type === 'LEAVE') {
-          return <InfoMessage key={idx}>{msg.content}</InfoMessage>;
+          return <InfoMessage key={idx}>{msg.message}</InfoMessage>;
         }
         if (msg.senderId === userId) {
-          return <SendMessage key={idx}>{msg.content}</SendMessage>;
+          return <SendMessage key={idx}>{msg.message}</SendMessage>;
         }
-        return <ReceiveMessage key={idx}>{msg.content}</ReceiveMessage>;
+        return <ReceiveMessage key={idx}>{msg.message}</ReceiveMessage>;
       })}
       {/* <SendMessage>안녕하세요 ddddddddddddddddddddddddddddddddd</SendMessage>
       <ReceiveMessage>

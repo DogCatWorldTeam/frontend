@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import PetCard from './PetCard';
-import Favorite from '../../assets/Favorite.svg';
 import SelectPage from './SelectPage';
 
 const PetContainer = styled.div`

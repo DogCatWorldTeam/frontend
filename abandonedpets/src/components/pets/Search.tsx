@@ -142,7 +142,6 @@ function Search({ onSearch }: SearchProps) {
   const writeBtnClickHandler = () => {
     if (localStorage.getItem('accessToken') === null) {
       alert('로그인 후 이용 가능합니다.');
-      navigate('/login');
     } else navigate('/petwrite');
   };
 
@@ -241,7 +240,7 @@ function Search({ onSearch }: SearchProps) {
           </FormControl>
 
           <FormControl sx={{ minWidth: 140 }}>
-            <InputLabel id="isYoung">젊은 동물</InputLabel>
+            <InputLabel id="isYoung">60일 미만</InputLabel>
             <Select
               id="isYoung"
               value={isYoung === null ? '' : isYoung.toString()}

@@ -160,7 +160,7 @@ const UserDropDownMenu = styled.ul`
   flex-direction: column;
   gap: 10px;
   position: absolute;
-  top: 38%;
+  top: 18%;
   left: 40%;
   transform: translate(-50%, 0);
   list-style: none;

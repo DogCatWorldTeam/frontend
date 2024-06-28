@@ -4,6 +4,7 @@ import axios from 'axios';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
+import { useNavigate } from 'react-router-dom';
 
 const FormWrapper = styled.form`
   width: 60%;
@@ -230,6 +231,7 @@ const SubmitBtn = styled.span`
 
 function Form() {
   axios.defaults.baseURL = import.meta.env.VITE_APP_API_URL;
+  const navigate = useNavigate();
 
   // const [petType, setPetType] = useState<string | null>(null); // 펫 타입 체크
   const [isSelected, setIsSelected] = useState<string | null>(null); // 입양 상태 버튼
@@ -372,7 +374,7 @@ function Form() {
     console.log(data);
 
     try {
-      const response = await axios.post(
+      await axios.post(
         '/api/v1/pet_board',
         data,
         // {
@@ -381,8 +383,8 @@ function Form() {
         //   },
         // },
       );
-      console.log('Response:', response.data);
       alert('글 작성 완료');
+      navigate('/dog');
     } catch (error) {
       console.error('Error submitting form:', error);
     }
@@ -400,7 +402,7 @@ function Form() {
     geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
   };
 
-  const handleClick = (mouseEvent: any) => {
+  const handleClick = (_, mouseEvent: any) => {
     const latlng = mouseEvent.latLng;
     const newPosition = {
       lat: latlng.getLat(),
