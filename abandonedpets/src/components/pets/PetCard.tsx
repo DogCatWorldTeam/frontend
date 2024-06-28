@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Card from '@mui/material/Card';
@@ -22,7 +22,7 @@ interface PetInfo {
   weight: string;
   kindCd: string;
   img: string;
-  fav: string;
+  fav: boolean;
   processState: string;
 }
 
@@ -33,14 +33,16 @@ interface PetCardProps {
 function PetCard({ pet }: PetCardProps) {
   axios.defaults.baseURL = import.meta.env.VITE_APP_API_URL;
 
-  const [isFavorite, setIsFavorite] = useState<boolean>(false);
+  const [isFavorite, setIsFavorite] = useState<boolean>(pet.fav);
   const navigate = useNavigate();
   const userId = Number(localStorage.getItem('userId'));
 
   const handleFavoriteClick = async () => {
-    await setIsFavorite(!isFavorite);
-    console.log(isFavorite);
-    if (!isFavorite) {
+    if (localStorage.getItem('userId') === null) {
+      setIsFavorite(!isFavorite);
+      return;
+    }
+    if (pet.fav === false) {
       axios
         .post(`/api/v1/bookmark`, {
           userId,
@@ -48,6 +50,7 @@ function PetCard({ pet }: PetCardProps) {
         })
         .then((res) => console.log(res));
     } else {
+      console.log('delete', isFavorite);
       axios.delete(`/api/v1/bookmark/${userId}`, {
         data: {
           userId,
@@ -55,7 +58,29 @@ function PetCard({ pet }: PetCardProps) {
         },
       });
     }
+
+    // await setIsFavorite(!isFavorite);
+    // console.log(isFavorite);
+    // if (isFavorite) {
+    //   console.log('post', isFavorite);
+    //   axios
+    //     .post(`/api/v1/bookmark`, {
+    //       userId,
+    //       petBoardId: pet.id,
+    //     })
+    //     .then((res) => console.log(res));
+    // } else {
+    //   console.log('delete', isFavorite);
+    //   axios.delete(`/api/v1/bookmark/${userId}`, {
+    //     data: {
+    //       userId,
+    //       petBoardId: pet.id,
+    //     },
+    //   });
+    // }
   };
+
+  useEffect(() => {}, [pet.fav]);
 
   return (
     <Card sx={{ width: '100%' }}>
@@ -81,7 +106,10 @@ function PetCard({ pet }: PetCardProps) {
       </CardActionArea>
       <CardActions>
         <Button onClick={handleFavoriteClick}>
-          <img src={isFavorite ? FavoriteFill : Favorite} alt="Favorite icon" />
+          {isFavorite ? <img src={FavoriteFill} /> : <img src={Favorite} />}
+          {pet.fav ? <img src={FavoriteFill} /> : <img src={Favorite} />}
+          {/* <img src={pet.fav ? FavoriteFill : Favorite} alt="Favorite icon" /> */}
+          {pet.fav ? <span>참</span> : <span>거짓</span>}
         </Button>
       </CardActions>
     </Card>

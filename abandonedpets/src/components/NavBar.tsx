@@ -54,11 +54,11 @@ const MenuBtn = styled.div`
   }
 `;
 
-const CategoryContainer = styled.ul<{ isopen: boolean }>`
+const CategoryContainer = styled.ul<{ isopen: string }>`
   display: flex;
 
   @media screen and (max-width: 767px) {
-    display: ${({ isopen }) => (isopen ? 'flex' : 'none')};
+    display: ${({ isopen }) => (isopen === 'true' ? 'flex' : 'none')};
     flex-direction: column;
     align-items: center;
     width: 100%;
@@ -80,14 +80,14 @@ const Category = styled(Link)`
   }
 `;
 
-const AuthContainer = styled.div<{ isopen: boolean }>`
+const AuthContainer = styled.div<{ isopen: string }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-right: 1.6rem;
 
   @media screen and (max-width: 767px) {
-    display: ${({ isopen }) => (isopen ? 'flex' : 'none')};
+    display: ${({ isopen }) => (isopen === 'true' ? 'flex' : 'none')};
     width: 100%;
     align-items: center;
     justify-content: center;
@@ -161,7 +161,7 @@ const UserDropDownMenu = styled.ul`
   gap: 10px;
   position: absolute;
   top: 38%;
-  left: 45%;
+  left: 40%;
   transform: translate(-50%, 0);
   list-style: none;
   background-color: #fff;
@@ -224,7 +224,7 @@ function NavBar() {
       <Link to="/">
         <LogoImg src={Logo} alt="메인로고" />
       </Link>
-      <CategoryContainer isopen={isMenuOpen}>
+      <CategoryContainer isopen={isMenuOpen.toString()}>
         <DropDown
           type="button"
           onMouseEnter={() => setIsDropDown(true)}
@@ -243,7 +243,7 @@ function NavBar() {
       </CategoryContainer>
 
       {isLogin ? (
-        <AuthContainer isopen={isMenuOpen}>
+        <AuthContainer isopen={isMenuOpen.toString()}>
           <IconButton
             sx={{ position: 'relative' }}
             onMouseEnter={() => setIsUserDropDown(true)}
@@ -282,7 +282,7 @@ function NavBar() {
           </div>
         </AuthContainer>
       ) : (
-        <AuthContainer isopen={isMenuOpen}>
+        <AuthContainer isopen={isMenuOpen.toString()}>
           <AuthItem to="/login">로그인</AuthItem>
           <AuthItem to="/signup">회원가입</AuthItem>
         </AuthContainer>
