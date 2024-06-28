@@ -15,3 +15,5 @@ RUN yarn build
 
 # 포트 5173번 노출
 EXPOSE 5173
+
+CMD ["yarn", "dev"]
