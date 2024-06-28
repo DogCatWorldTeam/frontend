@@ -12,14 +12,14 @@ export default function TokenRefresher() {
       baseURL: import.meta.env.VITE_APP_API_URL,
       headers: { 'Content-Type': 'application/json' }, // header의 Content-Type을 JSON 형식의 데이터를 전송한다
     });
-
     const requestInterceptor = axios.interceptors.request.use(
       (config) => {
         const accessToken = localStorage.getItem('accessToken');
         // const refreshToken = cookies.get('refreshToken');
 
-        config.headers.Authorization = `${accessToken}`;
+        config.headers.access = `${accessToken}`;
 
+        // console.log(config);
         return config;
       },
       (error) => Promise.reject(error),
@@ -41,7 +41,7 @@ export default function TokenRefresher() {
             // console.log("토큰 재발급 요청");
             await axios
               .post(
-                `http://localhost:8080/api/v1/users/reissue`,
+                `/api/v1/users/reissue`,
                 {},
                 {
                   headers: {
@@ -74,8 +74,8 @@ export default function TokenRefresher() {
           // refresh_token 재발급과 예외 처리
           // else if(msg == "만료된 리프레시 토큰입니다") {
           else {
-            // localStorage.clear();
-            // alert('다시 로그인 해주세요');
+            localStorage.clear();
+            alert('다시 로그인 해주세요');
             // navigate('/login');
             // window.alert("토큰이 만료되어 자동으로 로그아웃 되었습니다.")
           }
@@ -83,7 +83,7 @@ export default function TokenRefresher() {
           // window.alert(msg);
           // console.log(msg)
         }
-        // console.error('Error response:', error);
+        console.error('Error response:', error);
         // 다른 모든 오류를 거부하고 처리
         return Promise.reject(error);
       },

@@ -54,9 +54,9 @@ function Chat({ talkId, close, roomName }: ChatProps) {
     const loadChatHistory = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/v1/chatrooms/messages/${talkId}`,
+          `http://localhost:8080/api/v1/chatrooms/not-use-redis/messages/${talkId}`,
         );
-        // console.log(response);
+        console.log(response);
         const message = response.data as ChatMessageResponse[];
         setMessages(message);
       } catch (error) {
