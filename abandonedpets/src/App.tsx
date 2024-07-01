@@ -17,7 +17,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <TokenRefresher />
+        {/* <TokenRefresher /> */}
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/login" element={<LoginPage />} />
