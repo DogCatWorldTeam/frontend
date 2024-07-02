@@ -7,7 +7,6 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import axios from 'axios';
-import { Ellipse } from 'react-kakao-maps-sdk';
 import FavoriteFill from '../../assets/Favorite_fill.svg';
 
 const InfoDetail = styled.div`
