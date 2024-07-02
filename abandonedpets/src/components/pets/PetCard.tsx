@@ -89,7 +89,16 @@ function PetCard({ pet }: PetCardProps) {
           alt={`${pet.img}`}
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography
+            gutterBottom
+            variant="h5"
+            component="div"
+            sx={{
+              textOverflow: 'ellipsis',
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+            }}
+          >
             유기번호: {pet.name}
           </Typography>
           <Typography variant="body2" color="text.secondary" component="div">

@@ -233,10 +233,13 @@ function Form() {
   axios.defaults.baseURL = import.meta.env.VITE_APP_API_URL;
   const navigate = useNavigate();
 
+  const [visibleInputs, setVisibleInputs] = useState<number>(1); // 이미지 리스트 길이
   // const [petType, setPetType] = useState<string | null>(null); // 펫 타입 체크
   const [isSelected, setIsSelected] = useState<string | null>(null); // 입양 상태 버튼
   const [imgFile, setImgFile] = useState<string | null>(null); // 썸네일 미리보기
-  const [imgList, setImgList] = useState<(string | undefined)[]>([]); // 이미지 리스트
+  const [imgList, setImgList] = useState<(string | undefined)[]>(
+    Array(6).fill(undefined),
+  ); // 이미지 리스트 미리보기 데이터
   const [isGender, setIsGender] = useState<string | null>(null); // 성별 체크
   const [isNeuter, setIsNeuter] = useState<string | null>(null); // 중성화 체크
   const [formData, setFormData] = useState<{
@@ -249,8 +252,8 @@ function Form() {
     kindCd: string;
     specialMark: string;
     address: string;
-    mainImage: File | string; // 변경된 부분
-    images: string;
+    mainImage: File | string;
+    images: (File | string)[];
   }>({
     title: '',
     description: '',
@@ -262,7 +265,7 @@ function Form() {
     specialMark: '',
     address: '',
     mainImage: '',
-    images: '',
+    images: [],
   });
   const [position, setPosition] = useState<{ lat: number; lng: number }>({
     lat: 37.5528803113882,
@@ -323,11 +326,25 @@ function Form() {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
+        // 이미지 리스트 미리보기 데이터
         setImgList((prevImgList) => {
           const newList = [...prevImgList];
           newList[index] = reader.result as string;
           return newList;
         });
+        // 이미지 리스트 업로드 데이터
+        setFormData((prevData) => ({
+          ...prevData,
+          images: [
+            ...prevData.images.slice(0, index),
+            file,
+            ...prevData.images.slice(index + 1),
+          ],
+        }));
+        // Increment visible inputs count if it is less than 6
+        if (visibleInputs < 6) {
+          setVisibleInputs(visibleInputs + 1);
+        }
       };
       reader.readAsDataURL(file);
     }
@@ -396,7 +413,16 @@ function Form() {
       }),
     );
     data.append('mainImage', formData.mainImage); // 썸네일 이미지
-    data.append('images', formData.mainImage); // 이미지 리스트 // formData.images 로 변경필요
+    // data.append('images', formData.images); // 이미지 리스트 // formData.images 로 변경필요
+    for (let i = 0; i < formData.images.length; i++) {
+      data.append('images', formData.images[i]);
+    }
+    // formData.images.forEach((image, index) => {
+    //   data.append(`images`, image[index]);
+    // });
+
+    // console.log(data.getAll('images'));
+
     // const data = {
     //   title: formData.title,
     //   description: formData.description,
@@ -404,10 +430,10 @@ function Form() {
     //   userId,
     // };
 
-    console.log(data.get('petBoardRequestDto'));
-    console.log(petInfo);
-    console.log(data.get('mainImage'));
-    console.log(data.get('images'));
+    // console.log(data.get('petBoardRequestDto'));
+    // console.log(petInfo);
+    // console.log(data.get('mainImage'));
+    // console.log(data.get('images'));
     try {
       await axios
         .post('/api/v1/pet_board/create', data, {
@@ -629,12 +655,16 @@ function Form() {
       />
 
       <InputImgList>
-        {[...Array(6)].map((_, index) => (
+        {[...Array(visibleInputs)].map((_, index) => (
           <ImgPreviewList key={`listImg${index}`} htmlFor={`listImg${index}`}>
             {imgList[index] ? (
               <ImgPreview src={imgList[index]} alt="Preview" />
             ) : (
-              <ImgFileExplan>여기를 클릭해서 사진을 올려주세요.</ImgFileExplan>
+              <ImgFileExplan>
+                여기를 클릭해서 사진을 올려주세요.
+                <br /> <br />
+                (최대 6장)
+              </ImgFileExplan>
             )}
             <InputFile
               type="file"

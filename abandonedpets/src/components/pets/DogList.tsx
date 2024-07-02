@@ -84,7 +84,7 @@ function DogList({ searchParams }: { searchParams: SearchParams }) {
         if (Object.keys(params).length === 0) {
           try {
             const response = await axios.get(endpoint);
-            console.log(response);
+            // console.log(response);
 
             // console.log(`if문 내부 ${res}`, res);
             if (response.data && response.data.result) {
@@ -111,6 +111,7 @@ function DogList({ searchParams }: { searchParams: SearchParams }) {
             // console.error('Error fetching pet data:', error);
           }
         } else {
+          // 검색 값이 들어왔을 때
           try {
             const response = await axios.get(endpoint, {
               params: {
@@ -150,7 +151,6 @@ function DogList({ searchParams }: { searchParams: SearchParams }) {
             console.log(err);
             alert('잘못된 검색입니다');
           }
-
           // console.log(`if문 내부 res ${res}`);
         }
       } catch (err) {

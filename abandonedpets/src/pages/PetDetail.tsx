@@ -31,6 +31,7 @@ interface PetDetail {
   likeCount: number;
   liked: boolean;
   petBoardId: number;
+  imageUrls: string[] | null;
 
   petInfo: {
     id: number;
@@ -104,7 +105,7 @@ function PetDetail() {
         )}
         <FavoriteBtn favInfo={petDetail} />
       </BtnWrapper>
-      <ImgList />
+      <ImgList images={petDetail} />
     </>
   );
 }
