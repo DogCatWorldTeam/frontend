@@ -8,11 +8,13 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton'; 
-import DeleteIcon from '@mui/icons-material/Delete'; 
-import { CardActionArea } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { CardActionArea, CardActions } from '@mui/material';
 import { logoutHandler } from '../NavBar.tsx';
 import Dog from '../../assets/sampleImg/Dog.png';
+import Favorite from '../../assets/Favorite.svg';
+import FavoriteFill from '../../assets/Favorite_fill.svg';
 
 const Main = styled.main`
   padding: 1rem; /* Padding reduced */
@@ -93,12 +95,15 @@ const ContentBox = styled.div`
   border: 1px solid #d1d5db;
   border-radius: 0.25rem;
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(1, 1fr);
-  gap: 0.5rem; /* Gap reduced */
+  gap: 1rem; /* Gap reduced */
 
   @media (min-width: 768px) {
     grid-template-columns: repeat(3, 1fr);
@@ -113,6 +118,7 @@ const Title = styled.h3`
 interface BookmarkProps {
   id: number;
   petBoard: {
+    petBoardId: number;
     title: string;
     popfile: string;
   };
@@ -144,6 +150,7 @@ function MyPageList() {
   const [userInfo, setUserInfo] = useState<UserProps | null>(null);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editedUserInfo, setEditedUserInfo] = useState<UserProps | null>(null);
+  const [isFavorite, setIsFavorite] = useState<boolean>(true);
   const navigate = useNavigate();
   const itemsPerPage = 3;
 
@@ -270,23 +277,25 @@ function MyPageList() {
 
   const handleDeletePost = async (petBoardId: number) => {
     const confirmDelete = window.confirm('정말로 삭제하시겠습니까?');
-  
+
     if (!confirmDelete) {
       return;
     }
-  
+
     try {
       console.log(`Attempting to delete post with id: ${petBoardId}`);
       const res = await axios.delete(`/api/v1/pet_board/${petBoardId}`);
-      console.log('Delete response:', res); 
+      console.log('Delete response:', res);
       if (res.status === 200 && res.data === '게시물 삭제에 성공하였습니다.') {
         alert('게시글이 삭제되었습니다.');
         setmypetBoard((prev) => {
-          const updatedList = prev.filter((post) => post.petBoardId !== petBoardId);
-          console.log('Updated List:', updatedList); 
+          const updatedList = prev.filter(
+            (post) => post.petBoardId !== petBoardId,
+          );
+          console.log('Updated List:', updatedList);
           return updatedList;
         });
-        console.log(`Deleted post with id: ${petBoardId}`); 
+        console.log(`Deleted post with id: ${petBoardId}`);
       } else {
         console.error('Failed to delete post', res.data);
         alert('삭제하는 중 오류가 발생했습니다. 다시 시도해주세요.');
@@ -295,6 +304,33 @@ function MyPageList() {
       console.error('Failed to delete post', error);
       alert('삭제하는 중 오류가 발생했습니다. 다시 시도해주세요.');
     }
+  };
+
+  const deleteBookMarkHandler = (petBoardId: number) => {
+    const confirmDelete = window.confirm('북마크를 취소하시겠습니까??');
+
+    if (!confirmDelete) {
+      return;
+    }
+
+    axios
+      .delete(`/api/v1/bookmark`, {
+        data: {
+          userId: user,
+          petBoardId,
+        },
+      })
+      .then(() => {
+        setIsFavorite(!isFavorite);
+        alert('북마크 삭제에 성공했습니다.');
+        setBookmarks((prev) => {
+          const updatedList = prev.filter(
+            (post) => post.petBoard.petBoardId !== petBoardId,
+          );
+          console.log('Updated List:', updatedList);
+          return updatedList;
+        });
+      });
   };
 
   return (
@@ -381,18 +417,23 @@ function MyPageList() {
                 currentItemsPosts.map((post, index) => (
                   <div key={index} style={{ textAlign: 'center' }}>
                     <Card
-                      sx={{ maxWidth: 250 }}
+                      sx={{ width: '100%' }}
                       onClick={() => handleCardClick(post.petBoardId)}
                     >
                       <CardActionArea>
                         <CardMedia
                           component="img"
-                          height="140"
+                          height="200"
                           image={post.petInfo ? post.petInfo.popfile : Dog}
                           alt={post.title}
                         />
                         <CardContent>
-                          <Typography gutterBottom variant="h5" component="div">
+                          <Typography
+                            gutterBottom
+                            variant="h5"
+                            component="div"
+                            sx={{ fontSize: '1.2em' }}
+                          >
                             {post.title}
                           </Typography>
                           <IconButton
@@ -403,7 +444,7 @@ function MyPageList() {
                             }}
                           >
                             <DeleteIcon />
-                          </IconButton> 
+                          </IconButton>
                         </CardContent>
                       </CardActionArea>
                     </Card>
@@ -444,23 +485,42 @@ function MyPageList() {
               {currentItemsBookmarks.length > 0 ? (
                 currentItemsBookmarks.map((bookmark, index) => (
                   <div key={index} style={{ textAlign: 'center' }}>
-                    <Card
-                      sx={{ maxWidth: 250 }}
-                      onClick={() => handleCardClick(bookmark.id)}
-                    >
-                      <CardActionArea>
+                    <Card sx={{ width: '100%' }}>
+                      <CardActionArea
+                        onClick={() =>
+                          handleCardClick(bookmark.petBoard.petBoardId)
+                        }
+                      >
                         <CardMedia
                           component="img"
-                          height="140"
+                          height="200"
                           image={bookmark.petBoard.popfile}
                           alt={bookmark.petBoard.title}
                         />
                         <CardContent>
-                          <Typography gutterBottom variant="h5" component="div">
+                          <Typography
+                            gutterBottom
+                            variant="h5"
+                            component="div"
+                            sx={{ fontSize: '1.2em' }}
+                          >
                             {bookmark.petBoard.title}
                           </Typography>
                         </CardContent>
                       </CardActionArea>
+                      <CardActions>
+                        <Button
+                          onClick={() =>
+                            deleteBookMarkHandler(bookmark.petBoard.petBoardId)
+                          }
+                        >
+                          {isFavorite ? (
+                            <img src={FavoriteFill} />
+                          ) : (
+                            <img src={Favorite} />
+                          )}
+                        </Button>
+                      </CardActions>
                     </Card>
                   </div>
                 ))

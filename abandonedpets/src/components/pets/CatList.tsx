@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import PetCard from './PetCard';
-import Favorite from '../../assets/Favorite.svg';
 import SelectPage from './SelectPage';
 
 const PetContainer = styled.div`
@@ -28,6 +27,7 @@ interface PetInfo {
   name: number | string;
   img: string;
   fav: boolean;
+  favCnt: number;
 }
 
 interface SearchParams {
@@ -75,7 +75,7 @@ function DogList({ searchParams }: { searchParams: SearchParams }) {
                 sexCd: petBoard.petInfo.sexCd,
                 kindCd: petBoard.petInfo.kindCd,
                 img: petBoard.petInfo.popfile || '이미지 없음',
-                fav: Favorite,
+                favCnt: petBoard.likeCount,
                 name: petBoard.petInfo.desertionNo || petBoard.title,
               }));
               setPets(petData);
@@ -112,7 +112,7 @@ function DogList({ searchParams }: { searchParams: SearchParams }) {
                 sexCd: petBoard.petInfo.sexCd,
                 kindCd: petBoard.petInfo.kindCd,
                 img: petBoard.petInfo.popfile || '이미지 없음',
-                fav: Favorite,
+                favCnt: petBoard.likeCount,
                 name: petBoard.petInfo.desertionNo || petBoard.title,
               }));
               setPets(petData);

@@ -1,14 +1,110 @@
 import { useState } from 'react';
 import Button from '@mui/material/Button';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import axios from 'axios';
+import Favorite from '../../assets/Favorite.svg';
+import FavoriteFill from '../../assets/Favorite_fill.svg';
 
-function FavoriteBtn() {
-  const [isFavorite, setIsFavorite] = useState<boolean>(false);
+interface PetDetail {
+  description: string;
+  likeCount: number;
+  liked: boolean;
+  petBoardId: number;
+
+  petInfo: {
+    id: number;
+    desertionNo: number;
+    filename: string;
+    happenDt: string;
+    happenPlace: string;
+    petType: string;
+    kindCd: string;
+    colorCd: string;
+    age: string;
+    weight: string;
+    noticeNo: string;
+    noticeSdt: string;
+    noticeEdt: string;
+    popfile: string;
+    processState: string;
+    sexCd: string;
+    neuterYn: string;
+    specialMark: string;
+    shelter: {
+      name: string;
+      coordinate: {
+        latitude: number;
+        longitude: number;
+      } | null;
+      careNm: string;
+      careTel: string;
+      careAddr: string;
+    };
+    publicApi: boolean;
+  };
+
+  status: string;
+  title: string;
+}
+
+interface InfoProps {
+  favInfo: PetDetail;
+}
+
+function FavoriteBtn({ favInfo }: InfoProps) {
+  const favorite = favInfo;
+  const [isFavorite, setIsFavorite] = useState<boolean>(favorite.liked);
+  const userId = localStorage.getItem('userId');
+
+  const favBtnClickHandler = () => {
+    if (localStorage.getItem('userId') === null) {
+      setIsFavorite(!isFavorite);
+      return;
+    }
+    if (isFavorite) {
+      axios
+        .delete(`/api/v1/bookmark`, {
+          data: {
+            userId,
+            petBoardId: favorite.petInfo.id,
+          },
+        })
+        .then(() => setIsFavorite(!isFavorite));
+    } else {
+      axios
+        .post(`/api/v1/bookmark`, {
+          userId,
+          petBoardId: favorite.petInfo.id,
+        })
+        .then(() => setIsFavorite(!isFavorite));
+    }
+  };
+
+  // const handleFavoriteClick = async () => {
+  //   if (localStorage.getItem('userId') === null) {
+  //     setIsFavorite(!isFavorite);
+  //     return;
+  //   }
+  //   if (pet.fav === false) {
+  //     axios
+  //       .post(`/api/v1/bookmark`, {
+  //         userId,
+  //         petBoardId: pet.id,
+  //       })
+  //       .then((res) => console.log(res));
+  //   } else {
+  //     console.log('delete', isFavorite);
+  //     axios.delete(`/api/v1/bookmark/${userId}`, {
+  //       data: {
+  //         userId,
+  //         petBoardId: pet.id,
+  //       },
+  //     });
+  //   }
 
   return (
-    <Button onClick={() => setIsFavorite(!isFavorite)} variant="outlined">
-      {isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+    <Button onClick={favBtnClickHandler} variant="outlined">
+      {isFavorite ? <img src={FavoriteFill} /> : <img src={Favorite} />}
+      <span>{favorite.likeCount}</span>
     </Button>
   );
 }

@@ -36,6 +36,7 @@ interface PetInfo {
   name: number | string;
   img: string;
   fav: boolean;
+  favCnt: number;
 }
 
 interface SearchParams {
@@ -83,6 +84,7 @@ function DogList({ searchParams }: { searchParams: SearchParams }) {
         if (Object.keys(params).length === 0) {
           try {
             const response = await axios.get(endpoint);
+            console.log(response);
 
             // console.log(`if문 내부 ${res}`, res);
             if (response.data && response.data.result) {
@@ -97,7 +99,7 @@ function DogList({ searchParams }: { searchParams: SearchParams }) {
                 sexCd: petBoard.petInfo.sexCd,
                 kindCd: petBoard.petInfo.kindCd,
                 img: petBoard.petInfo.popfile || '이미지 없음',
-                fav: petBoard.liked,
+                favCnt: petBoard.likeCount,
                 name: petBoard.petInfo.desertionNo || petBoard.title,
               }));
               setPets(petData);
@@ -136,6 +138,7 @@ function DogList({ searchParams }: { searchParams: SearchParams }) {
                 kindCd: petBoard.petInfo.kindCd,
                 img: petBoard.petInfo.popfile || '이미지 없음',
                 fav: petBoard.liked,
+                favCnt: petBoard.likeCount,
                 name: petBoard.petInfo.desertionNo || petBoard.title,
               }));
               setPets(petData);

@@ -11,13 +11,13 @@ import PetDetail from './pages/PetDetail';
 import Mypage from './pages/Mypage';
 import FavoriteList from './components/mypage/FavoriteList';
 import PetWrite from './pages/PetWrite';
-import TokenRefresher from './auth/TokenRefresher';
+// import TokenRefresher from './auth/TokenRefresher';
 
 function App() {
   return (
     <>
       <BrowserRouter>
-        <TokenRefresher />
+        {/* <TokenRefresher /> */}
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/login" element={<LoginPage />} />
