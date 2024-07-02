@@ -139,6 +139,7 @@ function RegisterForm() {
           variant="standard"
           label="비밀번호"
           type="password"
+          placeholder="8~20자로 해주세요."
           required
           onChange={formChangeHandler}
         />
