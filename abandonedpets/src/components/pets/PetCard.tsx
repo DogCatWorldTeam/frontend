@@ -7,6 +7,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import axios from 'axios';
+import { Ellipse } from 'react-kakao-maps-sdk';
 import FavoriteFill from '../../assets/Favorite_fill.svg';
 
 const InfoDetail = styled.div`
@@ -89,7 +90,16 @@ function PetCard({ pet }: PetCardProps) {
           alt={`${pet.img}`}
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography
+            gutterBottom
+            variant="h5"
+            component="div"
+            sx={{
+              textOverflow: 'ellipsis',
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+            }}
+          >
             유기번호: {pet.name}
           </Typography>
           <Typography variant="body2" color="text.secondary" component="div">

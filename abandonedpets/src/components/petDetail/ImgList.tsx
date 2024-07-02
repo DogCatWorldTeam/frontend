@@ -23,15 +23,31 @@ const DogList = {
   ],
 };
 
-function ImgList() {
+interface PetDetail {
+  imageUrls: string[] | null;
+}
+
+interface InfoProps {
+  images: PetDetail;
+}
+
+function ImgList({ images }: InfoProps) {
+  const imgList = images;
+
   return (
     <Wrapper>
       <ImageList variant="masonry" cols={3} gap={8}>
-        {DogList.Dogs.map((dog, index) => (
+        {(imgList.imageUrls || []).map((img, idx) => (
+          <ImageListItem key={idx}>
+            <img src={img} alt="이미지" />
+          </ImageListItem>
+        ))}
+
+        {/* {DogList.Dogs.map((dog, index) => (
           <ImageListItem key={index}>
             <img src={dog.img} />
           </ImageListItem>
-        ))}
+        ))} */}
       </ImageList>
     </Wrapper>
   );
