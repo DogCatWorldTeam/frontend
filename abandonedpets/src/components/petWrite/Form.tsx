@@ -249,6 +249,8 @@ function Form() {
     kindCd: '',
     specialMark: '',
     address: '',
+    mainImage: '',
+    images: '',
   });
   const [position, setPosition] = useState<{ lat: number; lng: number }>({
     lat: 37.5528803113882,
@@ -288,7 +290,12 @@ function Form() {
         reader.readAsDataURL(file); // 파일 읽기
         reader.onloadend = () => {
           const result: string | null = reader.result as string; // 결과
-          setImgFile(result); // 이미지 파일 설정
+          setImgFile(result); // 이미지 파일 설정 (미리보기 )
+          setFormData((prevData) => ({
+            ...prevData,
+            mainImage: imgRef.current.files[0],
+          }));
+
           // console.log(URL.createObjectURL(file));
         };
       }
@@ -328,6 +335,7 @@ function Form() {
   // 폼 제출 핸들러
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const data = new FormData();
 
     // 주소 저장
     if (address) {
@@ -341,52 +349,66 @@ function Form() {
 
     // 백엔드로 전송할 데이터 구성
     const petInfo = {
-      name: formData.name,
-      age: formData.age,
-      weight: formData.weight,
-      kindCd: formData.kindCd,
-      specialMark: formData.specialMark,
-      address: formData.address,
-      processState: isSelected,
-      sexCd: isGender,
-      neuterYn: isNeuter,
-      filename: imgFile,
-      popfile: imgFile,
-      isPublicApi: false,
-      petType: formData.petType,
-
-      shelter: {
-        // id: 0,
-        // petInfoList: [''],
-        careNm: userId, // 보호소 이름: 유저 아이디
-        careTel: userPhone, // 보호소 전화번호: 유저 번호
-        careAddr: formData.address, // 주소
-      },
-    };
-
-    const data = {
       title: formData.title,
       description: formData.description,
-      petInfo,
+      petInfo: {
+        name: formData.name,
+        age: formData.age,
+        weight: formData.weight,
+        kindCd: formData.kindCd,
+        specialMark: formData.specialMark,
+        address: formData.address,
+        processState: isSelected,
+        sexCd: isGender,
+        neuterYn: isNeuter,
+        // filename: imgFile,
+        // popfile: imgFile,
+        isPublicApi: false,
+        petType: formData.petType,
+
+        shelter: {
+          // id: 0,
+          // petInfoList: [''],
+          careNm: userId, // 보호소 이름: 유저 아이디
+          careTel: userPhone, // 보호소 전화번호: 유저 번호
+          careAddr: formData.address, // 주소
+        },
+      },
       userId,
     };
 
-    console.log(data);
+    data.append(
+      'petBoardRequestDto',
+      new Blob([JSON.stringify(petInfo)], {
+        type: 'application/json',
+      }),
+    );
+    data.append('mainImage', formData.mainImage); // 썸네일 이미지
+    data.append('images', formData.mainImage); // 이미지 리스트 // formData.images 로 변경필요
+    // const data = {
+    //   title: formData.title,
+    //   description: formData.description,
+    //   petInfo,
+    //   userId,
+    // };
 
+    console.log(data.get('petBoardRequestDto'));
+    console.log(petInfo);
+    console.log(data.get('mainImage'));
+    console.log(data.get('images'));
     try {
-      await axios.post(
-        '/api/v1/pet_board',
-        data,
-        // {
-        //   headers: {
-        //     'Content-Type': 'multipart/form-data',
-        //   },
-        // },
-      );
-      alert('글 작성 완료');
-      navigate('/dog');
+      await axios
+        .post('/api/v1/pet_board/create', data, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        })
+        .then((res) => {
+          console.log(res);
+          alert('글 작성 완료');
+          navigate('/dog');
+        });
     } catch (error) {
       console.error('Error submitting form:', error);
+      alert('글 작성 실패');
     }
   };
 

@@ -23,6 +23,7 @@ interface PetInfo {
   kindCd: string;
   img: string;
   fav: boolean;
+  favCnt: number;
   processState: string;
 }
 
@@ -111,6 +112,7 @@ function PetCard({ pet }: PetCardProps) {
           {/* <img src={pet.fav ? FavoriteFill : Favorite} alt="Favorite icon" /> */}
           {pet.fav ? <span>참</span> : <span>거짓</span>}
         </Button>
+        <span>{pet.favCnt}</span>
       </CardActions>
     </Card>
   );
