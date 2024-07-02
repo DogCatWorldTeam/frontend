@@ -71,7 +71,7 @@ function PetDetail() {
       try {
         const res = localStorage.getItem('userId')
           ? await axios.get<PetDetail>(
-              `/api/v1/pet_board/${id}?userid=${localStorage.getItem('userId')}`,
+              `/api/v1/pet_board/${id}?userId=${localStorage.getItem('userId')}`,
             )
           : await axios.get<PetDetail>(`/api/v1/pet_board/${id}`);
 
@@ -79,9 +79,7 @@ function PetDetail() {
         //   `/api/v1/pet_board/${id}?userid=${localStorage.getItem('userId')}`,
         // );
 
-        // const response = await axios.get<PetDetail>(`/api/v1/petinfo/${id}`);
         // console.log(res.data);
-        // console.log(response.data);
         setPetDetail(res.data);
         setIsAdoption(res.data.petInfo.processState.includes('종료'));
       } catch (error) {
