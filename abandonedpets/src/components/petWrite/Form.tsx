@@ -239,7 +239,19 @@ function Form() {
   const [imgList, setImgList] = useState<(string | undefined)[]>([]); // 이미지 리스트
   const [isGender, setIsGender] = useState<string | null>(null); // 성별 체크
   const [isNeuter, setIsNeuter] = useState<string | null>(null); // 중성화 체크
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    title: string;
+    description: string;
+    petType: string;
+    name: string;
+    age: string;
+    weight: string;
+    kindCd: string;
+    specialMark: string;
+    address: string;
+    mainImage: File | string; // 변경된 부분
+    images: string;
+  }>({
     title: '',
     description: '',
     petType: '',
@@ -284,7 +296,7 @@ function Form() {
   const handleFileChange = () => {
     if (imgRef.current && imgRef.current.files) {
       // console.log(imgRef.current.files);
-      const file: File | null = imgRef.current.files[0]; // 파일 가져오기
+      const file: File = imgRef.current.files[0]; // 파일 가져오기
       if (file) {
         const reader = new FileReader();
         reader.readAsDataURL(file); // 파일 읽기
@@ -293,7 +305,7 @@ function Form() {
           setImgFile(result); // 이미지 파일 설정 (미리보기 )
           setFormData((prevData) => ({
             ...prevData,
-            mainImage: imgRef.current.files[0],
+            mainImage: file,
           }));
 
           // console.log(URL.createObjectURL(file));
@@ -424,7 +436,7 @@ function Form() {
     geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
   };
 
-  const handleClick = (_, mouseEvent: any) => {
+  const handleClick = (_: any, mouseEvent: any) => {
     const latlng = mouseEvent.latLng;
     const newPosition = {
       lat: latlng.getLat(),

@@ -20,8 +20,8 @@ const Title = styled.div`
   justify-content: center;
 `;
 
-const TitleStatus = styled.div<{ isAdoption: boolean }>`
-  color: ${(props) => (props.isAdoption ? '#cccccc' : '#ffbe57')};
+const TitleStatus = styled.div<{ isadoption: boolean }>`
+  color: ${(props) => (props.isadoption ? '#cccccc' : '#ffbe57')};
 `;
 
 const TitleText = styled.div`
@@ -82,26 +82,36 @@ interface ShelterInfo {
 }
 
 interface PetDetail {
-  id: number;
-  desertionNo: number;
-  filename: string;
-  happenDt: string;
-  happenPlace: string;
-  petType: string;
-  kindCd: string;
-  colorCd: string;
-  age: string;
-  weight: string;
-  noticeNo: string;
-  noticeSdt: string;
-  noticeEdt: string;
-  popfile: string;
-  processState: string;
-  sexCd: string;
-  neuterYn: string;
-  specialMark: string;
-  shelter: ShelterInfo;
-  publicApi: boolean;
+  description: string;
+  likeCount: number;
+  liked: boolean;
+  petBoardId: number;
+
+  petInfo: {
+    id: number;
+    desertionNo: number;
+    filename: string;
+    happenDt: string;
+    happenPlace: string;
+    petType: string;
+    kindCd: string;
+    colorCd: string;
+    age: string;
+    weight: string;
+    noticeNo: string;
+    noticeSdt: string;
+    noticeEdt: string;
+    popfile: string;
+    processState: string;
+    sexCd: string;
+    neuterYn: string;
+    specialMark: string;
+    shelter: ShelterInfo;
+    publicApi: boolean;
+  };
+
+  status: string;
+  title: string;
 }
 
 interface InfoProps {
@@ -114,7 +124,7 @@ const PetDetail: React.FC<InfoProps> = ({ petInfo, petState }) => {
   // console.log(petState);
   const petDetail = petInfo;
   const isAdoption = petState;
-  console.log(isAdoption);
+  // console.log(isAdoption);
 
   // console.log(petDetail);
 
@@ -155,23 +165,23 @@ const PetDetail: React.FC<InfoProps> = ({ petInfo, petState }) => {
     <Wrapper>
       <Title>
         {isAdoption ? (
-          <TitleStatus isAdoption={isAdoption}>
-            [{petDetail.processState}]
+          <TitleStatus isadoption={isAdoption}>
+            [{petDetail.petInfo.processState}]
           </TitleStatus>
         ) : (
-          <TitleStatus isAdoption={isAdoption}>
-            [{petDetail.processState}]
+          <TitleStatus isadoption={isAdoption}>
+            [{petDetail.petInfo.processState}]
           </TitleStatus>
         )}
-        <TitleText>{petDetail.kindCd} 잘 키워 주실 분을 찾습니다</TitleText>
+        <TitleText>{petDetail.title}</TitleText>
       </Title>
       <ImgContainer>
-        <Img src={petDetail.popfile} alt="강아지 사진" />
+        <Img src={petDetail.petInfo.popfile} alt="강아지 사진" />
       </ImgContainer>
 
       <InfoContainer>
         <InfoDetailContainer>
-          {petDetail.desertionNo ? (
+          {petDetail.petInfo.desertionNo ? (
             <PetDetailExplan>
               <PetsIcon fontSize="small" />
               유기번호
@@ -186,7 +196,7 @@ const PetDetail: React.FC<InfoProps> = ({ petInfo, petState }) => {
             <PetsIcon fontSize="small" />
             나이
           </PetDetailExplan>
-          {petDetail.colorCd ? (
+          {petDetail.petInfo.colorCd ? (
             <PetDetailExplan>
               <PetsIcon fontSize="small" />
               색상
@@ -206,7 +216,7 @@ const PetDetail: React.FC<InfoProps> = ({ petInfo, petState }) => {
             중성화 여부
           </PetDetailExplan>
 
-          {petDetail.happenPlace ? (
+          {petDetail.petInfo.happenPlace ? (
             <PetDetailExplan>
               <PetsIcon fontSize="small" />
               발견장소
@@ -224,28 +234,28 @@ const PetDetail: React.FC<InfoProps> = ({ petInfo, petState }) => {
         </InfoDetailContainer>
 
         <InfoDetailContainer>
-          {petDetail.desertionNo ? (
-            <PetDetailText>{petDetail.desertionNo}</PetDetailText>
+          {petDetail.petInfo.desertionNo ? (
+            <PetDetailText>{petDetail.petInfo.desertionNo}</PetDetailText>
           ) : null}
-          <PetDetailText>{petDetail.sexCd}</PetDetailText>
-          <PetDetailText>{petDetail.age}</PetDetailText>
-          {petDetail.colorCd ? (
-            <PetDetailText>{petDetail.colorCd}</PetDetailText>
+          <PetDetailText>{petDetail.petInfo.sexCd}</PetDetailText>
+          <PetDetailText>{petDetail.petInfo.age}</PetDetailText>
+          {petDetail.petInfo.colorCd ? (
+            <PetDetailText>{petDetail.petInfo.colorCd}</PetDetailText>
           ) : null}
-          <PetDetailText>{petDetail.weight}</PetDetailText>
-          <PetDetailText>{petDetail.kindCd}</PetDetailText>
+          <PetDetailText>{petDetail.petInfo.weight}</PetDetailText>
+          <PetDetailText>{petDetail.petInfo.kindCd}</PetDetailText>
           <PetDetailText>
-            {petDetail.neuterYn === 'Y' ? '예' : '아니오'}
+            {petDetail.petInfo.neuterYn === 'Y' ? '예' : '아니오'}
           </PetDetailText>
-          {petDetail.happenPlace ? (
-            <PetDetailText>{petDetail.happenPlace}</PetDetailText>
+          {petDetail.petInfo.happenPlace ? (
+            <PetDetailText>{petDetail.petInfo.happenPlace}</PetDetailText>
           ) : null}
-          <PetDetailText>{petDetail.shelter.careNm}</PetDetailText>
-          <PetDetailText>{petDetail.shelter.careAddr}</PetDetailText>
+          <PetDetailText>{petDetail.petInfo.shelter.careNm}</PetDetailText>
+          <PetDetailText>{petDetail.petInfo.shelter.careAddr}</PetDetailText>
         </InfoDetailContainer>
       </InfoContainer>
-      {petDetail.specialMark && (
-        <DetailText specialMark={petDetail.specialMark} />
+      {petDetail.description && (
+        <DetailText specialMark={petDetail.description} />
       )}
     </Wrapper>
   );

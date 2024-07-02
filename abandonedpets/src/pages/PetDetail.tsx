@@ -27,26 +27,36 @@ interface ShelterInfo {
 }
 
 interface PetDetail {
-  id: number;
-  desertionNo: number;
-  filename: string;
-  happenDt: string;
-  happenPlace: string;
-  petType: string;
-  kindCd: string;
-  colorCd: string;
-  age: string;
-  weight: string;
-  noticeNo: string;
-  noticeSdt: string;
-  noticeEdt: string;
-  popfile: string;
-  processState: string;
-  sexCd: string;
-  neuterYn: string;
-  specialMark: string;
-  shelter: ShelterInfo;
-  publicApi: boolean;
+  description: string;
+  likeCount: number;
+  liked: boolean;
+  petBoardId: number;
+
+  petInfo: {
+    id: number;
+    desertionNo: number;
+    filename: string;
+    happenDt: string;
+    happenPlace: string;
+    petType: string;
+    kindCd: string;
+    colorCd: string;
+    age: string;
+    weight: string;
+    noticeNo: string;
+    noticeSdt: string;
+    noticeEdt: string;
+    popfile: string;
+    processState: string;
+    sexCd: string;
+    neuterYn: string;
+    specialMark: string;
+    shelter: ShelterInfo;
+    publicApi: boolean;
+  };
+
+  status: string;
+  title: string;
 }
 
 function PetDetail() {
@@ -59,10 +69,21 @@ function PetDetail() {
   useEffect(() => {
     const fetchPetDetail = async () => {
       try {
-        const response = await axios.get<PetDetail>(`/api/v1/petinfo/${id}`);
-        // console.log(response);
-        setPetDetail(response.data);
-        setIsAdoption(response.data.processState.includes('종료'));
+        const res = localStorage.getItem('userId')
+          ? await axios.get<PetDetail>(
+              `/api/v1/pet_board/${id}?userid=${localStorage.getItem('userId')}`,
+            )
+          : await axios.get<PetDetail>(`/api/v1/pet_board/${id}`);
+
+        // const res = await axios.get(
+        //   `/api/v1/pet_board/${id}?userid=${localStorage.getItem('userId')}`,
+        // );
+
+        // const response = await axios.get<PetDetail>(`/api/v1/petinfo/${id}`);
+        // console.log(res.data);
+        // console.log(response.data);
+        setPetDetail(res.data);
+        setIsAdoption(res.data.petInfo.processState.includes('종료'));
       } catch (error) {
         // console.error('Error fetching pet details:', error);
       }
@@ -80,8 +101,10 @@ function PetDetail() {
       <NavBar />
       <Info petInfo={petDetail} petState={isAdoption} />
       <BtnWrapper>
-        {petDetail.publicApi ? null : <SendMessageBtn chatInfo={petDetail} />}
-        <FavoriteBtn />
+        {petDetail.petInfo.publicApi ? null : (
+          <SendMessageBtn chatInfo={petDetail} />
+        )}
+        <FavoriteBtn favInfo={petDetail} />
       </BtnWrapper>
       <ImgList />
     </>

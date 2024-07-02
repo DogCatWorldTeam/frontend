@@ -111,6 +111,7 @@ function RegisterForm() {
       alert(response.data.message);
       navigate('/login');
     } catch (err) {
+      console.log(err);
       alert('회원가입 실패');
     }
   };

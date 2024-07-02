@@ -36,6 +36,7 @@ interface PetInfo {
   name: number | string;
   img: string;
   fav: boolean;
+  favCnt: number;
 }
 
 interface SearchParams {
@@ -98,7 +99,6 @@ function DogList({ searchParams }: { searchParams: SearchParams }) {
                 sexCd: petBoard.petInfo.sexCd,
                 kindCd: petBoard.petInfo.kindCd,
                 img: petBoard.petInfo.popfile || '이미지 없음',
-                fav: petBoard.liked,
                 favCnt: petBoard.likeCount,
                 name: petBoard.petInfo.desertionNo || petBoard.title,
               }));

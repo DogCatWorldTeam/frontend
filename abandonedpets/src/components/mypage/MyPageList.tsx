@@ -306,6 +306,33 @@ function MyPageList() {
     }
   };
 
+  const deleteBookMarkHandler = (petBoardId: number) => {
+    const confirmDelete = window.confirm('북마크를 취소하시겠습니까??');
+
+    if (!confirmDelete) {
+      return;
+    }
+
+    axios
+      .delete(`/api/v1/bookmark`, {
+        data: {
+          userId: user,
+          petBoardId,
+        },
+      })
+      .then(() => {
+        setIsFavorite(!isFavorite);
+        alert('북마크 삭제에 성공했습니다.');
+        setBookmarks((prev) => {
+          const updatedList = prev.filter(
+            (post) => post.petBoard.petBoardId !== petBoardId,
+          );
+          console.log('Updated List:', updatedList);
+          return updatedList;
+        });
+      });
+  };
+
   return (
     <Main>
       <Section>
@@ -482,7 +509,11 @@ function MyPageList() {
                         </CardContent>
                       </CardActionArea>
                       <CardActions>
-                        <Button>
+                        <Button
+                          onClick={() =>
+                            deleteBookMarkHandler(bookmark.petBoard.petBoardId)
+                          }
+                        >
                           {isFavorite ? (
                             <img src={FavoriteFill} />
                           ) : (
