@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '@mui/material/Button';
@@ -25,8 +25,8 @@ const SearchContainer = styled.div`
 `;
 
 const FilterImg = styled.img`
-  width: 2.5em;
-  height: 2.5em;
+  width: 2em;
+  height: 2em;
   position: absolute;
   left: 0;
   top: 50%;
@@ -51,18 +51,19 @@ const InputContainer = styled.div`
   display: flex;
   justify-content: start;
   align-items: center;
-  margin-left: 3rem;
+  margin-left: 3em;
 `;
 
 const WriteBtn = styled.span`
-  width: 10rem;
+  width: 10em;
+  font-size: 1em;
 `;
 
 const Input = styled.input`
   width: 100%;
   border: none;
   outline: none;
-  font-size: 1.25em;
+  font-size: 1em;
   margin-left: 0.5rem;
 `;
 
@@ -208,6 +209,12 @@ function Search({ onSearch }: SearchProps) {
     // }
   };
 
+  const searchInputHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      searchHandler();
+    }
+  };
+
   return (
     <SearchWrapper>
       <SearchContainer>
@@ -219,12 +226,14 @@ function Search({ onSearch }: SearchProps) {
             placeholder="검색할 내용을 입력해주세요 (나이는 필수로 입력해주세요)"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+            onKeyDown={searchInputHandler}
           />
         </InputContainer>
         <Button
           variant="outlined"
           color="warning"
           onClick={writeBtnClickHandler}
+          sx={{ width: '10.5em' }}
         >
           <WriteBtn>글 작성하기</WriteBtn>
         </Button>
