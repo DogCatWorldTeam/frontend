@@ -18,19 +18,22 @@ const ExplanContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media screen and (max-width: 1023px) {
+    flex-direction: column;
+  }
 `;
 
 const ExplanHeader = styled.p`
-  font-size: 2.5rem;
+  font-size: 2.5em;
 `;
 
 const Explan = styled.p`
-  font-size: 2rem;
+  font-size: 2em;
 `;
 
 const ExplanImg = styled.img`
   height: 18.75rem;
-  padding-left: 1.5rem;
 `;
 
 function MainPage() {

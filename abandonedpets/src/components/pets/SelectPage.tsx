@@ -21,7 +21,7 @@ function SelectPage({ count, page, onChange }: SelectPageProps) {
         count={count}
         page={page}
         color="primary"
-        size="large"
+        size="medium"
         onChange={onChange}
       />
     </Wrapper>
