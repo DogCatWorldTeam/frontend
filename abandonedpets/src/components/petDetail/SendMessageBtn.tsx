@@ -15,8 +15,8 @@ const SendBtn = styled.button`
   background-color: #ffe7ce;
   border: none;
   border-radius: 10px;
-  font-size: 1rem;
-  font-weight: 700;
+  font-size: 1em;
+  font-weight: 500;
 
   &: hover {
     cursor: pointer;
@@ -25,8 +25,8 @@ const SendBtn = styled.button`
 `;
 
 const SendIng = styled.img`
-  width: 1rem;
-  height: 1rem;
+  width: 1em;
+  height: 1em;
   position: absolute;
   top: 50%;
   right: 1rem;

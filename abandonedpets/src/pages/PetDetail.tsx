@@ -9,7 +9,7 @@ import FavoriteBtn from '../components/petDetail/FavoriteBtn';
 import ImgList from '../components/petDetail/ImgList';
 
 const BtnWrapper = styled.div`
-  width: 25rem;
+  width: 25em;
   margin: 0 auto;
   display: flex;
   justify-content: space-around;
