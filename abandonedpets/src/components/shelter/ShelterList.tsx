@@ -17,6 +17,7 @@ import SelectPage from './SelectPage';
 
 const ShelterContainer = styled.div`
   width: 60%;
+  min-width: 300px;
   margin: 3% auto;
   display: flex;
   flex-direction: column;
@@ -24,7 +25,7 @@ const ShelterContainer = styled.div`
 `;
 
 const ShelterInfo = styled.div`
-  font-size: 1.5rem;
+  font-size: 1.5em;
 `;
 
 const MarkerInfo = styled.div`
@@ -38,9 +39,16 @@ const MarkerInfo = styled.div`
 const PetContainer = styled.div`
   width: 100%;
   display: grid;
-  place-items: center;
   grid-template-columns: repeat(3, 1fr); //4개의 열
   gap: 20px;
+
+  @media screen and (max-width: 1023px) {
+    grid-template-columns: repeat(2, 1fr); // 2개의 열
+  }
+
+  @media screen and (max-width: 767px) {
+    grid-template-columns: repeat(1, 1fr); // 1개의 열
+  }
 `;
 
 const InfoDetail = styled.p`
@@ -160,7 +168,7 @@ function ShelterList() {
       <ShelterInfo>가까운 보호소를 클릭해주세요.</ShelterInfo>
       <Map
         center={{ lat: 37.5528803113882, lng: 126.972601286522 }}
-        style={{ width: '800px', height: '600px' }}
+        style={{ width: '100%', height: '37em' }}
         level={7}
       >
         {locationsInfo.map((loc) => (
@@ -190,7 +198,7 @@ function ShelterList() {
 
       {selectedLocation && (
         <div>
-          <h2>{selectedLocation.title}에서 친구들이 기다리고 있어요.</h2>
+          <h3>{selectedLocation.title}에서 친구들이 기다리고 있어요.</h3>
           <PetContainer>
             {selectedLocation.data?.content ? (
               selectedLocation.data.content.map((pet, petIndex) => (
