@@ -10,14 +10,14 @@ const InfoContainer = styled.div`
 `;
 
 const InfoText = styled.div`
-  width: 16rem;
+  width: 16em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 1rem;
+  font-size: 1em;
 `;
 
-function InfoBar({ close }: any) {
+function InfoBar({ close, roomName }: any) {
   return (
     <InfoContainer>
       <Button
@@ -30,7 +30,7 @@ function InfoBar({ close }: any) {
       >
         <ArrowBackIosNewIcon fontSize="small" />
       </Button>
-      <InfoText>중.소형 진도 믹스견 잘 키워 주실 분을 찾습니다</InfoText>
+      <InfoText>{roomName}</InfoText>
     </InfoContainer>
   );
 }

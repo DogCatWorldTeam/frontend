@@ -10,8 +10,8 @@ const ChatContainer = styled.div`
   position: fixed;
   bottom: 80px;
   right: 22px;
-  width: 390px;
-  height: 600px;
+  width: 24em;
+  height: 37em;
   background-color: white;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -46,6 +46,8 @@ interface ChatMessageResponse {
 function Chat({ talkId, close, roomName }: ChatProps) {
   const [messages, setMessages] = useState<ChatMessageResponse[]>([]);
 
+  // console.log(roomName);
+
   const stompClient = useRef<any>(null);
 
   const userId = Number(localStorage.getItem('userId'));
@@ -56,7 +58,7 @@ function Chat({ talkId, close, roomName }: ChatProps) {
         const response = await axios.get(
           `http://localhost:8080/api/v1/chatrooms/not-use-redis/messages/${talkId}`,
         );
-        console.log(response);
+        // console.log(response);
         const message = response.data as ChatMessageResponse[];
         setMessages(message);
       } catch (error) {
@@ -103,11 +105,11 @@ function Chat({ talkId, close, roomName }: ChatProps) {
   }, [talkId]);
 
   const sendMessage = (message: string) => {
-    console.log(message);
+    // console.log(message);
     if (stompClient.current && message) {
-      console.log(
-        `chatRoonId${talkId}, chatRoomName${roomName}, senderId:${userId}, message: ${message}, `,
-      );
+      // console.log(
+      //   `chatRoonId${talkId}, chatRoomName${roomName}, senderId:${userId}, message: ${message}, `,
+      // );
 
       stompClient.current.send(
         '/app/message',
@@ -140,7 +142,7 @@ function Chat({ talkId, close, roomName }: ChatProps) {
 
   return (
     <ChatContainer>
-      <InfoBar close={close} />
+      <InfoBar close={close} roomName={roomName} />
       <Messages content={messages} />
       <Input sendMessage={sendMessage} />
     </ChatContainer>

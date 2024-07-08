@@ -57,7 +57,7 @@ function SendMessageBtn({ chatInfo }: any) {
       const socket = new WebSocket('ws://localhost:8080/ws');
       stompClient.current = Stomp.over(socket);
       stompClient.current.connect({}, () => {
-        console.log('서버연결 성공');
+        // console.log('서버연결 성공');
         // 임시의 roomId = 1로 설정
         // stompClient.current.send(
         //   `/app/message`,
@@ -128,8 +128,8 @@ function SendMessageBtn({ chatInfo }: any) {
           JSON.stringify({
             // chatRoomId: 3,
             senderId: userId, // 로그인한 유저의 Id 저장
-            chatRoomName: chatInfo.kindCd, // 채팅방 이름은 게시글 이름
-            receiverId: Number(chatInfo.shelter.careNm), // 게시글을 작성한 유저의 Id
+            chatRoomName: chatInfo.title, // 채팅방 이름은 게시글 이름
+            receiverId: Number(chatInfo.petInfo.shelter.careNm), // 게시글을 작성한 유저의 Id
             message: '채팅방에 입장했습니다.',
             type: 'ENTER',
           }),
@@ -217,7 +217,7 @@ function SendMessageBtn({ chatInfo }: any) {
           );
           // console.log(response.data);
           response.data.forEach((item: any) => {
-            if (item.receiverId === Number(chatInfo.shelter.careNm)) {
+            if (item.receiverId === Number(chatInfo.petInfo.shelter.careNm)) {
               // console.log(item.chatRoomId);
               roomId = item.chatRoomId;
               // setChatRoomId(item.chatRoomId);
@@ -236,8 +236,8 @@ function SendMessageBtn({ chatInfo }: any) {
               {},
               JSON.stringify({
                 chatRoomId: roomId,
-                senderId: Number(chatInfo.shelter.careNm), // 게시글을 작성한 유저의 Id
-                chatRoomName: chatInfo.kindCd, // 채팅방 이름은 게시글 이름
+                senderId: Number(chatInfo.petInfo.shelter.careNm), // 게시글을 작성한 유저의 Id
+                chatRoomName: chatInfo.title, // 채팅방 이름은 게시글 이름
                 message: '채팅방에 입장했습니다.',
                 type: 'TALK',
               }),
@@ -245,7 +245,8 @@ function SendMessageBtn({ chatInfo }: any) {
             alert('채팅방 생성 성공');
           } else console.log('받는 쪽 채팅 방 생성 실패');
         } catch (err) {
-          // console.log(err);
+          console.log('채팅방 생성 실패');
+          console.log(err);
         }
       };
 

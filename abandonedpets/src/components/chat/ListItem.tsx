@@ -14,7 +14,7 @@ const List = styled.div`
 
 const ChatRoomName = styled.div`
   width: 12rem;
-  font-size: 1rem;
+  font-size: 1em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -36,7 +36,7 @@ interface ListProps {
 }
 
 function ListItem({ chat, openChatRoom, onRemoveRoom }: ListProps) {
-  console.log(chat);
+  // console.log(chat);
 
   const stompClient = useRef<Stomp | any>(null);
   const userId = Number(localStorage.getItem('userId'));
@@ -77,6 +77,7 @@ function ListItem({ chat, openChatRoom, onRemoveRoom }: ListProps) {
           variant="outlined"
           size="small"
           onClick={() => openChatRoom(chat.chatRoomId, chat.name)}
+          sx={{ minWidth: 67, fontSize: '0.875em' }}
         >
           채팅하기
         </Button>
@@ -85,6 +86,7 @@ function ListItem({ chat, openChatRoom, onRemoveRoom }: ListProps) {
           size="small"
           color="error"
           onClick={removeRoomHandler}
+          sx={{ minWidth: 67, fontSize: '0.875em' }}
         >
           삭제하기
         </Button>

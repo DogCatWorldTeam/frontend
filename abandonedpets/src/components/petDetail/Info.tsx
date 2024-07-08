@@ -14,7 +14,7 @@ const Wrapper = styled.div`
 
 const Title = styled.div`
   width: 100%;
-  font-size: 1.85em;
+  font-size: 1.5em;
   font-weight: 900;
   display: flex;
   justify-content: center;

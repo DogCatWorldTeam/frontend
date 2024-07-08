@@ -7,8 +7,8 @@ const ChatContainer = styled.div`
   position: fixed;
   bottom: 80px;
   right: 22px;
-  width: 390px;
-  height: 600px;
+  width: 24em;
+  height: 37em;
   background-color: white;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -18,7 +18,7 @@ const ChatContainer = styled.div`
 `;
 
 const InfoText = styled.span`
-  font-size: 2.2rem;
+  font-size: 1.5em;
 `;
 
 const ListWrapper = styled.div`
@@ -91,27 +91,25 @@ function ChatList({ openChatRoom }: Props) {
   };
 
   return (
-    <>
-      <ChatContainer>
-        <header>
-          <InfoText>채팅 목록</InfoText>
-        </header>
-        <ListWrapper>
-          {chatRoomList ? (
-            chatRoomList.map((chat, idx) => (
-              <ListItem
-                key={idx}
-                chat={chat}
-                openChatRoom={openChatRoom}
-                onRemoveRoom={removeRoomHandler}
-              />
-            ))
-          ) : (
-            <div>채팅 목록 없음</div>
-          )}
-        </ListWrapper>
-      </ChatContainer>
-    </>
+    <ChatContainer>
+      <header>
+        <InfoText>채팅 목록</InfoText>
+      </header>
+      <ListWrapper>
+        {chatRoomList ? (
+          chatRoomList.map((chat, idx) => (
+            <ListItem
+              key={idx}
+              chat={chat}
+              openChatRoom={openChatRoom}
+              onRemoveRoom={removeRoomHandler}
+            />
+          ))
+        ) : (
+          <div>채팅 목록 없음</div>
+        )}
+      </ListWrapper>
+    </ChatContainer>
   );
 }
 

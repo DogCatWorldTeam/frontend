@@ -173,6 +173,13 @@ const UserDropDownMenu = styled.ul`
     0 6px 6px rgba(0, 0, 0, 0.23);
 `;
 
+const ChatContainer = styled.div`
+  position: fixed;
+  bottom: 20px;
+  right: 22px;
+  z-index: 10;
+`;
+
 const cookies = new Cookies();
 
 export const logoutHandler = () => {
@@ -218,83 +225,75 @@ function NavBar() {
   };
 
   return (
-    <Wrapper>
-      <MenuBtn onClick={() => setIsMenuOpen(!isMenuOpen)}>
-        <MenuIcon />
-      </MenuBtn>
-      <Link to="/">
-        <LogoImg src={Logo} alt="메인로고" />
-      </Link>
-      <CategoryContainer isopen={isMenuOpen.toString()}>
-        <DropDown
-          type="button"
-          onMouseEnter={() => setIsDropDown(true)}
-          onMouseLeave={() => setIsDropDown(false)}
-        >
-          입양/분양
-          {isDropDown ? (
-            <DropDownMenu>
-              <DropDownList to="/dog">강아지</DropDownList>
-              <DropDownList to="/cat">고양이</DropDownList>
-            </DropDownMenu>
-          ) : null}
-        </DropDown>
-        <Category to="/shelter">인근 보호소</Category>
-        <Category to="/funeral">장례식장</Category>
-      </CategoryContainer>
-
-      {isLogin ? (
-        <AuthContainer isopen={isMenuOpen.toString()}>
-          <IconButton
-            sx={{ position: 'relative' }}
-            onMouseEnter={() => setIsUserDropDown(true)}
-            onMouseLeave={() => setIsUserDropDown(false)}
+    <>
+      <Wrapper>
+        <MenuBtn onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          <MenuIcon />
+        </MenuBtn>
+        <Link to="/">
+          <LogoImg src={Logo} alt="메인로고" />
+        </Link>
+        <CategoryContainer isopen={isMenuOpen.toString()}>
+          <DropDown
+            type="button"
+            onMouseEnter={() => setIsDropDown(true)}
+            onMouseLeave={() => setIsDropDown(false)}
           >
-            <PersonIcon fontSize="medium" />
-            {isUserDropDown ? (
-              <UserDropDownMenu>
-                <DropDownList to="/mypage">마이페이지</DropDownList>
-                <DropDownList to="/" onClick={logOutHandler}>
-                  로그아웃
-                </DropDownList>
-              </UserDropDownMenu>
-            ) : (
-              ''
-            )}
-          </IconButton>
-          <div>
-            {isChatListOpen &&
-              (isChatRoomOpen ? (
-                <Chat
-                  talkId={currentTalk}
-                  close={ChatRoomClose}
-                  roomName={chatName}
-                />
-              ) : (
-                <ChatList openChatRoom={chatRoomLink} />
-              ))}
-            <Fab
-              sx={{ position: 'fixed', bottom: 20, right: 22 }}
-              color="primary"
-              onClick={() => setIsChatListOpen(!isChatListOpen)}
+            입양/분양
+            {isDropDown ? (
+              <DropDownMenu>
+                <DropDownList to="/dog">강아지</DropDownList>
+                <DropDownList to="/cat">고양이</DropDownList>
+              </DropDownMenu>
+            ) : null}
+          </DropDown>
+          <Category to="/shelter">인근 보호소</Category>
+          <Category to="/funeral">장례식장</Category>
+        </CategoryContainer>
+
+        {isLogin ? (
+          <AuthContainer isopen={isMenuOpen.toString()}>
+            <IconButton
+              sx={{ position: 'relative' }}
+              onMouseEnter={() => setIsUserDropDown(true)}
+              onMouseLeave={() => setIsUserDropDown(false)}
             >
-              {isChatListOpen ? <CloseIcon /> : <ChatIcon />}
-            </Fab>
-          </div>
-        </AuthContainer>
-      ) : (
-        <AuthContainer isopen={isMenuOpen.toString()}>
-          <AuthItem to="/login">로그인</AuthItem>
-          <AuthItem to="/signup">회원가입</AuthItem>
-        </AuthContainer>
-      )}
-      {/* <AuthContainer>
-        <AuthItem to="/login">로그인</AuthItem>
-        <AuthItem to="/signup">회원가입</AuthItem>
-        <ForumIcon />
-        <PersonIcon fontSize="large" />
-      </AuthContainer> */}
-    </Wrapper>
+              <PersonIcon fontSize="medium" />
+              {isUserDropDown ? (
+                <UserDropDownMenu>
+                  <DropDownList to="/mypage">마이페이지</DropDownList>
+                  <DropDownList to="/" onClick={logOutHandler}>
+                    로그아웃
+                  </DropDownList>
+                </UserDropDownMenu>
+              ) : (
+                ''
+              )}
+            </IconButton>
+          </AuthContainer>
+        ) : (
+          <AuthContainer isopen={isMenuOpen.toString()}>
+            <AuthItem to="/login">로그인</AuthItem>
+            <AuthItem to="/signup">회원가입</AuthItem>
+          </AuthContainer>
+        )}
+      </Wrapper>
+      <ChatContainer>
+        {isChatListOpen &&
+          (isChatRoomOpen ? (
+            <Chat
+              talkId={currentTalk}
+              close={ChatRoomClose}
+              roomName={chatName}
+            />
+          ) : (
+            <ChatList openChatRoom={chatRoomLink} />
+          ))}
+        <Fab color="primary" onClick={() => setIsChatListOpen(!isChatListOpen)}>
+          {isChatListOpen ? <CloseIcon /> : <ChatIcon />}
+        </Fab>
+      </ChatContainer>
+    </>
   );
 }
 
