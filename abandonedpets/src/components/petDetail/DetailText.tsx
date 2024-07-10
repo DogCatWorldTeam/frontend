@@ -3,13 +3,12 @@ import styled from 'styled-components';
 
 const TextArea = styled.div`
   width: 60%;
-  min-width: 30rem;
   margin: 3% auto;
   background-color: #ffefde;
   border-radius: 10px;
-  min-height: 7rem;
+  min-height: 7em;
   padding: 15px;
-  font-size: 1rem;
+  font-size: 1em;
   display: flex;
   justify-content: center; /* 수평 중앙 정렬 */
   align-items: center; /* 수직 중앙 정렬 */

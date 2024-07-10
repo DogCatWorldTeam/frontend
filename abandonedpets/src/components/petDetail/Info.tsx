@@ -14,7 +14,7 @@ const Wrapper = styled.div`
 
 const Title = styled.div`
   width: 100%;
-  font-size: 2rem;
+  font-size: 1.5em;
   font-weight: 900;
   display: flex;
   justify-content: center;
@@ -29,7 +29,7 @@ const TitleText = styled.div`
 `;
 
 const ImgContainer = styled.div`
-  width: 45rem;
+  height: 45em;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -58,14 +58,14 @@ const InfoDetailContainer = styled.div`
 `;
 
 const PetDetailExplan = styled.span`
-  font-size: 1.2em;
+  font-size: 1em;
   color: #a1a1a1;
   display: flex;
   align-items: center;
 `;
 
 const PetDetailText = styled.span`
-  font-size: 1.2em;
+  font-size: 1em;
   display: flex;
   align-items: center;
 `;
@@ -176,7 +176,7 @@ const PetDetail: React.FC<InfoProps> = ({ petInfo, petState }) => {
         <TitleText>{petDetail.title}</TitleText>
       </Title>
       <ImgContainer>
-        <Img src={petDetail.petInfo.popfile} alt="강아지 사진" />
+        <Img src={petDetail.petInfo.popfile} alt="동물 사진" />
       </ImgContainer>
 
       <InfoContainer>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '@mui/material/Button';
@@ -25,8 +25,8 @@ const SearchContainer = styled.div`
 `;
 
 const FilterImg = styled.img`
-  width: 2.5em;
-  height: 2.5em;
+  width: 2em;
+  height: 2em;
   position: absolute;
   left: 0;
   top: 50%;
@@ -51,18 +51,19 @@ const InputContainer = styled.div`
   display: flex;
   justify-content: start;
   align-items: center;
-  margin-left: 3rem;
+  margin-left: 3em;
 `;
 
 const WriteBtn = styled.span`
-  width: 10rem;
+  width: 10em;
+  font-size: 1em;
 `;
 
 const Input = styled.input`
   width: 100%;
   border: none;
   outline: none;
-  font-size: 1.25em;
+  font-size: 1em;
   margin-left: 0.5rem;
 `;
 
@@ -208,6 +209,12 @@ function Search({ onSearch }: SearchProps) {
     // }
   };
 
+  const searchInputHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      searchHandler();
+    }
+  };
+
   return (
     <SearchWrapper>
       <SearchContainer>
@@ -219,12 +226,14 @@ function Search({ onSearch }: SearchProps) {
             placeholder="검색할 내용을 입력해주세요 (나이는 필수로 입력해주세요)"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+            onKeyDown={searchInputHandler}
           />
         </InputContainer>
         <Button
           variant="outlined"
           color="warning"
           onClick={writeBtnClickHandler}
+          sx={{ width: '10.5em' }}
         >
           <WriteBtn>글 작성하기</WriteBtn>
         </Button>
@@ -277,15 +286,58 @@ function Search({ onSearch }: SearchProps) {
             />
           </FormItems>
 
-          <FormItems>
-            <FormInfo>품종</FormInfo>
+          <FormControl sx={{ minWidth: 120 }}>
+            <InputLabel id="selectedCategory">품종</InputLabel>
+            <Select
+              id="selectedCategory"
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+            >
+              <MenuItem value="">none</MenuItem>
+              <MenuItem value="푸들">푸들</MenuItem>
+              <MenuItem value="비숑">비숑</MenuItem>
+              <MenuItem value="말티즈">말티즈</MenuItem>
+
+              {/* <MenuItem value="웰시 코기">웰시코기</MenuItem> */}
+              <MenuItem value="시츄">시츄</MenuItem>
+              <MenuItem value="시바견">시바견</MenuItem>
+              <MenuItem value="포메라니안">포메라니안</MenuItem>
+              <MenuItem value="리트리버">리트리버</MenuItem>
+              <MenuItem value="불독">불독</MenuItem>
+              <MenuItem value="믹스견">믹스견</MenuItem>
+              <MenuItem value="러시안 블루">러시안 블루</MenuItem>
+              <MenuItem value="페르시안">페르시안</MenuItem>
+
+              <MenuItem value="레그돌">레그돌</MenuItem>
+              <MenuItem value="믹스묘">믹스묘</MenuItem>
+            </Select>
+
+            {/* <NativeSelect id="selectedCategory">
+              <option value="">none</option>
+              <option value="푸들">푸들</option>
+              <option value="비숑">비숑</option>
+              <option value="말티즈">말티즈</option>
+              <option value="웰시코기">웰시코기</option>
+              <option value="시츄">시츄</option>
+              <option value="시바견">시바견</option>
+              <option value="포메라니안">포메라니안</option>
+              <option value="리트리버">리트리버</option>
+              <option value="불독">불독</option>
+              <option value="믹스견">믹스견</option>
+              <option value="러시안 블루">러시안 블루</option>
+              <option value="페르시안">페르시안</option>
+              <option value="레그돌">레그돌</option>
+              <option value="믹스묘">믹스묘</option>
+            </NativeSelect> */}
+
+            {/* <FormInfo>품종</FormInfo>
             <TextField
               variant="outlined"
               placeholder="품종을 입력해주세요"
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
               sx={{ width: 250 }}
-            />
+            /> */}
 
             {/* <Autocomplete
               disablePortal
@@ -294,7 +346,7 @@ function Search({ onSearch }: SearchProps) {
               sx={{ width: 300 }}
               renderInput={(params) => <TextField {...params} label="전체" />}
             /> */}
-          </FormItems>
+          </FormControl>
         </FilterForm>
       )}
     </SearchWrapper>

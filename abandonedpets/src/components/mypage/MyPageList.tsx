@@ -30,7 +30,6 @@ const Section = styled.section`
 `;
 
 const Sidebar = styled.div`
-  width: 100%;
   height: 100vh; /* Full viewport height */
   background-color: #ffffff;
   padding: 1rem;
@@ -50,23 +49,23 @@ const Sidebar = styled.div`
 `;
 
 const ProfileImage = styled.div`
-  width: 12rem;
-  height: 12rem;
+  width: 12em;
+  height: 12em;
   background-color: #d1d5db;
   border-radius: 50%;
   margin: 0 auto 5rem auto;
 `;
 
 const TextLarge = styled.h3`
-  font-size: 1.5rem; /* Increased font size */
-  margin-bottom: 3rem; /* Increased margin */
+  font-size: 1.5em; /* Increased font size */
+  margin-bottom: 3em; /* Increased margin */
   text-align: center;
 `;
 
 const TextSmall = styled.p`
-  font-size: 1rem; /* Increased font size */
+  font-size: 1em; /* Increased font size */
   color: #6b7280;
-  margin-bottom: 3rem; /* Increased margin */
+  margin-bottom: 3em; /* Increased margin */
   text-align: center;
 `;
 
@@ -101,6 +100,8 @@ const ContentBox = styled.div`
 `;
 
 const Grid = styled.div`
+  width: 100%;
+
   display: grid;
   grid-template-columns: repeat(1, 1fr);
   gap: 1rem; /* Gap reduced */
@@ -432,7 +433,9 @@ function MyPageList() {
                             gutterBottom
                             variant="h5"
                             component="div"
-                            sx={{ fontSize: '1.2em' }}
+                            sx={{
+                              fontSize: '1.2em',
+                            }}
                           >
                             {post.title}
                           </Typography>

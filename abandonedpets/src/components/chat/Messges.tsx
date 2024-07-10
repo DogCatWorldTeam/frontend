@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const MessagesContainer = styled.div`
-  height: 530px;
+  height: 32em;
   overflow-y: auto;
   margin: 20px 0 10px 0;
   display: flex;
@@ -12,7 +12,7 @@ const MessagesContainer = styled.div`
 const Message = styled.div`
   max-width: 60%; /* 최대 너비를 설정하여 메시지가 너무 길어지지 않도록 함 */
   padding: 10px;
-  font-size: 0.875rem;
+  font-size: 0.875em;
   border-radius: 8px;
   word-wrap: break-word; /* 단어가 박스를 넘지 않도록 함 */
 `;
@@ -32,7 +32,7 @@ const ReceiveMessage = styled(Message)`
 `;
 
 const InfoMessage = styled.div`
-  font-size: 0.875rem;
+  font-size: 0.875em;
   text-align: center;
 `;
 
