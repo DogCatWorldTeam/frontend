@@ -111,6 +111,7 @@ function Chat({ talkId, close, roomName }: ChatProps) {
       //   `chatRoonId${talkId}, chatRoomName${roomName}, senderId:${userId}, message: ${message}, `,
       // );
 
+      // 여기서부터 126까지
       stompClient.current.send(
         '/app/message',
         {},
@@ -123,6 +124,9 @@ function Chat({ talkId, close, roomName }: ChatProps) {
         }),
       );
     } else alert('메세지 전송 실패');
+
+    // console.log(message);  // 입력 메세지 전달 확인
+
     // if (stompClient && newMessage) {
     //   const chatMessage: ChatMessageReqeust = {
     //     chatRoomId: talkId,
