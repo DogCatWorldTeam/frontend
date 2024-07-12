@@ -223,7 +223,7 @@ function Search({ onSearch }: SearchProps) {
           <SearchImg src={SearchIcon} alt="검색" onClick={searchHandler} />
           <Input
             type="text"
-            placeholder="검색할 내용을 입력해주세요 (나이는 필수로 입력해주세요)"
+            placeholder="검색할 내용을 입력해주세요"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             onKeyDown={searchInputHandler}
