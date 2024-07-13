@@ -44,6 +44,7 @@ interface ChatMessageResponse {
 }
 
 function Chat({ talkId, close, roomName }: ChatProps) {
+  axios.defaults.baseURL = import.meta.env.VITE_APP_API_URL;
   const [messages, setMessages] = useState<ChatMessageResponse[]>([]);
 
   // console.log(roomName);
@@ -56,7 +57,7 @@ function Chat({ talkId, close, roomName }: ChatProps) {
     const loadChatHistory = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/v1/chatrooms/not-use-redis/messages/${talkId}`,
+          `/api/v1/chatrooms/not-use-redis/messages/${talkId}`,
         );
         // console.log(response);
         const message = response.data as ChatMessageResponse[];
@@ -69,7 +70,8 @@ function Chat({ talkId, close, roomName }: ChatProps) {
     loadChatHistory();
 
     const connect = () => {
-      const socket = new WebSocket('ws://localhost:8080/ws');
+      // const socket = new WebSocket(`ws://localhost:8080/ws`);
+      const socket = new WebSocket(`ws://dogcatworld.site/ws`);
       stompClient.current = Stomp.over(socket);
       stompClient.current.connect({}, () => {
         console.log('서버 연결 성공');
