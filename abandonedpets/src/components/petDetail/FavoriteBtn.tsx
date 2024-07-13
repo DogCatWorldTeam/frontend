@@ -52,7 +52,8 @@ interface InfoProps {
 
 function FavoriteBtn({ favInfo }: InfoProps) {
   const favorite = favInfo;
-  const [isFavorite, setIsFavorite] = useState<boolean>(favorite.liked);
+  const [isFavorite, setIsFavorite] = useState<boolean>(favorite.liked); // 북마크 여부 true/false
+  const [favCnt, setFavCnt] = useState<number>(favInfo.likeCount);
   const userId = localStorage.getItem('userId');
 
   const favBtnClickHandler = () => {
@@ -60,22 +61,29 @@ function FavoriteBtn({ favInfo }: InfoProps) {
       setIsFavorite(!isFavorite);
       return;
     }
+
     if (isFavorite) {
       axios
         .delete(`/api/v1/bookmark`, {
           data: {
             userId,
-            petBoardId: favorite.petInfo.id,
+            petBoardId: favorite.petBoardId,
           },
         })
-        .then(() => setIsFavorite(!isFavorite));
+        .then(() => {
+          setIsFavorite(!isFavorite);
+          setFavCnt(favCnt - 1);
+        });
     } else {
       axios
         .post(`/api/v1/bookmark`, {
           userId,
-          petBoardId: favorite.petInfo.id,
+          petBoardId: favorite.petBoardId,
         })
-        .then(() => setIsFavorite(!isFavorite));
+        .then(() => {
+          setIsFavorite(!isFavorite);
+          setFavCnt(favCnt + 1);
+        });
     }
   };
 
@@ -104,7 +112,7 @@ function FavoriteBtn({ favInfo }: InfoProps) {
   return (
     <Button onClick={favBtnClickHandler} variant="outlined">
       {isFavorite ? <img src={FavoriteFill} /> : <img src={Favorite} />}
-      <span>{favorite.likeCount}</span>
+      <span>{favCnt}</span>
     </Button>
   );
 }

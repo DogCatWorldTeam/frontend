@@ -42,7 +42,10 @@ const Input = ({ sendMessage }: any) => {
   };
 
   const enterHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') sendHandler();
+    if (e.nativeEvent.isComposing) return;
+    if (e.key === 'Enter') {
+      sendHandler();
+    }
   };
 
   return (
