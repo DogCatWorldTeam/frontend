@@ -278,21 +278,26 @@ function NavBar() {
           </AuthContainer>
         )}
       </Wrapper>
-      <ChatContainer>
-        {isChatListOpen &&
-          (isChatRoomOpen ? (
-            <Chat
-              talkId={currentTalk}
-              close={ChatRoomClose}
-              roomName={chatName}
-            />
-          ) : (
-            <ChatList openChatRoom={chatRoomLink} />
-          ))}
-        <Fab color="primary" onClick={() => setIsChatListOpen(!isChatListOpen)}>
-          {isChatListOpen ? <CloseIcon /> : <ChatIcon />}
-        </Fab>
-      </ChatContainer>
+      {isLogin ? (
+        <ChatContainer>
+          {isChatListOpen &&
+            (isChatRoomOpen ? (
+              <Chat
+                talkId={currentTalk}
+                close={ChatRoomClose}
+                roomName={chatName}
+              />
+            ) : (
+              <ChatList openChatRoom={chatRoomLink} />
+            ))}
+          <Fab
+            color="primary"
+            onClick={() => setIsChatListOpen(!isChatListOpen)}
+          >
+            {isChatListOpen ? <CloseIcon /> : <ChatIcon />}
+          </Fab>
+        </ChatContainer>
+      ) : null}
     </>
   );
 }
