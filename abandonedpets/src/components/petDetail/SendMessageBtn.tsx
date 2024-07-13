@@ -54,7 +54,8 @@ function SendMessageBtn({ chatInfo }: any) {
     // useEffect로 소켓서버를 띄우지말고, 그냥 메세지 전송 버튼을 눌렀을 때, 동기처리하면 되지않을까?
 
     const connect = () => {
-      const socket = new WebSocket('ws://localhost:8080/ws');
+      // const socket = new WebSocket(`ws://localhost:8080/ws`);
+      const socket = new WebSocket(`ws://dogcatworld.site/ws`);
       stompClient.current = Stomp.over(socket);
       stompClient.current.connect({}, () => {
         // console.log('서버연결 성공');
