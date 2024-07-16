@@ -166,7 +166,11 @@ function MyPageList() {
     // 유저 정보 가져오기
     (async () => {
       try {
-        const userRes = await axios.get(`/api/v1/users/${userId}`);
+        const userRes = await axios.get(`/api/v1/users/${userId}`, {
+          headers: {
+            access: localStorage.getItem('accessToken'),
+          },
+        });
         if (userRes.data.status === 'OK') {
           setUserInfo(userRes.data.result);
           setEditedUserInfo(userRes.data.result);
@@ -179,7 +183,11 @@ function MyPageList() {
     // 북마크 정보 가져오기
     (async () => {
       try {
-        const res = await axios.get(`/api/v1/bookmark/${userId}`);
+        const res = await axios.get(`/api/v1/bookmark/${userId}`, {
+          headers: {
+            access: localStorage.getItem('accessToken'),
+          },
+        });
 
         if (res.data.status === 'OK') {
           setBookmarks(res.data.result);
@@ -192,7 +200,11 @@ function MyPageList() {
     // 게시글 정보 가져오기
     (async () => {
       try {
-        const res = await axios.get(`/api/v1/pet_board/myPetBoard/${userId}`);
+        const res = await axios.get(`/api/v1/pet_board/myPetBoard/${userId}`, {
+          headers: {
+            access: localStorage.getItem('accessToken'),
+          },
+        });
         setmypetBoard(res.data);
       } catch (error) {
         // console.error('Failed to fetch posts', error);
@@ -235,7 +247,11 @@ function MyPageList() {
       if (!user) return;
 
       try {
-        const res = await axios.put(`/api/v1/users/${user}`, editedUserInfo);
+        const res = await axios.put(`/api/v1/users/${user}`, editedUserInfo, {
+          headers: {
+            access: localStorage.getItem('accessToken'),
+          },
+        });
         if (res.data.status === 'OK') {
           alert('회원 정보가 수정되었습니다.');
           setUserInfo(editedUserInfo);
@@ -261,7 +277,11 @@ function MyPageList() {
     if (!user) return;
 
     try {
-      const res = await axios.delete(`/api/v1/users/${user}`);
+      const res = await axios.delete(`/api/v1/users/${user}`, {
+        headers: {
+          access: localStorage.getItem('accessToken'),
+        },
+      });
       if (res.data.status === 'OK') {
         alert('회원 탈퇴가 완료되었습니다.');
         logoutHandler(); // 로그아웃 처리
@@ -285,7 +305,11 @@ function MyPageList() {
 
     try {
       console.log(`Attempting to delete post with id: ${petBoardId}`);
-      const res = await axios.delete(`/api/v1/pet_board/${petBoardId}`);
+      const res = await axios.delete(`/api/v1/pet_board/${petBoardId}`, {
+        headers: {
+          access: localStorage.getItem('accessToken'),
+        },
+      });
       console.log('Delete response:', res);
       if (res.status === 200 && res.data === '게시물 삭제에 성공하였습니다.') {
         alert('게시글이 삭제되었습니다.');
@@ -319,6 +343,10 @@ function MyPageList() {
         data: {
           userId: user,
           petBoardId,
+        },
+
+        headers: {
+          access: localStorage.getItem('accessToken'),
         },
       })
       .then(() => {
