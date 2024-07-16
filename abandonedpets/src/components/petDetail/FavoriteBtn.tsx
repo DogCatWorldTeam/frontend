@@ -69,6 +69,10 @@ function FavoriteBtn({ favInfo }: InfoProps) {
             userId,
             petBoardId: favorite.petBoardId,
           },
+
+          headers: {
+            access: localStorage.getItem('accessToken'),
+          },
         })
         .then(() => {
           setIsFavorite(!isFavorite);
@@ -76,10 +80,18 @@ function FavoriteBtn({ favInfo }: InfoProps) {
         });
     } else {
       axios
-        .post(`/api/v1/bookmark`, {
-          userId,
-          petBoardId: favorite.petBoardId,
-        })
+        .post(
+          `/api/v1/bookmark`,
+          {
+            userId,
+            petBoardId: favorite.petBoardId,
+          },
+          {
+            headers: {
+              access: localStorage.getItem('accessToken'),
+            },
+          },
+        )
         .then(() => {
           setIsFavorite(!isFavorite);
           setFavCnt(favCnt + 1);

@@ -133,7 +133,11 @@ function ShelterList() {
   useEffect(() => {
     const fetchShelters = async () => {
       try {
-        const res = await axios.get(`/api/v1/shelter_address`);
+        const res = await axios.get(`/api/v1/shelter_address`, {
+          headers: {
+            access: localStorage.getItem('accessToken'),
+          },
+        });
         const locationData: Location[] = res.data.map((shelter: Shelter) => ({
           title: shelter.name,
           latlng: {

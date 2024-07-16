@@ -67,7 +67,11 @@ function DogList({ searchParams }: { searchParams: SearchParams }) {
 
         if (Object.keys(params).length === 0) {
           try {
-            const response = await axios.get(endpoint);
+            const response = await axios.get(endpoint, {
+              headers: {
+                access: localStorage.getItem('accessToken'),
+              },
+            });
 
             // console.log(`if문 내부 ${res}`, res);
             if (response.data && response.data.result) {
@@ -100,6 +104,9 @@ function DogList({ searchParams }: { searchParams: SearchParams }) {
               params: {
                 ...params,
                 page: page - 1,
+              },
+              headers: {
+                access: localStorage.getItem('accessToken'),
               },
             });
 

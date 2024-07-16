@@ -73,6 +73,11 @@ function PetDetail() {
         const res = localStorage.getItem('userId')
           ? await axios.get<PetDetail>(
               `/api/v1/pet_board/${id}?userId=${localStorage.getItem('userId')}`,
+              {
+                headers: {
+                  access: localStorage.getItem('accessToken'),
+                },
+              },
             )
           : await axios.get<PetDetail>(`/api/v1/pet_board/${id}`);
 

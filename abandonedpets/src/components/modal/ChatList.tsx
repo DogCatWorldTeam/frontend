@@ -56,6 +56,11 @@ function ChatList({ openChatRoom }: Props) {
       try {
         const response = await axios.get(
           `/api/v1/chatrooms/participants/${userId}`,
+          {
+            headers: {
+              access: localStorage.getItem('accessToken'),
+            },
+          },
         );
         if (
           response.data ===

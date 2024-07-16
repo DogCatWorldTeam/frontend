@@ -88,7 +88,11 @@ function FuneralList() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get('/api/v1/pet-funeral');
+        const res = await axios.get('/api/v1/pet-funeral', {
+          headers: {
+            access: localStorage.getItem('accessToken'),
+          },
+        });
         setData(res.data); // assuming res.data is an array of funeral data
         setFilteredFunerals(res.data); // initialize with all data
       } catch (error) {

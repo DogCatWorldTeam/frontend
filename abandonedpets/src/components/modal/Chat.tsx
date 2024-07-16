@@ -58,6 +58,11 @@ function Chat({ talkId, close, roomName }: ChatProps) {
       try {
         const response = await axios.get(
           `/api/v1/chatrooms/not-use-redis/messages/${talkId}`,
+          {
+            headers: {
+              access: localStorage.getItem('accessToken'),
+            },
+          },
         );
         // console.log(response);
         const message = response.data as ChatMessageResponse[];

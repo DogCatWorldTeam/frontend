@@ -449,7 +449,10 @@ function Form() {
     try {
       await axios
         .post('/api/v1/pet_board/create', data, {
-          headers: { 'Content-Type': 'multipart/form-data' },
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            access: localStorage.getItem('accessToken'),
+          },
         })
         .then(() => {
           // console.log(res);
